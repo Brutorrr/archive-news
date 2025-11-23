@@ -483,6 +483,21 @@ def process_emails():
                             new_body.extend(soup.contents)
                             soup.append(new_body)
 
+                        # =================================================================
+                        # CORRECTION BUG TABLE WIDTH ET CSS INLINE
+                        # =================================================================
+                        for table in soup.find_all("table"):
+                            # 1. Nettoyer les styles inline avec des widths énormes
+                            if table.get("style"):
+                                # Remplace width: XXXXpx par width: 100% si > 600px
+                                # Regex pour les valeurs entre 600 et 99999...
+                                table["style"] = re.sub(r'width:\s*([6-9]\d{2}|\d{4,})px', 'width: 100%', table["style"], flags=re.IGNORECASE)
+                            
+                            # 2. Nettoyer l'attribut width="XXXX" obsolète
+                            if table.get("width") and table["width"].isdigit():
+                                if int(table["width"]) > 600:
+                                    table["width"] = "100%"
+
                         # Injection Style
                         style_tag = soup.new_tag("style")
                         style_tag.string = """
