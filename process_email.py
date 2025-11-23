@@ -192,7 +192,6 @@ def generate_index():
             footer {{ margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 0.85rem; }}
             .copyright a {{ color: inherit; text-decoration: none; border-bottom: 1px dotted var(--text-muted); transition: color 0.2s; }}
             .copyright a:hover {{ color: var(--accent-color); border-bottom-color: var(--accent-color); }}
-            
             details {{ margin-top: 15px; cursor: pointer; }}
             details p {{ background: var(--hover-bg); padding: 10px; border-radius: 4px; text-align: left; }}
         </style>
@@ -312,7 +311,6 @@ def process_emails():
                     soup = BeautifulSoup(html_content, "html.parser")
                     for s in soup(["script", "iframe", "object"]): s.extract()
 
-                    # Nettoyage des transferts
                     split_keywords = ["Forwarded message", "Message transféré"]
                     found_split = False
                     for div in soup.find_all("div"):
@@ -338,74 +336,95 @@ def process_emails():
                         new_body.extend(soup.contents)
                         soup.append(new_body)
 
-                    # --- INJECTION UI PREVIEW (TOOLBAR & WRAPPER) ---
+                    # --- DESIGN PREVIEW (PANNEAU DE CONTROLE) ---
                     
-                    # 1. CSS/JS Injection
+                    # 1. Style (Sans transition pour éviter les glitchs)
                     style_tag = soup.new_tag("style")
                     style_tag.string = """
-                        /* Reset de base */
-                        body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+                        /* Reset */
+                        body { margin: 0; padding: 0; background-color: #eef2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
                         
-                        /* TOOLBAR UI */
-                        #preview-toolbar {
-                            position: fixed; top: 0; left: 0; right: 0;
-                            height: 60px; background: #1a1a1a; color: white;
-                            display: flex; align-items: center; justify-content: space-between;
-                            padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-                            z-index: 999999;
-                        }
-                        #preview-toolbar h1 { 
-                            margin: 0; font-size: 16px; font-weight: 600; 
-                            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
-                            max-width: 400px; color: #e0e0e0;
+                        /* HEADER PANEL */
+                        .preview-header {
+                            background-color: #ffffff;
+                            border-bottom: 1px solid #dcdcdc;
+                            padding: 20px 30px;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: center;
+                            gap: 15px;
+                            box-shadow: 0 2px 5px rgba(0,0,0,0.03);
                         }
                         
-                        .toolbar-actions { display: flex; gap: 12px; }
+                        /* TITRE (Avec préfixe) */
+                        .preview-header h1 {
+                            margin: 0;
+                            font-size: 18px;
+                            color: #333;
+                            font-weight: 600;
+                            text-align: center;
+                            line-height: 1.4;
+                        }
                         
-                        /* BOUTONS STYLISÉS */
-                        .tool-btn {
-                            background: #333; border: 1px solid #555; color: #ddd;
-                            padding: 8px 14px; border-radius: 6px; cursor: pointer;
-                            font-size: 13px; font-weight: 500;
-                            display: flex; align-items: center; gap: 6px;
+                        /* CONTROLES (BOUTONS) */
+                        .controls {
+                            display: flex;
+                            gap: 15px;
+                        }
+                        
+                        .btn {
+                            background-color: #f8f9fa;
+                            border: 1px solid #ddd;
+                            color: #555;
+                            padding: 8px 16px;
+                            border-radius: 6px;
+                            font-size: 14px;
+                            font-weight: 500;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
                             transition: all 0.2s ease;
                         }
-                        .tool-btn:hover { background: #444; border-color: #777; color: #fff; }
-                        .tool-btn.active { 
-                            background: #0070f3; border-color: #0070f3; color: white; 
-                            box-shadow: 0 0 8px rgba(0, 112, 243, 0.4);
+                        .btn:hover {
+                            background-color: #e2e6ea;
+                            color: #333;
+                            border-color: #ccc;
+                        }
+                        .btn.active {
+                            background-color: #0070f3;
+                            color: white;
+                            border-color: #0070f3;
+                            box-shadow: 0 2px 8px rgba(0, 112, 243, 0.3);
                         }
                         
-                        /* EMAIL CONTAINER */
+                        /* WRAPPER EMAIL */
                         #email-wrapper {
-                            margin-top: 60px; /* Espace pour la toolbar */
                             width: 100%;
-                            min-height: calc(100vh - 60px);
-                            display: flex; justify-content: center;
+                            display: flex;
+                            justify-content: center;
                             padding: 40px 20px;
                             box-sizing: border-box;
-                            transition: background-color 0.3s;
+                            min-height: calc(100vh - 150px);
                         }
                         
                         #email-content {
-                            width: 100%; max-width: 800px;
+                            width: 100%; 
+                            max-width: 800px; /* Desktop par défaut */
                             background: #ffffff;
-                            box-shadow: 0 5px 30px rgba(0,0,0,0.1);
-                            transition: all 0.3s ease;
-                            /* Isolation du CSS de l'email */
-                            border-radius: 2px;
+                            box-shadow: 0 5px 30px rgba(0,0,0,0.08);
+                            /* Pas de transition pour éviter les glitchs dark mode */
                         }
 
-                        /* --- MOBILE MODE LOGIC --- */
+                        /* --- MOBILE MODE --- */
                         body.mobile-active #email-content {
-                            max-width: 375px !important; /* Largeur iPhone SE */
-                            border: 8px solid #333;
+                            max-width: 375px !important;
+                            border: 10px solid #333;
                             border-radius: 30px;
                             overflow: hidden;
-                            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
                         }
                         
-                        /* Force le redimensionnement des vieux mails en mode mobile */
+                        /* Force adaptation mobile pour vieux mails */
                         body.mobile-active table, 
                         body.mobile-active img {
                             max-width: 100% !important;
@@ -413,13 +432,26 @@ def process_emails():
                             width: auto !important;
                         }
 
-                        /* --- DARK MODE LOGIC (SMART INVERT) --- */
-                        body.dark-active #email-wrapper { background-color: #121212; }
+                        /* --- DARK MODE (SMART INVERT) --- */
+                        body.dark-active { background-color: #121212; }
+                        body.dark-active .preview-header { 
+                            background-color: #1e1e1e; 
+                            border-bottom-color: #333; 
+                        }
+                        body.dark-active .preview-header h1 { color: #e0e0e0; }
+                        body.dark-active .btn { 
+                            background-color: #2c2c2c; 
+                            border-color: #444; 
+                            color: #ccc; 
+                        }
+                        body.dark-active .btn:hover { background-color: #383838; }
+                        body.dark-active .btn.active { background-color: #0070f3; color: white; }
+
+                        /* Inversion intelligente du contenu mail */
                         body.dark-active #email-content {
-                            /* Inversion intelligente : on inverse tout le conteneur */
                             filter: invert(1) hue-rotate(180deg);
                         }
-                        /* Et on RE-inverse les images et vidéos pour qu'elles redeviennent normales */
+                        /* Ré-inversion des médias pour qu'ils restent normaux */
                         body.dark-active img, 
                         body.dark-active video, 
                         body.dark-active iframe {
@@ -432,31 +464,33 @@ def process_emails():
                         new_head.append(style_tag)
                         soup.insert(0, new_head)
 
-                    # 2. Script JS Injection
+                    # 2. JS
                     script_tag = soup.new_tag("script")
                     script_tag.string = """
                         function toggleMobile() {
                             document.body.classList.toggle('mobile-active');
-                            const btn = document.getElementById('btn-mobile');
-                            btn.classList.toggle('active');
+                            document.getElementById('btn-mobile').classList.toggle('active');
                         }
                         function toggleDark() {
                             document.body.classList.toggle('dark-active');
-                            const btn = document.getElementById('btn-dark');
-                            btn.classList.toggle('active');
+                            document.getElementById('btn-dark').classList.toggle('active');
                         }
                     """
                     soup.body.append(script_tag)
 
-                    # 3. Création de la Toolbar (SANS le bouton Retour)
-                    toolbar_html = BeautifulSoup(f"""
-                    <div id="preview-toolbar">
-                        <h1>{subject}</h1>
-                        <div class="toolbar-actions">
-                            <button id="btn-mobile" class="tool-btn" onclick="toggleMobile()">📱 Mobile</button>
-                            <button id="btn-dark" class="tool-btn" onclick="toggleDark()">🌙 Sombre</button>
+                    # 3. Header (Dashboard)
+                    header_html = BeautifulSoup(f"""
+                    <header class="preview-header">
+                        <h1>Titre : {subject}</h1>
+                        <div class="controls">
+                            <button id="btn-mobile" class="btn" onclick="toggleMobile()">
+                                <span>📱</span> Vue Mobile
+                            </button>
+                            <button id="btn-dark" class="btn" onclick="toggleDark()">
+                                <span>🌙</span> Mode Sombre
+                            </button>
                         </div>
-                    </div>
+                    </header>
                     """, 'html.parser')
 
                     # 4. Wrappings
@@ -465,7 +499,7 @@ def process_emails():
                     
                     to_move = []
                     for child in soup.body.contents:
-                        if child != script_tag and child != toolbar_html:
+                        if child != script_tag and child != header_html:
                             to_move.append(child)
                     
                     for child in to_move:
@@ -474,7 +508,7 @@ def process_emails():
                     wrapper_div.append(content_div)
                     
                     soup.body.clear()
-                    soup.body.append(toolbar_html)
+                    soup.body.append(header_html)
                     soup.body.append(wrapper_div)
                     soup.body.append(script_tag)
 
@@ -491,7 +525,7 @@ def process_emails():
                         new_title.string = subject
                         if soup.head: soup.head.append(new_title)
 
-                    # Images (Lazy Loading)
+                    # Images
                     img_counter = 0
                     for img in soup.find_all("img"):
                         src = img.get("src")
