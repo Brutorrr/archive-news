@@ -7,20 +7,37 @@ import re
 import mimetypes
 import requests
 import datetime
-import uuid
+import hashlib
+import shutil
 
 # --- CONFIGURATION ---
 GMAIL_USER = os.environ["GMAIL_USER"]
 GMAIL_PASSWORD = os.environ["GMAIL_PASSWORD"]
-TARGET_LABEL = "Netlify-News"
+
+# Attention : En IMAP, les sous-libellés sont séparés par un slash
+# Si votre libellé racine est "Github" et le sous-libellé "archive-newsletters"
+TARGET_LABEL = "Github/archive-newsletters" 
+
 OUTPUT_FOLDER = "docs"
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
 
+def get_deterministic_id(subject):
+    """
+    Génère un ID unique et constant basé sur le sujet.
+    Si on relance le script, le même sujet donnera le même ID (dossier).
+    Cela permet de ne pas traiter deux fois le même mail.
+    """
+    if not subject:
+        subject = "sans_titre"
+    # On crée un hash MD5 du sujet pour avoir un nom de dossier propre et unique
+    hash_object = hashlib.md5(subject.encode('utf-8', errors='ignore'))
+    return hash_object.hexdigest()[:10] # On garde les 10 premiers caractères
+
 def get_page_title(filepath):
-    """Ouvre un fichier HTML et récupère son titre depuis la balise <title>"""
+    """Ouvre un fichier HTML et récupère son titre"""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             soup = BeautifulSoup(f, 'html.parser')
@@ -31,24 +48,34 @@ def get_page_title(filepath):
     return "Sans titre"
 
 def generate_index():
-    print("Génération du sommaire...")
+    print("Génération du sommaire global...")
     if not os.path.exists(OUTPUT_FOLDER):
         return
         
-    files = [f for f in os.listdir(OUTPUT_FOLDER) if f.endswith(".html") and f != "index.html"]
-    # Tri par date de modification
-    files.sort(key=lambda x: os.path.getmtime(os.path.join(OUTPUT_FOLDER, x)), reverse=True)
+    # On liste les DOSSIERS dans 'docs' (chaque dossier = une newsletter)
+    # On ignore les fichiers isolés et les dossiers système
+    subfolders = [f.path for f in os.scandir(OUTPUT_FOLDER) if f.is_dir() and not f.name.startswith('.')]
+    
+    # Tri par date de modification du dossier (le plus récent en haut)
+    subfolders.sort(key=lambda x: os.path.getmtime(x), reverse=True)
 
     links_html = ""
-    for f in files:
-        filepath = os.path.join(OUTPUT_FOLDER, f)
-        full_title = get_page_title(filepath) # Récupère le vrai titre complet
-        timestamp = os.path.getmtime(filepath)
+    for folder in subfolders:
+        folder_name = os.path.basename(folder)
+        index_file_path = os.path.join(folder, "index.html")
+        
+        # Si le dossier ne contient pas d'index.html, on l'ignore (dossier vide ou corrompu)
+        if not os.path.exists(index_file_path):
+            continue
+
+        full_title = get_page_title(index_file_path)
+        timestamp = os.path.getmtime(folder)
         date_str = datetime.datetime.fromtimestamp(timestamp).strftime('%d/%m/%Y')
 
+        # Le lien pointe vers le sous-dossier
         links_html += f'''
         <li>
-            <a href="{f}">
+            <a href="{folder_name}/index.html">
                 <div class="link-content">
                     <span class="icon">📧</span>
                     <span class="title">{full_title}</span>
@@ -94,22 +121,19 @@ def generate_index():
     
     with open(f"{OUTPUT_FOLDER}/index.html", "w", encoding='utf-8') as f:
         f.write(index_content)
+    print("Sommaire généré.")
 
 def get_decoded_email_subject(msg):
-    """Décode le sujet correctement même s'il est fragmenté (RFC 2047)"""
     subject_header = msg["Subject"]
     if not subject_header:
         return "Sans Titre"
-        
     decoded_list = decode_header(subject_header)
     full_subject = ""
-    
     for part, encoding in decoded_list:
         if isinstance(part, bytes):
             full_subject += part.decode(encoding or "utf-8", errors="ignore")
         else:
             full_subject += str(part)
-            
     return full_subject.strip()
 
 def process_emails():
@@ -117,24 +141,47 @@ def process_emails():
         if not os.path.exists(OUTPUT_FOLDER):
             os.makedirs(OUTPUT_FOLDER)
 
-        print("Connexion au serveur...")
+        print("Connexion au serveur Gmail...")
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
         mail.login(GMAIL_USER, GMAIL_PASSWORD)
-        mail.select(TARGET_LABEL)
         
-        status, messages = mail.search(None, 'UNSEEN')
+        # Sélection du nouveau libellé
+        # Si le script plante ici, vérifiez le nom exact du libellé dans Gmail
+        rv, data = mail.select(f'"{TARGET_LABEL}"')
+        if rv != 'OK':
+            print(f"ERREUR: Impossible de trouver le libellé '{TARGET_LABEL}'. Vérifiez le nom exact.")
+            return
+
+        # CHANGEMENT MAJEUR : On cherche TOUS les emails ('ALL'), pas juste les non-lus
+        status, messages = mail.search(None, 'ALL')
         
         if messages[0]:
-            for num in messages[0].split():
+            email_ids = messages[0].split()
+            print(f"{len(email_ids)} emails trouvés dans le dossier.")
+
+            for num in email_ids:
+                # Lecture partielle pour avoir le sujet (rapide)
+                status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
+                msg_header = email.message_from_bytes(msg_data[0][1])
+                subject = get_decoded_email_subject(msg_header)
+                
+                # Génération de l'ID dossier unique basé sur le sujet
+                folder_id = get_deterministic_id(subject)
+                newsletter_path = os.path.join(OUTPUT_FOLDER, folder_id)
+
+                # ANTI-DOUBLON : Si le dossier existe déjà, on passe au suivant !
+                if os.path.exists(newsletter_path):
+                    # print(f"Déjà archivé : {subject[:20]}...")
+                    continue
+
+                print(f"Archivage de : {subject[:40]}... -> Dossier : {folder_id}")
+                
+                # Si pas encore archivé, on télécharge tout l'email
                 status, msg_data = mail.fetch(num, "(RFC822)")
                 msg = email.message_from_bytes(msg_data[0][1])
                 
-                # --- CORRECTION 1 : Décodage complet du sujet ---
-                subject = get_decoded_email_subject(msg)
-                
-                # Nom de fichier aléatoire pour l'anonymisation
-                random_filename = str(uuid.uuid4().hex)[:10]
-                print(f"Traitement : {subject[:30]}... -> {random_filename}.html")
+                # Création du sous-dossier
+                os.makedirs(newsletter_path, exist_ok=True)
 
                 # Extraction HTML
                 html_content = ""
@@ -152,12 +199,12 @@ def process_emails():
 
                 if not html_content: continue
 
-                # Traitement HTML
+                # Traitement
                 soup = BeautifulSoup(html_content, "html.parser")
                 for s in soup(["script", "iframe", "object"]):
                     s.extract()
                 
-                # --- CORRECTION 2 : Titre dans le <head> ---
+                # Titre dans <head>
                 if soup.title:
                     soup.title.string = subject
                 else:
@@ -170,21 +217,17 @@ def process_emails():
                         new_head.append(new_title)
                         soup.insert(0, new_head)
 
-                # --- CORRECTION 3 : Titre visible dans le corps de l'email ---
-                # On ajoute un bandeau en haut du body
+                # Bandeau Titre
                 header_div = soup.new_tag("div")
                 header_div['style'] = "background:#fff; border-bottom:1px solid #ddd; padding:15px; margin-bottom:20px; font-family:sans-serif; text-align:center;"
-                
                 h1_tag = soup.new_tag("h1")
                 h1_tag.string = subject
                 h1_tag['style'] = "margin:0; font-size:18px; color:#333; font-weight:600;"
-                
                 header_div.append(h1_tag)
-                
                 if soup.body:
                     soup.body.insert(0, header_div)
 
-                # Téléchargement Images
+                # Images (sauvegardées dans le sous-dossier)
                 img_counter = 0
                 for img in soup.find_all("img"):
                     src = img.get("src")
@@ -196,32 +239,36 @@ def process_emails():
                         if response.status_code == 200:
                             content_type = response.headers.get('content-type')
                             ext = mimetypes.guess_extension(content_type) or ".jpg"
-                            img_name = f"{random_filename}_img_{img_counter}{ext}"
-                            img_path = os.path.join(OUTPUT_FOLDER, img_name)
+                            
+                            # Nom simple car on est dans un dossier dédié
+                            img_name = f"img_{img_counter}{ext}"
+                            img_path = os.path.join(newsletter_path, img_name)
+                            
                             with open(img_path, "wb") as f:
                                 f.write(response.content)
+                            
+                            # Le src devient juste le nom du fichier (car même dossier)
                             img['src'] = img_name
                             if img.has_attr('srcset'): del img['srcset']
                             img_counter += 1
                     except Exception: pass
 
-                filename = f"{OUTPUT_FOLDER}/{random_filename}.html"
+                # Sauvegarde index.html DANS le sous-dossier
+                filename = os.path.join(newsletter_path, "index.html")
                 with open(filename, "w", encoding='utf-8') as f:
                     f.write(str(soup))
             
-            # Important : Regénérer l'index APRÈS avoir tout traité
+            # Mise à jour du sommaire global à la fin
             generate_index()
             print("Terminé.")
         else:
-            print("Rien de nouveau.")
+            print("Aucun email trouvé dans ce libellé.")
 
         mail.close()
         mail.logout()
 
     except Exception as e:
         print(f"Erreur critique: {e}")
-        # On ne raise pas l'erreur pour que le workflow GitHub finisse "vert"
-        # mais on pourrait le laisser pour débugger
 
 if __name__ == "__main__":
     process_emails()
