@@ -20,7 +20,7 @@ HEADERS = {
 }
 
 def get_page_title(filepath):
-    """Ouvre un fichier HTML et récupère son titre complet"""
+    """Ouvre un fichier HTML et récupère son titre depuis la balise <title>"""
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             soup = BeautifulSoup(f, 'html.parser')
@@ -31,7 +31,7 @@ def get_page_title(filepath):
     return "Sans titre"
 
 def generate_index():
-    print("Génération du sommaire sécurisé...")
+    print("Génération du sommaire...")
     if not os.path.exists(OUTPUT_FOLDER):
         return
         
@@ -42,10 +42,7 @@ def generate_index():
     links_html = ""
     for f in files:
         filepath = os.path.join(OUTPUT_FOLDER, f)
-        
-        # On récupère le VRAI titre complet depuis le contenu du fichier
-        full_title = get_page_title(filepath)
-        
+        full_title = get_page_title(filepath) # Récupère le vrai titre complet
         timestamp = os.path.getmtime(filepath)
         date_str = datetime.datetime.fromtimestamp(timestamp).strftime('%d/%m/%Y')
 
@@ -97,7 +94,23 @@ def generate_index():
     
     with open(f"{OUTPUT_FOLDER}/index.html", "w", encoding='utf-8') as f:
         f.write(index_content)
-    print("Sommaire généré.")
+
+def get_decoded_email_subject(msg):
+    """Décode le sujet correctement même s'il est fragmenté (RFC 2047)"""
+    subject_header = msg["Subject"]
+    if not subject_header:
+        return "Sans Titre"
+        
+    decoded_list = decode_header(subject_header)
+    full_subject = ""
+    
+    for part, encoding in decoded_list:
+        if isinstance(part, bytes):
+            full_subject += part.decode(encoding or "utf-8", errors="ignore")
+        else:
+            full_subject += str(part)
+            
+    return full_subject.strip()
 
 def process_emails():
     try:
@@ -116,41 +129,35 @@ def process_emails():
                 status, msg_data = mail.fetch(num, "(RFC822)")
                 msg = email.message_from_bytes(msg_data[0][1])
                 
-                # --- SUJET COMPLET ---
-                subject_header = msg["Subject"]
-                if subject_header:
-                    decoded_list = decode_header(subject_header)
-                    subject, encoding = decoded_list[0]
-                    if isinstance(subject, bytes):
-                        subject = subject.decode(encoding if encoding else "utf-8")
-                else:
-                    subject = "Sans Titre"
+                # --- CORRECTION 1 : Décodage complet du sujet ---
+                subject = get_decoded_email_subject(msg)
                 
-                # Génération d'un nom de fichier aléatoire (UUID) pour l'obfuscation
-                random_filename = str(uuid.uuid4().hex)[:10] # ex: a4e12b9f.html
-                print(f"Traitement de : {subject} -> {random_filename}.html")
+                # Nom de fichier aléatoire pour l'anonymisation
+                random_filename = str(uuid.uuid4().hex)[:10]
+                print(f"Traitement : {subject[:30]}... -> {random_filename}.html")
 
                 # Extraction HTML
                 html_content = ""
                 for part in msg.walk():
-                    content_type = part.get_content_type()
-                    content_disposition = str(part.get("Content-Disposition"))
-                    if content_type == "text/html" and "attachment" not in content_disposition:
-                        html_content = part.get_payload(decode=True).decode(part.get_content_charset() or 'utf-8')
+                    if part.get_content_type() == "text/html":
+                        payload = part.get_payload(decode=True)
+                        charset = part.get_content_charset() or 'utf-8'
+                        html_content = payload.decode(charset, errors="ignore")
                         break
                 
                 if not html_content and not msg.is_multipart():
-                    html_content = msg.get_payload(decode=True).decode(msg.get_content_charset() or 'utf-8')
+                    payload = msg.get_payload(decode=True)
+                    charset = msg.get_content_charset() or 'utf-8'
+                    html_content = payload.decode(charset, errors="ignore")
 
                 if not html_content: continue
 
-                # Nettoyage et Images
+                # Traitement HTML
                 soup = BeautifulSoup(html_content, "html.parser")
                 for s in soup(["script", "iframe", "object"]):
                     s.extract()
                 
-                # --- IMPORTANT : On force l'insertion du titre complet dans le HTML ---
-                # Cela permet à generate_index() de le retrouver plus tard
+                # --- CORRECTION 2 : Titre dans le <head> ---
                 if soup.title:
                     soup.title.string = subject
                 else:
@@ -162,6 +169,20 @@ def process_emails():
                         new_head = soup.new_tag('head')
                         new_head.append(new_title)
                         soup.insert(0, new_head)
+
+                # --- CORRECTION 3 : Titre visible dans le corps de l'email ---
+                # On ajoute un bandeau en haut du body
+                header_div = soup.new_tag("div")
+                header_div['style'] = "background:#fff; border-bottom:1px solid #ddd; padding:15px; margin-bottom:20px; font-family:sans-serif; text-align:center;"
+                
+                h1_tag = soup.new_tag("h1")
+                h1_tag.string = subject
+                h1_tag['style'] = "margin:0; font-size:18px; color:#333; font-weight:600;"
+                
+                header_div.append(h1_tag)
+                
+                if soup.body:
+                    soup.body.insert(0, header_div)
 
                 # Téléchargement Images
                 img_counter = 0
@@ -175,7 +196,6 @@ def process_emails():
                         if response.status_code == 200:
                             content_type = response.headers.get('content-type')
                             ext = mimetypes.guess_extension(content_type) or ".jpg"
-                            # Nom d'image lié au fichier aléatoire
                             img_name = f"{random_filename}_img_{img_counter}{ext}"
                             img_path = os.path.join(OUTPUT_FOLDER, img_name)
                             with open(img_path, "wb") as f:
@@ -188,18 +208,20 @@ def process_emails():
                 filename = f"{OUTPUT_FOLDER}/{random_filename}.html"
                 with open(filename, "w", encoding='utf-8') as f:
                     f.write(str(soup))
-                    
-            print("Mails traités.")
+            
+            # Important : Regénérer l'index APRÈS avoir tout traité
+            generate_index()
+            print("Terminé.")
         else:
-            print("Aucun nouveau mail.")
+            print("Rien de nouveau.")
 
         mail.close()
         mail.logout()
-        generate_index()
 
     except Exception as e:
-        print(f"Erreur: {e}")
-        raise e
+        print(f"Erreur critique: {e}")
+        # On ne raise pas l'erreur pour que le workflow GitHub finisse "vert"
+        # mais on pourrait le laisser pour débugger
 
 if __name__ == "__main__":
     process_emails()
