@@ -79,7 +79,7 @@ def clean_output_folder():
         os.makedirs(OUTPUT_FOLDER)
 
 def generate_index():
-    print("Génération du sommaire (Style Liste)...")
+    print("Génération du sommaire...")
     if not os.path.exists(OUTPUT_FOLDER):
         return
         
@@ -136,7 +136,6 @@ def generate_index():
             
             h1 {{ text-align: center; color: #1a1a1a; margin-bottom: 30px; font-size: 1.8rem; border-bottom: 2px solid #f0f0f0; padding-bottom: 20px; }}
             
-            /* LIST DESIGN */
             ul {{ list-style: none; padding: 0; margin: 0; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden; }}
             li {{ border-bottom: 1px solid #eaeaea; margin: 0; }}
             li:last-child {{ border-bottom: none; }}
@@ -153,18 +152,16 @@ def generate_index():
             }}
             a.item-link:hover {{ background-color: #f8f9fa; }}
             
-            /* TYPOGRAPHY */
             .title {{ 
                 font-weight: 500; 
                 font-size: 1rem; 
                 color: #111;
-                /* Force single line with ellipsis */
                 white-space: nowrap; 
                 overflow: hidden; 
                 text-overflow: ellipsis; 
                 margin-right: 15px; 
-                flex: 1; /* Takes all available space */
-                min-width: 0; /* Fix for flexbox text overflow */
+                flex: 1; 
+                min-width: 0; 
             }}
             
             .date {{ 
@@ -175,7 +172,6 @@ def generate_index():
                 font-variant-numeric: tabular-nums;
             }}
             
-            /* FOOTER */
             footer {{ margin-top: 40px; padding-top: 20px; border-top: 1px solid #eaeaea; text-align: center; color: #888; font-size: 0.85rem; }}
             .footer-links a {{ color: #0070f3; text-decoration: none; margin: 0 8px; }}
             .footer-links a:hover {{ text-decoration: underline; }}
@@ -191,8 +187,7 @@ def generate_index():
             
             <footer>
                 <div class="footer-links">
-                    <a href="https://github.com/benoit-prentout" target="_blank">GitHub</a> • 
-                    <a href="https://www.getinside.fr/" target="_blank">GetInside.fr</a>
+                    <a href="https://github.com/benoit-prentout" target="_blank">Mon Profil GitHub</a>
                 </div>
                 <p>&copy; {current_year} Benoît Prentout.</p>
                 <details>
@@ -274,7 +269,6 @@ def process_emails():
                     soup = BeautifulSoup(html_content, "html.parser")
                     for s in soup(["script", "iframe", "object"]): s.extract()
 
-                    # Nettoyage
                     split_keywords = ["Forwarded message", "Message transféré"]
                     found_split = False
                     for div in soup.find_all("div"):
@@ -300,7 +294,6 @@ def process_emails():
                         new_body.extend(soup.contents)
                         soup.append(new_body)
 
-                    # Reconstruction
                     meta_tag = soup.new_tag("meta", attrs={"name": "creation_date", "content": email_date_str})
                     if soup.head: soup.head.append(meta_tag)
                     else:
@@ -322,7 +315,6 @@ def process_emails():
                     header_div.append(h1_tag)
                     soup.body.insert(0, header_div)
 
-                    # Images
                     img_counter = 0
                     for img in soup.find_all("img"):
                         src = img.get("src")
