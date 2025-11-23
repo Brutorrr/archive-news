@@ -1,7 +1,8 @@
 import imaplib
 import email
 from email.header import decode_header
-from bs4 import BeautifulSoup
+from email.utils import parsedate_to_datetime
+from bs4 import BeautifulSoup, Tag
 import os
 import re
 import mimetypes
@@ -34,15 +35,45 @@ def get_deterministic_id(subject):
     hash_object = hashlib.md5(subject.encode('utf-8', errors='ignore'))
     return hash_object.hexdigest()[:10]
 
-def get_page_title(filepath):
+def get_email_date(msg):
+    """Récupère la date de réception du mail et la formate"""
+    try:
+        date_header = msg["Date"]
+        if date_header:
+            dt = parsedate_to_datetime(date_header)
+            # On retourne au format YYYY-MM-DD pour le stockage
+            return dt.strftime('%Y-%m-%d')
+    except Exception:
+        pass
+    # Date du jour par défaut si échec
+    return datetime.datetime.now().strftime('%Y-%m-%d')
+
+def get_page_metadata(filepath):
+    """Récupère le titre et la date depuis le fichier HTML stocké"""
+    title = "Sans titre"
+    date_str = None
+    
     try:
         with open(filepath, 'r', encoding='utf-8') as f:
             soup = BeautifulSoup(f, 'html.parser')
+            # Récupération Titre
             if soup.title and soup.title.string:
-                return soup.title.string.strip()
+                title = soup.title.string.strip()
+            
+            # Récupération Date (stockée dans une meta)
+            meta_date = soup.find("meta", attrs={"name": "creation_date"})
+            if meta_date and meta_date.get("content"):
+                date_str = meta_date["content"]
+                
     except Exception:
         pass
-    return "Sans titre"
+        
+    # Si pas de date dans le fichier, on prend la date de modif du fichier
+    if not date_str:
+        timestamp = os.path.getmtime(filepath)
+        date_str = datetime.datetime.fromtimestamp(timestamp).strftime('%Y-%m-%d')
+        
+    return title, date_str
 
 def clean_output_folder():
     """Nettoie le dossier docs sauf les fichiers systèmes"""
@@ -67,9 +98,10 @@ def generate_index():
         return
         
     subfolders = [f.path for f in os.scandir(OUTPUT_FOLDER) if f.is_dir() and not f.name.startswith('.')]
-    subfolders.sort(key=lambda x: os.path.getmtime(x), reverse=True)
-
-    links_html = ""
+    
+    # On va stocker les infos pour trier par DATE DU MAIL (et pas date du fichier)
+    pages_data = []
+    
     for folder in subfolders:
         folder_name = os.path.basename(folder)
         index_file_path = os.path.join(folder, "index.html")
@@ -77,18 +109,37 @@ def generate_index():
         if not os.path.exists(index_file_path):
             continue
 
-        full_title = get_page_title(index_file_path)
-        timestamp = os.path.getmtime(folder)
-        date_str = datetime.datetime.fromtimestamp(timestamp).strftime('%d/%m/%Y')
+        full_title, date_str = get_page_metadata(index_file_path)
+        
+        # On convertit en format affichable (YYYY-MM-DD -> DD/MM/YYYY)
+        try:
+            date_obj = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+            display_date = date_obj.strftime('%d/%m/%Y')
+            sort_key = date_str # On trie sur YYYY-MM-DD
+        except:
+            display_date = date_str
+            sort_key = date_str
 
+        pages_data.append({
+            "folder": folder_name,
+            "title": full_title,
+            "date": display_date,
+            "sort_key": sort_key
+        })
+
+    # Tri par date de réception (décroissant)
+    pages_data.sort(key=lambda x: x["sort_key"], reverse=True)
+
+    links_html = ""
+    for page in pages_data:
         links_html += f'''
         <li>
-            <a href="{folder_name}/index.html">
+            <a href="{page['folder']}/index.html">
                 <div class="link-content">
                     <span class="icon">📧</span>
-                    <span class="title">{full_title}</span>
+                    <span class="title">{page['title']}</span>
                 </div>
-                <span class="date">{date_str}</span>
+                <span class="date">{page['date']}</span>
             </a>
         </li>
         '''
@@ -151,14 +202,10 @@ def process_emails():
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
         mail.login(GMAIL_USER, GMAIL_PASSWORD)
         
-        # Gestion d'erreur pour le libellé
         rv, data = mail.select(f'"{TARGET_LABEL}"')
         if rv != 'OK':
-            print(f"ERREUR CRITIQUE: Le libellé '{TARGET_LABEL}' est introuvable.")
-            print("Liste des dossiers disponibles :")
-            for folder in mail.list()[1]:
-                print(folder.decode())
-            return # On arrête proprement sans exit code 1
+            print(f"ERREUR: Impossible de trouver le libellé '{TARGET_LABEL}'.")
+            return
 
         status, messages = mail.search(None, 'ALL')
         
@@ -167,17 +214,21 @@ def process_emails():
             print(f"{len(email_ids)} emails trouvés.")
 
             for num in email_ids:
-                try: # Try/Except local pour qu'un email pourri ne plante pas tout le script
-                    status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
+                try:
+                    # 1. RECUPERATION EN-TETES (Sujet + Date)
+                    status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT DATE)])')
                     msg_header = email.message_from_bytes(msg_data[0][1])
                     
                     raw_subject = get_decoded_email_subject(msg_header)
                     subject = clean_subject_prefixes(raw_subject)
                     
+                    # Récupération de la vraie date du mail
+                    email_date_str = get_email_date(msg_header)
+                    
                     folder_id = get_deterministic_id(subject)
                     newsletter_path = os.path.join(OUTPUT_FOLDER, folder_id)
 
-                    print(f"Traitement : {subject[:30]}...")
+                    print(f"Traitement : {subject[:30]}... ({email_date_str})")
                     
                     status, msg_data = mail.fetch(num, "(RFC822)")
                     msg = email.message_from_bytes(msg_data[0][1])
@@ -203,31 +254,59 @@ def process_emails():
                     for s in soup(["script", "iframe", "object"]):
                         s.extract()
 
-                    # --- CORRECTION MAJEURE : SUPPRESSION HISTORIQUE ---
-                    # Au lieu de 'garder' le quote, on le 'supprime'.
+                    # --- CORRECTION CONTENU (EXTRACTION FORCEE) ---
+                    # Logique : On cherche le "Splitter" (Message transféré).
+                    # Si on le trouve, on jette tout ce qui est AVANT.
                     
-                    # 1. Supprimer le bloc de citation Gmail (historique)
-                    for quote in soup.find_all(class_="gmail_quote"):
-                        quote.decompose() # .decompose() supprime l'élément de l'arbre
+                    split_keywords = ["Forwarded message", "Message transféré", "Message transféré"]
+                    found_split = False
                     
-                    # 2. Supprimer les en-têtes "De: ... Envoyé le: ..."
-                    for attr in soup.find_all(class_="gmail_attr"):
-                        attr.decompose()
-                    
-                    # 3. Supprimer les séparateurs
+                    # Méthode 1 : Chercher la div séparatrice standard de Gmail
                     for div in soup.find_all("div"):
-                        if div.string and ("Forwarded message" in div.string or "Message transféré" in div.string):
-                            div.decompose()
+                        text = div.get_text()
+                        if any(k in text for k in split_keywords) and "-----" in text:
+                            # On a trouvé le séparateur !
+                            # On garde tous les frères suivants (le vrai contenu)
+                            real_content = []
+                            for sibling in div.next_siblings:
+                                real_content.append(sibling)
+                            
+                            # On vide le body et on remet le vrai contenu
+                            if soup.body:
+                                soup.body.clear()
+                                for item in real_content:
+                                    if item: soup.body.append(item)
+                            found_split = True
+                            break
                     
-                    # Protection contre les body vides
+                    # Méthode 2 : Si pas de splitter texte, on cherche le container 'gmail_quote'
+                    # (Backup au cas où)
+                    if not found_split:
+                        quote = soup.find(class_="gmail_quote")
+                        if quote:
+                            soup.body.clear()
+                            soup.body.append(quote)
+                            # On supprime les headers dans la quote (De:, Envoyé le:)
+                            for attr in soup.find_all(class_="gmail_attr"):
+                                attr.decompose()
+
+                    # Protection Body vide
                     if not soup.body:
-                        # Si pas de body (ex: fragment), on en crée un
                         new_body = soup.new_tag("body")
                         new_body.extend(soup.contents)
                         soup.append(new_body)
 
                     # --- RECONSTRUCTION ---
                     
+                    # Insertion de la DATE dans une meta pour le sommaire
+                    meta_tag = soup.new_tag("meta", attrs={"name": "creation_date", "content": email_date_str})
+                    if soup.head:
+                        soup.head.append(meta_tag)
+                    else:
+                        new_head = soup.new_tag("head")
+                        new_head.append(meta_tag)
+                        soup.insert(0, new_head)
+
                     # Titre <head>
                     if soup.title:
                         soup.title.string = subject
@@ -236,10 +315,6 @@ def process_emails():
                         new_title.string = subject
                         if soup.head:
                             soup.head.append(new_title)
-                        else:
-                            new_head = soup.new_tag('head')
-                            new_head.append(new_title)
-                            soup.insert(0, new_head)
 
                     # Bandeau Titre
                     header_div = soup.new_tag("div")
@@ -276,7 +351,7 @@ def process_emails():
                         f.write(str(soup))
                 
                 except Exception as e_mail:
-                    print(f"Erreur sur un email ({num}): {e_mail}")
+                    print(f"Erreur email {num}: {e_mail}")
                     continue
             
             generate_index()
@@ -289,8 +364,7 @@ def process_emails():
 
     except Exception as e:
         print(f"Erreur critique: {e}")
-        # On ne lève pas l'erreur pour éviter Exit Code 1, mais on la logue.
-        # raise e 
+        # On ne raise pas l'erreur pour éviter Exit Code 1
 
 if __name__ == "__main__":
     process_emails()
