@@ -147,7 +147,7 @@ def generate_index():
     links_html = ""
     for page in pages_data:
         links_html += f'''
-        <li>
+        <li class="news-item">
             <a href="{page['folder']}/index.html" class="item-link">
                 <div class="info-col">
                     <span class="sender">{page['sender']}</span>
@@ -209,6 +209,13 @@ def generate_index():
             .date {{ font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; font-variant-numeric: tabular-nums; }}
             .date-arch {{ font-size: 0.7rem; color: var(--text-light); white-space: nowrap; font-variant-numeric: tabular-nums; margin-top: 3px; }}
             
+            /* Pagination Styles */
+            .pagination {{ display: flex; justify-content: center; gap: 8px; margin-top: 25px; flex-wrap: wrap; }}
+            .page-btn {{ background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-main); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.9rem; transition: all 0.2s; }}
+            .page-btn:hover {{ background: var(--hover-bg); border-color: var(--accent-color); }}
+            .page-btn.active {{ background: var(--accent-color); color: white; border-color: var(--accent-color); }}
+            .page-btn:disabled {{ opacity: 0.5; cursor: not-allowed; }}
+            
             footer {{ margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 0.85rem; }}
             .copyright a {{ color: inherit; text-decoration: none; border-bottom: 1px dotted var(--text-muted); transition: color 0.2s; }}
             .copyright a:hover {{ color: var(--accent-color); border-bottom-color: var(--accent-color); }}
@@ -227,6 +234,7 @@ def generate_index():
             <ul id="newsList">
                 {links_html}
             </ul>
+            <div id="pagination" class="pagination"></div>
             <footer>
                 <p class="copyright">&copy; {current_year} <a href="https://github.com/benoit-prentout" target="_blank">Benoît Prentout</a>.</p>
                 <details>
@@ -240,6 +248,7 @@ def generate_index():
         const root = document.documentElement;
         const savedTheme = localStorage.getItem('theme');
         const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
         if (savedTheme === 'dark' || (!savedTheme && systemDark)) {{ root.setAttribute('data-theme', 'dark'); }}
         
         toggleBtn.addEventListener('click', () => {{
@@ -249,18 +258,106 @@ def generate_index():
             localStorage.setItem('theme', newTheme);
         }});
 
+        // --- PAGINATION & SEARCH LOGIC ---
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        const list = document.getElementById("newsList");
+        const allItems = Array.from(list.getElementsByClassName('news-item'));
+        const paginationContainer = document.getElementById('pagination');
+
+        function showPage(page) {{
+            currentPage = page;
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            
+            allItems.forEach((item, index) => {{
+                if (index >= start && index < end) {{
+                    item.style.display = "";
+                }} else {{
+                    item.style.display = "none";
+                }}
+            }});
+            renderPaginationControls();
+            window.scrollTo(0, 0);
+        }}
+
+        function renderPaginationControls() {{
+            const totalPages = Math.ceil(allItems.length / itemsPerPage);
+            paginationContainer.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+
+            // Bouton Précédent
+            const prevBtn = document.createElement('button');
+            prevBtn.className = 'page-btn';
+            prevBtn.innerHTML = '&laquo;';
+            prevBtn.disabled = currentPage === 1;
+            prevBtn.onclick = () => showPage(currentPage - 1);
+            paginationContainer.appendChild(prevBtn);
+
+            // Numéros de page (limité pour l'esthétique si beaucoup de pages)
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) {{
+                const firstPage = document.createElement('button');
+                firstPage.className = 'page-btn';
+                firstPage.innerText = '1';
+                firstPage.onclick = () => showPage(1);
+                paginationContainer.appendChild(firstPage);
+                if (startPage > 2) paginationContainer.appendChild(document.createTextNode('...'));
+            }}
+
+            for (let i = startPage; i <= endPage; i++) {{
+                const btn = document.createElement('button');
+                btn.className = `page-btn ${{i === currentPage ? 'active' : ''}}`;
+                btn.innerText = i;
+                btn.onclick = () => showPage(i);
+                paginationContainer.appendChild(btn);
+            }}
+
+            if (endPage < totalPages) {{
+                if (endPage < totalPages - 1) paginationContainer.appendChild(document.createTextNode('...'));
+                const lastPage = document.createElement('button');
+                lastPage.className = 'page-btn';
+                lastPage.innerText = totalPages;
+                lastPage.onclick = () => showPage(totalPages);
+                paginationContainer.appendChild(lastPage);
+            }}
+
+            // Bouton Suivant
+            const nextBtn = document.createElement('button');
+            nextBtn.className = 'page-btn';
+            nextBtn.innerHTML = '&raquo;';
+            nextBtn.disabled = currentPage === totalPages;
+            nextBtn.onclick = () => showPage(currentPage + 1);
+            paginationContainer.appendChild(nextBtn);
+        }}
+
         function filterList() {{
-            var input, filter, ul, li, a, i, txtValue;
-            input = document.getElementById('searchInput');
-            filter = input.value.toUpperCase();
-            ul = document.getElementById("newsList");
-            li = ul.getElementsByTagName('li');
-            for (i = 0; i < li.length; i++) {{
-                a = li[i].getElementsByTagName("a")[0];
-                txtValue = a.textContent || a.innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) {{ li[i].style.display = ""; }} else {{ li[i].style.display = "none"; }}
+            const input = document.getElementById('searchInput');
+            const filter = input.value.toUpperCase();
+            
+            if (filter === "") {{
+                // Si recherche vide, on remet la pagination normale
+                paginationContainer.style.display = "flex";
+                showPage(1);
+            }} else {{
+                // Si recherche active, on cache la pagination et on filtre TOUT
+                paginationContainer.style.display = "none";
+                allItems.forEach(item => {{
+                    const text = item.textContent || item.innerText;
+                    if (text.toUpperCase().indexOf(filter) > -1) {{
+                        item.style.display = "";
+                    }} else {{
+                        item.style.display = "none";
+                    }}
+                }});
             }}
         }}
+
+        // Init
+        showPage(1);
         </script>
     </body>
     </html>
@@ -288,14 +385,11 @@ def process_emails():
             total_emails = len(email_ids)
             print(f"{total_emails} emails trouvés au total.")
 
-            # --- PHASE 1: SCAN ET NETTOYAGE (SYNCHRONISATION) ---
-            # On récupère les sujets de TOUS les emails pour savoir ce qui est valide
+            # --- PHASE 1: SCAN ET NETTOYAGE ---
             print("Analyse des emails valides (Synchronisation)...")
             valid_folder_ids = set()
-            email_map = {} # Map ID -> email_num pour le téléchargement ultérieur
+            email_map = {}
 
-            # On peut récupérer les en-têtes par lots si besoin, ici on itère pour calculer les IDs
-            # Note: Pour optimiser, on pourrait fetcher tous les sujets d'un coup, mais restons simple
             for num in email_ids:
                 try:
                     status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
@@ -308,12 +402,11 @@ def process_emails():
                 except Exception as e:
                     print(f"Erreur lecture header {num}: {e}")
 
-            # Suppression des dossiers locaux qui ne sont plus dans Gmail
             local_folders = set([f.name for f in os.scandir(OUTPUT_FOLDER) if f.is_dir() and not f.name.startswith('.')])
             folders_to_delete = local_folders - valid_folder_ids
             
             if folders_to_delete:
-                print(f"🗑️ Suppression de {len(folders_to_delete)} dossiers obsolètes (plus présents dans Gmail)...")
+                print(f"🗑️ Suppression de {len(folders_to_delete)} dossiers obsolètes...")
                 for f_id in folders_to_delete:
                     path_to_remove = os.path.join(OUTPUT_FOLDER, f_id)
                     try:
@@ -322,11 +415,10 @@ def process_emails():
                     except Exception as e:
                         print(f"   - Erreur suppression {f_id}: {e}")
             
-            # --- PHASE 2: TÉLÉCHARGEMENT INCRÉMENTAL (BATCH) ---
+            # --- PHASE 2: TÉLÉCHARGEMENT INCRÉMENTAL ---
             folders_to_download = valid_folder_ids - local_folders
             print(f"📥 {len(folders_to_download)} nouveaux emails à télécharger.")
             
-            # On prend seulement les N premiers pour éviter le timeout
             folders_to_process_now = list(folders_to_download)[:BATCH_SIZE]
             
             if folders_to_process_now:
@@ -335,11 +427,9 @@ def process_emails():
                 for f_id in folders_to_process_now:
                     num = email_map[f_id]
                     try:
-                        # Récupération infos complètes
                         status, msg_data = mail.fetch(num, '(RFC822)')
                         msg = email.message_from_bytes(msg_data[0][1])
                         
-                        # Re-calcul des métadonnées (pour être sûr)
                         raw_subject = get_decoded_email_subject(msg)
                         subject = clean_subject_prefixes(raw_subject)
                         sender_name = get_clean_sender(msg)
@@ -350,7 +440,6 @@ def process_emails():
                         
                         print(f"   -> Téléchargement : {subject[:30]}...")
 
-                        # Extraction HTML
                         html_content = ""
                         for part in msg.walk():
                             if part.get_content_type() == "text/html":
@@ -363,11 +452,8 @@ def process_emails():
                             charset = msg.get_content_charset() or 'utf-8'
                             html_content = payload.decode(charset, errors="ignore")
                         
-                        if not html_content: 
-                            print("      [Alerte] Pas de contenu HTML trouvé.")
-                            continue
+                        if not html_content: continue
 
-                        # Parsing & Nettoyage
                         soup = BeautifulSoup(html_content, "lxml")
                         for s in soup(["script", "iframe", "object"]): s.extract()
 
@@ -397,7 +483,7 @@ def process_emails():
                             new_body.extend(soup.contents)
                             soup.append(new_body)
 
-                        # Injection Style & Scripts
+                        # Injection Style
                         style_tag = soup.new_tag("style")
                         style_tag.string = """
                             /* Reset */
@@ -414,25 +500,13 @@ def process_emails():
                                 display: flex;
                                 justify-content: center;
                             }
-                            
                             .header-inner {
-                                width: 100%;
-                                max-width: 800px;
-                                padding: 15px 20px;
-                                display: flex;
-                                justify-content: space-between;
-                                align-items: flex-start;
-                                flex-wrap: wrap;
-                                gap: 15px;
+                                width: 100%; max-width: 800px; padding: 15px 20px;
+                                display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 15px;
                             }
-                            
                             .header-title { flex: 1; min-width: 200px; }
-                            .header-title h1 {
-                                margin: 0; font-size: 16px; color: #333; font-weight: 600; line-height: 1.4;
-                            }
-                            
+                            .header-title h1 { margin: 0; font-size: 16px; color: #333; font-weight: 600; line-height: 1.4; }
                             .controls { display: flex; gap: 10px; align-items: center; }
-                            
                             .btn {
                                 background-color: #f8f9fa; border: 1px solid #ddd; color: #555;
                                 padding: 6px 12px; border-radius: 6px; font-size: 13px; font-weight: 500;
@@ -442,68 +516,21 @@ def process_emails():
                             .btn:hover { background-color: #e2e6ea; color: #333; border-color: #ccc; }
                             .btn.active { background-color: #0070f3; color: white; border-color: #0070f3; box-shadow: 0 2px 8px rgba(0, 112, 243, 0.3); }
                             
-                            /* WRAPPER EMAIL */
-                            #email-wrapper {
-                                width: 100%;
-                                display: flex;
-                                justify-content: center;
-                                padding: 20px 20px 60px 20px;
-                                box-sizing: border-box;
-                            }
-                            
-                            #email-content {
-                                width: 100%; 
-                                max-width: 800px;
-                                background: #ffffff;
-                                box-shadow: 0 5px 30px rgba(0,0,0,0.08);
-                                display: flex; 
-                                flex-direction: column; 
-                                align-items: center;
-                            }
-                            
-                            #email-content > * {
-                                margin-left: auto !important;
-                                margin-right: auto !important;
-                                max-width: 100%;
-                            }
+                            #email-wrapper { width: 100%; display: flex; justify-content: center; padding: 20px 20px 60px 20px; box-sizing: border-box; }
+                            #email-content { width: 100%; max-width: 800px; background: #ffffff; box-shadow: 0 5px 30px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; }
+                            #email-content > * { margin-left: auto !important; margin-right: auto !important; max-width: 100%; }
 
-                            /* --- MOBILE MODE --- */
-                            body.mobile-active #email-content {
-                                max-width: 375px !important;
-                                border: 1px solid #d1d1d1;
-                                border-radius: 20px;
-                                overflow: hidden;
-                                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
-                            }
-                            
-                            body.mobile-active table, 
-                            body.mobile-active img {
-                                max-width: 100% !important;
-                                height: auto !important;
-                                width: auto !important;
-                            }
+                            body.mobile-active #email-content { max-width: 375px !important; border: 1px solid #d1d1d1; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+                            body.mobile-active table, body.mobile-active img { max-width: 100% !important; height: auto !important; width: auto !important; }
 
-                            /* --- DARK MODE (SMART INVERT) --- */
                             body.dark-active { background-color: #121212 !important; }
-                            
-                            body.dark-active .preview-header { 
-                                background-color: #1e1e1e; border-bottom-color: #333; 
-                            }
+                            body.dark-active .preview-header { background-color: #1e1e1e; border-bottom-color: #333; }
                             body.dark-active .header-title h1 { color: #e0e0e0; }
-                            
                             body.dark-active .btn { background-color: #2c2c2c; border-color: #444; color: #ccc; }
                             body.dark-active .btn:hover { background-color: #383838; }
                             body.dark-active .btn.active { background-color: #0070f3; color: white; }
-
-                            body.dark-active #email-content {
-                                filter: invert(1) hue-rotate(180deg);
-                                border-color: #333;
-                            }
-                            body.dark-active img, 
-                            body.dark-active video, 
-                            body.dark-active iframe {
-                                filter: invert(1) hue-rotate(180deg) !important;
-                            }
+                            body.dark-active #email-content { filter: invert(1) hue-rotate(180deg); border-color: #333; }
+                            body.dark-active img, body.dark-active video, body.dark-active iframe { filter: invert(1) hue-rotate(180deg) !important; }
                         """
                         if soup.head: soup.head.append(style_tag)
                         else:
@@ -527,16 +554,10 @@ def process_emails():
                         header_html = BeautifulSoup(f"""
                         <header class="preview-header">
                             <div class="header-inner">
-                                <div class="header-title">
-                                    <h1>Sujet : {subject}</h1>
-                                </div>
+                                <div class="header-title"><h1>Sujet : {subject}</h1></div>
                                 <div class="controls">
-                                    <button id="btn-mobile" class="btn" onclick="toggleMobile()">
-                                        <span>📱</span> Mobile
-                                    </button>
-                                    <button id="btn-dark" class="btn" onclick="toggleDark()">
-                                        <span>🌙</span> Sombre
-                                    </button>
+                                    <button id="btn-mobile" class="btn" onclick="toggleMobile()"><span>📱</span> Mobile</button>
+                                    <button id="btn-dark" class="btn" onclick="toggleDark()"><span>🌙</span> Sombre</button>
                                 </div>
                             </div>
                         </header>
@@ -550,9 +571,7 @@ def process_emails():
                             if child != script_tag and child != header_html:
                                 to_move.append(child)
                         
-                        for child in to_move:
-                            content_div.append(child)
-                        
+                        for child in to_move: content_div.append(child)
                         wrapper_div.append(content_div)
                         
                         soup.body.clear()
@@ -560,7 +579,7 @@ def process_emails():
                         soup.body.append(wrapper_div)
                         soup.body.append(script_tag)
 
-                        # Metadonnées (DATE RECEPTION + DATE ARCHIVAGE)
+                        # Metadonnées
                         meta_date = soup.new_tag("meta", attrs={"name": "creation_date", "content": email_date_str})
                         current_arch_date = datetime.datetime.now().strftime('%Y-%m-%d')
                         meta_arch = soup.new_tag("meta", attrs={"name": "archiving_date", "content": current_arch_date})
@@ -588,7 +607,6 @@ def process_emails():
                                 if response.status_code == 200:
                                     content_type = response.headers.get('content-type', '')
                                     if 'image' not in content_type: continue
-
                                     ext = mimetypes.guess_extension(content_type) or ".jpg"
                                     img_name = f"img_{img_counter}{ext}"
                                     img_path = os.path.join(newsletter_path, img_name)
