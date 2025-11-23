@@ -41,7 +41,7 @@ Designed to preserve content fidelity, download remote images locally, and provi
 
 ```mermaid
 graph LR
-A[Gmail (Label: Netlify-News)] -- IMAP --> B(Python Script via GitHub Actions)
-B -- Extract HTML & Download Images --> C[Process & Sanitize]
-C -- Commit changes --> D[GitHub Repository (/docs)]
-D -- Auto Deploy --> E[GitHub Pages Website]
+    A["Gmail (Label: Netlify-News)"] -- "IMAP" --> B("Python Script via GitHub Actions")
+    B -- "Extract HTML & Download Images" --> C["Process & Sanitize"]
+    C -- "Commit changes" --> D["GitHub Repository (/docs)"]
+    D -- "Auto Deploy" --> E["GitHub Pages Website"]
