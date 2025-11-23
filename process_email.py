@@ -311,6 +311,7 @@ def process_emails():
                     soup = BeautifulSoup(html_content, "html.parser")
                     for s in soup(["script", "iframe", "object"]): s.extract()
 
+                    # Nettoyage des transferts
                     split_keywords = ["Forwarded message", "Message transféré"]
                     found_split = False
                     for div in soup.find_all("div"):
@@ -336,7 +337,7 @@ def process_emails():
                         new_body.extend(soup.contents)
                         soup.append(new_body)
 
-                    # --- DESIGN PREVIEW (PANNEAU DE CONTROLE) ---
+                    # --- INJECTION UI PREVIEW (HEADER FIXE & LAYOUT) ---
                     
                     # 1. Style (Sans transition pour éviter les glitchs)
                     style_tag = soup.new_tag("style")
@@ -344,47 +345,63 @@ def process_emails():
                         /* Reset */
                         body { margin: 0; padding: 0; background-color: #eef2f5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
                         
-                        /* HEADER PANEL */
+                        /* HEADER PANEL (FIXE & ALIGNÉ) */
                         .preview-header {
+                            position: sticky; top: 0; left: 0; right: 0;
                             background-color: #ffffff;
                             border-bottom: 1px solid #dcdcdc;
-                            padding: 20px 30px;
-                            display: flex;
-                            flex-direction: column;
-                            align-items: center;
-                            gap: 15px;
+                            z-index: 1000;
                             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
+                            display: flex;
+                            justify-content: center; /* Pour centrer le contenu principal */
                         }
                         
-                        /* TITRE (Avec préfixe) */
-                        .preview-header h1 {
+                        /* Conteneur interne du header aligné avec le contenu */
+                        .header-inner {
+                            width: 100%;
+                            max-width: 800px; /* Même largeur que l'email */
+                            padding: 15px 20px;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                            flex-wrap: wrap;
+                            gap: 15px;
+                        }
+                        
+                        /* TITRE */
+                        .header-title {
+                            flex: 1;
+                            min-width: 200px;
+                        }
+                        .header-title h1 {
                             margin: 0;
-                            font-size: 18px;
+                            font-size: 16px;
                             color: #333;
                             font-weight: 600;
-                            text-align: center;
                             line-height: 1.4;
                         }
                         
-                        /* CONTROLES (BOUTONS) */
+                        /* CONTROLES (BOUTONS ALIGNÉS À DROITE) */
                         .controls {
                             display: flex;
-                            gap: 15px;
+                            gap: 10px;
+                            align-items: center;
                         }
                         
                         .btn {
                             background-color: #f8f9fa;
                             border: 1px solid #ddd;
                             color: #555;
-                            padding: 8px 16px;
+                            padding: 6px 12px;
                             border-radius: 6px;
-                            font-size: 14px;
+                            font-size: 13px;
                             font-weight: 500;
                             cursor: pointer;
                             display: flex;
                             align-items: center;
-                            gap: 8px;
+                            gap: 6px;
                             transition: all 0.2s ease;
+                            white-space: nowrap;
                         }
                         .btn:hover {
                             background-color: #e2e6ea;
@@ -403,9 +420,8 @@ def process_emails():
                             width: 100%;
                             display: flex;
                             justify-content: center;
-                            padding: 40px 20px;
+                            padding: 20px 20px 60px 20px; /* Marge pour le scroll */
                             box-sizing: border-box;
-                            min-height: calc(100vh - 150px);
                         }
                         
                         #email-content {
@@ -419,12 +435,14 @@ def process_emails():
                         /* --- MOBILE MODE --- */
                         body.mobile-active #email-content {
                             max-width: 375px !important;
-                            border: 10px solid #333;
-                            border-radius: 30px;
+                            /* Bordure fine élégante */
+                            border: 1px solid #d1d1d1;
+                            border-radius: 20px;
                             overflow: hidden;
+                            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
                         }
                         
-                        /* Force adaptation mobile pour vieux mails */
+                        /* Force adaptation mobile */
                         body.mobile-active table, 
                         body.mobile-active img {
                             max-width: 100% !important;
@@ -434,11 +452,13 @@ def process_emails():
 
                         /* --- DARK MODE (SMART INVERT) --- */
                         body.dark-active { background-color: #121212; }
+                        
                         body.dark-active .preview-header { 
                             background-color: #1e1e1e; 
                             border-bottom-color: #333; 
                         }
-                        body.dark-active .preview-header h1 { color: #e0e0e0; }
+                        body.dark-active .header-title h1 { color: #e0e0e0; }
+                        
                         body.dark-active .btn { 
                             background-color: #2c2c2c; 
                             border-color: #444; 
@@ -450,6 +470,7 @@ def process_emails():
                         /* Inversion intelligente du contenu mail */
                         body.dark-active #email-content {
                             filter: invert(1) hue-rotate(180deg);
+                            border-color: #333; /* Bordure sombre en mode mobile */
                         }
                         /* Ré-inversion des médias pour qu'ils restent normaux */
                         body.dark-active img, 
@@ -478,17 +499,21 @@ def process_emails():
                     """
                     soup.body.append(script_tag)
 
-                    # 3. Header (Dashboard)
+                    # 3. Header (Dashboard Aligné)
                     header_html = BeautifulSoup(f"""
                     <header class="preview-header">
-                        <h1>Titre : {subject}</h1>
-                        <div class="controls">
-                            <button id="btn-mobile" class="btn" onclick="toggleMobile()">
-                                <span>📱</span> Vue Mobile
-                            </button>
-                            <button id="btn-dark" class="btn" onclick="toggleDark()">
-                                <span>🌙</span> Mode Sombre
-                            </button>
+                        <div class="header-inner">
+                            <div class="header-title">
+                                <h1>Sujet : {subject}</h1>
+                            </div>
+                            <div class="controls">
+                                <button id="btn-mobile" class="btn" onclick="toggleMobile()">
+                                    <span>📱</span> Mobile
+                                </button>
+                                <button id="btn-dark" class="btn" onclick="toggleDark()">
+                                    <span>🌙</span> Sombre
+                                </button>
+                            </div>
                         </div>
                     </header>
                     """, 'html.parser')
@@ -525,7 +550,10 @@ def process_emails():
                         new_title.string = subject
                         if soup.head: soup.head.append(new_title)
 
-                    # Images
+                    # Bandeau Titre INTERNE supprimé (car présent dans le header fixe)
+                    # On ne garde que le contenu brut dans le content_div
+
+                    # Images (Lazy Loading)
                     img_counter = 0
                     for img in soup.find_all("img"):
                         src = img.get("src")
