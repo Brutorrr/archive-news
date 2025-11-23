@@ -21,7 +21,8 @@ HEADERS = {
 }
 
 def clean_subject_prefixes(subject):
-    """Retire les Fwd:, Re:, Tr: et autres préfixes en boucle"""
+    """Retire les Fwd:, Re:, Tr: en boucle"""
+    if not subject: return "Sans titre"
     pattern = r'^\s*\[?(?:Fwd|Fw|Tr|Re|Aw|Wg)\s*:\s*\]?\s*'
     cleaned = subject
     while re.match(pattern, cleaned, re.IGNORECASE):
@@ -29,8 +30,7 @@ def clean_subject_prefixes(subject):
     return cleaned.strip()
 
 def get_deterministic_id(subject):
-    if not subject:
-        subject = "sans_titre"
+    if not subject: subject = "sans_titre"
     hash_object = hashlib.md5(subject.encode('utf-8', errors='ignore'))
     return hash_object.hexdigest()[:10]
 
@@ -45,23 +45,19 @@ def get_page_title(filepath):
     return "Sans titre"
 
 def clean_output_folder():
-    """Nettoie le dossier docs pour éviter les doublons (anciens dossiers Fwd vs nouveaux)"""
+    """Nettoie le dossier docs sauf les fichiers systèmes"""
     if os.path.exists(OUTPUT_FOLDER):
         for item in os.listdir(OUTPUT_FOLDER):
             item_path = os.path.join(OUTPUT_FOLDER, item)
-            # On ne supprime pas le dossier .git s'il existe, ni CNAME
-            if item.startswith('.'):
+            if item.startswith('.') or item == "CNAME":
                 continue
-            if item == "CNAME":
-                continue
-                
             try:
                 if os.path.isdir(item_path):
                     shutil.rmtree(item_path)
                 else:
                     os.remove(item_path)
             except Exception as e:
-                print(f"Erreur lors du nettoyage de {item}: {e}")
+                print(f"Warning nettoyage: {e}")
     else:
         os.makedirs(OUTPUT_FOLDER)
 
@@ -149,20 +145,20 @@ def get_decoded_email_subject(msg):
 
 def process_emails():
     try:
-        # ETAPE 1 : Nettoyage préalable pour repartir sur une base saine
         clean_output_folder()
         
-        if not os.path.exists(OUTPUT_FOLDER):
-            os.makedirs(OUTPUT_FOLDER)
-
         print("Connexion au serveur Gmail...")
         mail = imaplib.IMAP4_SSL("imap.gmail.com")
         mail.login(GMAIL_USER, GMAIL_PASSWORD)
         
+        # Gestion d'erreur pour le libellé
         rv, data = mail.select(f'"{TARGET_LABEL}"')
         if rv != 'OK':
-            print(f"ERREUR: Impossible de trouver le libellé '{TARGET_LABEL}'.")
-            return
+            print(f"ERREUR CRITIQUE: Le libellé '{TARGET_LABEL}' est introuvable.")
+            print("Liste des dossiers disponibles :")
+            for folder in mail.list()[1]:
+                print(folder.decode())
+            return # On arrête proprement sans exit code 1
 
         status, messages = mail.search(None, 'ALL')
         
@@ -171,64 +167,130 @@ def process_emails():
             print(f"{len(email_ids)} emails trouvés.")
 
             for num in email_ids:
-                # Récupération partielle pour le sujet
-                status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
-                msg_header = email.message_from_bytes(msg_data[0][1])
-                
-                # Nettoyage du titre (Fwd, Re...)
-                raw_subject = get_decoded_email_subject(msg_header)
-                subject = clean_subject_prefixes(raw_subject)
-                
-                folder_id = get_deterministic_id(subject)
-                newsletter_path = os.path.join(OUTPUT_FOLDER, folder_id)
+                try: # Try/Except local pour qu'un email pourri ne plante pas tout le script
+                    status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
+                    msg_header = email.message_from_bytes(msg_data[0][1])
+                    
+                    raw_subject = get_decoded_email_subject(msg_header)
+                    subject = clean_subject_prefixes(raw_subject)
+                    
+                    folder_id = get_deterministic_id(subject)
+                    newsletter_path = os.path.join(OUTPUT_FOLDER, folder_id)
 
-                # NOTE : On ne skip plus si le dossier existe, car on a nettoyé au début
-                # et on veut être sûr de tout régénérer proprement.
+                    print(f"Traitement : {subject[:30]}...")
+                    
+                    status, msg_data = mail.fetch(num, "(RFC822)")
+                    msg = email.message_from_bytes(msg_data[0][1])
+                    
+                    os.makedirs(newsletter_path, exist_ok=True)
 
-                print(f"Traitement : {subject[:30]}...")
-                
-                status, msg_data = mail.fetch(num, "(RFC822)")
-                msg = email.message_from_bytes(msg_data[0][1])
-                
-                os.makedirs(newsletter_path, exist_ok=True)
-
-                html_content = ""
-                for part in msg.walk():
-                    if part.get_content_type() == "text/html":
-                        payload = part.get_payload(decode=True)
-                        charset = part.get_content_charset() or 'utf-8'
+                    html_content = ""
+                    for part in msg.walk():
+                        if part.get_content_type() == "text/html":
+                            payload = part.get_payload(decode=True)
+                            charset = part.get_content_charset() or 'utf-8'
+                            html_content = payload.decode(charset, errors="ignore")
+                            break
+                    
+                    if not html_content and not msg.is_multipart():
+                        payload = msg.get_payload(decode=True)
+                        charset = msg.get_content_charset() or 'utf-8'
                         html_content = payload.decode(charset, errors="ignore")
-                        break
-                
-                if not html_content and not msg.is_multipart():
-                    payload = msg.get_payload(decode=True)
-                    charset = msg.get_content_charset() or 'utf-8'
-                    html_content = payload.decode(charset, errors="ignore")
 
-                if not html_content: continue
+                    if not html_content: continue
 
-                soup = BeautifulSoup(html_content, "html.parser")
-                for s in soup(["script", "iframe", "object"]):
-                    s.extract()
+                    soup = BeautifulSoup(html_content, "html.parser")
+                    for s in soup(["script", "iframe", "object"]):
+                        s.extract()
 
-                # --- LOGIQUE DE NETTOYAGE DES TRANSFERTS ---
-                # 1. Si on détecte une citation Gmail (le bloc transféré), on ne garde que lui
-                quote = soup.find(class_="gmail_quote")
-                if quote:
-                    soup.body.clear()
-                    soup.body.append(quote)
-                
-                # 2. Suppression des en-têtes de transfert (De: ..., Envoyé le: ...)
-                for attr in soup.find_all(class_="gmail_attr"):
-                    attr.decompose()
-                
-                # 3. Nettoyage des divs "Forwarded message" génériques
-                for div in soup.find_all("div"):
-                    if div.string and "Forwarded message" in div.string:
-                        div.decompose()
-                    if div.string and "Message transféré" in div.string:
-                        div.decompose()
+                    # --- CORRECTION MAJEURE : SUPPRESSION HISTORIQUE ---
+                    # Au lieu de 'garder' le quote, on le 'supprime'.
+                    
+                    # 1. Supprimer le bloc de citation Gmail (historique)
+                    for quote in soup.find_all(class_="gmail_quote"):
+                        quote.decompose() # .decompose() supprime l'élément de l'arbre
+                    
+                    # 2. Supprimer les en-têtes "De: ... Envoyé le: ..."
+                    for attr in soup.find_all(class_="gmail_attr"):
+                        attr.decompose()
+                    
+                    # 3. Supprimer les séparateurs
+                    for div in soup.find_all("div"):
+                        if div.string and ("Forwarded message" in div.string or "Message transféré" in div.string):
+                            div.decompose()
+                    
+                    # Protection contre les body vides
+                    if not soup.body:
+                        # Si pas de body (ex: fragment), on en crée un
+                        new_body = soup.new_tag("body")
+                        new_body.extend(soup.contents)
+                        soup.append(new_body)
 
-                # --- RECONSTRUCTION DE LA PAGE ---
+                    # --- RECONSTRUCTION ---
+                    
+                    # Titre <head>
+                    if soup.title:
+                        soup.title.string = subject
+                    else:
+                        new_title = soup.new_tag('title')
+                        new_title.string = subject
+                        if soup.head:
+                            soup.head.append(new_title)
+                        else:
+                            new_head = soup.new_tag('head')
+                            new_head.append(new_title)
+                            soup.insert(0, new_head)
+
+                    # Bandeau Titre
+                    header_div = soup.new_tag("div")
+                    header_div['style'] = "background:#fff; border-bottom:1px solid #ddd; padding:15px; margin-bottom:20px; font-family:sans-serif; text-align:center;"
+                    h1_tag = soup.new_tag("h1")
+                    h1_tag.string = subject
+                    h1_tag['style'] = "margin:0; font-size:18px; color:#333; font-weight:600;"
+                    header_div.append(h1_tag)
+                    soup.body.insert(0, header_div)
+
+                    # Images
+                    img_counter = 0
+                    for img in soup.find_all("img"):
+                        src = img.get("src")
+                        if not src or src.startswith("data:") or src.startswith("cid:"):
+                            continue
+                        try:
+                            if src.startswith("//"): src = "https:" + src
+                            response = requests.get(src, headers=HEADERS, timeout=10)
+                            if response.status_code == 200:
+                                content_type = response.headers.get('content-type')
+                                ext = mimetypes.guess_extension(content_type) or ".jpg"
+                                img_name = f"img_{img_counter}{ext}"
+                                img_path = os.path.join(newsletter_path, img_name)
+                                with open(img_path, "wb") as f:
+                                    f.write(response.content)
+                                img['src'] = img_name
+                                if img.has_attr('srcset'): del img['srcset']
+                                img_counter += 1
+                        except Exception: pass
+
+                    filename = os.path.join(newsletter_path, "index.html")
+                    with open(filename, "w", encoding='utf-8') as f:
+                        f.write(str(soup))
                 
-                # Titre dans <head
+                except Exception as e_mail:
+                    print(f"Erreur sur un email ({num}): {e_mail}")
+                    continue
+            
+            generate_index()
+            print("Terminé.")
+        else:
+            print("Aucun email trouvé.")
+
+        mail.close()
+        mail.logout()
+
+    except Exception as e:
+        print(f"Erreur critique: {e}")
+        # On ne lève pas l'erreur pour éviter Exit Code 1, mais on la logue.
+        # raise e 
+
+if __name__ == "__main__":
+    process_emails()
