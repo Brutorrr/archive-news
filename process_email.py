@@ -16,7 +16,7 @@ GMAIL_USER = os.environ["GMAIL_USER"]
 GMAIL_PASSWORD = os.environ["GMAIL_PASSWORD"]
 TARGET_LABEL = "Github/archive-newsletters"
 OUTPUT_FOLDER = "docs"
-BATCH_SIZE = 20  # Nombre max d'emails à traiter par exécution (anti-timeout)
+BATCH_SIZE = 20  # Nombre max d'emails à traiter par exécution
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
@@ -295,7 +295,7 @@ def generate_index():
             prevBtn.onclick = () => showPage(currentPage - 1);
             paginationContainer.appendChild(prevBtn);
 
-            // Numéros de page (limité pour l'esthétique si beaucoup de pages)
+            // Numéros de page
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, currentPage + 2);
             
@@ -339,11 +339,9 @@ def generate_index():
             const filter = input.value.toUpperCase();
             
             if (filter === "") {{
-                // Si recherche vide, on remet la pagination normale
                 paginationContainer.style.display = "flex";
                 showPage(1);
             }} else {{
-                // Si recherche active, on cache la pagination et on filtre TOUT
                 paginationContainer.style.display = "none";
                 allItems.forEach(item => {{
                     const text = item.textContent || item.innerText;
@@ -483,22 +481,36 @@ def process_emails():
                             new_body.extend(soup.contents)
                             soup.append(new_body)
 
-                        # =================================================================
-                        # CORRECTION BUG TABLE WIDTH ET CSS INLINE
-                        # =================================================================
-                        for table in soup.find_all("table"):
-                            # 1. Nettoyer les styles inline avec des widths énormes
-                            if table.get("style"):
-                                # Remplace width: XXXXpx par width: 100% si > 600px
-                                # Regex pour les valeurs entre 600 et 99999...
-                                table["style"] = re.sub(r'width:\s*([6-9]\d{2}|\d{4,})px', 'width: 100%', table["style"], flags=re.IGNORECASE)
-                            
-                            # 2. Nettoyer l'attribut width="XXXX" obsolète
-                            if table.get("width") and table["width"].isdigit():
-                                if int(table["width"]) > 600:
-                                    table["width"] = "100%"
+                        # ---------------------------------------------------------
+                        # EXTRACTION DES LIENS (NOUVELLE FONCTIONNALITÉ)
+                        # ---------------------------------------------------------
+                        extracted_links = []
+                        for a_tag in soup.find_all('a', href=True):
+                            text = a_tag.get_text(strip=True)
+                            if not text:
+                                # Si image, on essaie de choper le alt
+                                img_tag = a_tag.find('img')
+                                if img_tag and img_tag.get('alt'):
+                                    text = f"[Image: {img_tag.get('alt')}]"
+                                else:
+                                    text = "[Lien image/vide]"
+                            extracted_links.append({
+                                'text': text[:60] + "..." if len(text) > 60 else text, 
+                                'url': a_tag['href']
+                            })
+                        
+                        links_html_list = ""
+                        for l in extracted_links:
+                            links_html_list += f'<li><a href="{l["url"]}" target="_blank" rel="noopener noreferrer"><span class="link-text">{l["text"]}</span><br><span class="link-url">{l["url"]}</span></a></li>'
 
-                        # Injection Style
+                        # Correction Largeur Tables
+                        for table in soup.find_all("table"):
+                            if table.get("style"):
+                                table["style"] = re.sub(r'width:\s*([6-9]\d{2}|\d{4,})px', 'width: 100%', table["style"], flags=re.IGNORECASE)
+                            if table.get("width") and table["width"].isdigit():
+                                if int(table["width"]) > 600: table["width"] = "100%"
+
+                        # Injection Style & Scripts & Panel
                         style_tag = soup.new_tag("style")
                         style_tag.string = """
                             /* Reset */
@@ -531,6 +543,26 @@ def process_emails():
                             .btn:hover { background-color: #e2e6ea; color: #333; border-color: #ccc; }
                             .btn.active { background-color: #0070f3; color: white; border-color: #0070f3; box-shadow: 0 2px 8px rgba(0, 112, 243, 0.3); }
                             
+                            /* LINKS SIDEBAR */
+                            .links-panel {
+                                position: fixed; top: 0; right: -400px; width: 350px; height: 100vh;
+                                background: #ffffff; box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+                                z-index: 2000; transition: right 0.3s ease; padding: 20px;
+                                overflow-y: auto; box-sizing: border-box;
+                            }
+                            .links-panel.open { right: 0; }
+                            .links-panel h3 { margin-top: 0; font-size: 16px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+                            .links-panel ul { list-style: none; padding: 0; }
+                            .links-panel li { margin-bottom: 10px; border-bottom: 1px solid #f5f5f5; padding-bottom: 8px; }
+                            .links-panel a { text-decoration: none; color: inherit; display: block; word-break: break-all; }
+                            .links-panel a:hover .link-text { text-decoration: underline; }
+                            .links-panel .link-text { font-weight: 600; font-size: 13px; color: #0070f3; display: block; margin-bottom: 2px; }
+                            .links-panel .link-url { font-size: 11px; color: #888; display: block; }
+                            .links-panel .close-btn {
+                                position: absolute; top: 15px; right: 15px; background: none; border: none;
+                                font-size: 20px; cursor: pointer; color: #666;
+                            }
+
                             #email-wrapper { width: 100%; display: flex; justify-content: center; padding: 20px 20px 60px 20px; box-sizing: border-box; }
                             #email-content { width: 100%; max-width: 800px; background: #ffffff; box-shadow: 0 5px 30px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; }
                             #email-content > * { margin-left: auto !important; margin-right: auto !important; max-width: 100%; }
@@ -538,14 +570,24 @@ def process_emails():
                             body.mobile-active #email-content { max-width: 375px !important; border: 1px solid #d1d1d1; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
                             body.mobile-active table, body.mobile-active img { max-width: 100% !important; height: auto !important; width: auto !important; }
 
+                            /* DARK MODE */
                             body.dark-active { background-color: #121212 !important; }
                             body.dark-active .preview-header { background-color: #1e1e1e; border-bottom-color: #333; }
                             body.dark-active .header-title h1 { color: #e0e0e0; }
                             body.dark-active .btn { background-color: #2c2c2c; border-color: #444; color: #ccc; }
                             body.dark-active .btn:hover { background-color: #383838; }
                             body.dark-active .btn.active { background-color: #0070f3; color: white; }
+                            
                             body.dark-active #email-content { filter: invert(1) hue-rotate(180deg); border-color: #333; }
                             body.dark-active img, body.dark-active video, body.dark-active iframe { filter: invert(1) hue-rotate(180deg) !important; }
+                            
+                            /* Dark Mode for Sidebar */
+                            body.dark-active .links-panel { background: #1e1e1e; border-left: 1px solid #333; box-shadow: -2px 0 10px rgba(0,0,0,0.5); }
+                            body.dark-active .links-panel h3 { color: #e0e0e0; border-bottom-color: #333; }
+                            body.dark-active .links-panel li { border-bottom-color: #333; }
+                            body.dark-active .links-panel .link-text { color: #4da3ff; }
+                            body.dark-active .links-panel .link-url { color: #aaa; }
+                            body.dark-active .links-panel .close-btn { color: #e0e0e0; }
                         """
                         if soup.head: soup.head.append(style_tag)
                         else:
@@ -563,19 +605,34 @@ def process_emails():
                                 document.body.classList.toggle('dark-active');
                                 document.getElementById('btn-dark').classList.toggle('active');
                             }
+                            function toggleLinks() {
+                                const panel = document.getElementById('links-panel');
+                                panel.classList.toggle('open');
+                                document.getElementById('btn-links').classList.toggle('active');
+                            }
                         """
                         soup.body.append(script_tag)
 
+                        # Header + Panel HTML Construction
+                        nb_links = len(extracted_links)
                         header_html = BeautifulSoup(f"""
                         <header class="preview-header">
                             <div class="header-inner">
                                 <div class="header-title"><h1>Sujet : {subject}</h1></div>
                                 <div class="controls">
+                                    <button id="btn-links" class="btn" onclick="toggleLinks()"><span>🔗</span> Liens ({nb_links})</button>
                                     <button id="btn-mobile" class="btn" onclick="toggleMobile()"><span>📱</span> Mobile</button>
                                     <button id="btn-dark" class="btn" onclick="toggleDark()"><span>🌙</span> Sombre</button>
                                 </div>
                             </div>
                         </header>
+                        <div id="links-panel" class="links-panel">
+                            <h3>Liens extraits ({nb_links})</h3>
+                            <button class="close-btn" onclick="toggleLinks()">×</button>
+                            <ul>
+                                {links_html_list}
+                            </ul>
+                        </div>
                         """, 'html.parser')
 
                         wrapper_div = soup.new_tag("div", id="email-wrapper")
