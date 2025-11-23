@@ -182,7 +182,7 @@
             prevBtn.onclick = () => showPage(currentPage - 1);
             paginationContainer.appendChild(prevBtn);
 
-            // Numéros de page (limité pour l'esthétique si beaucoup de pages)
+            // Numéros de page
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, currentPage + 2);
             
@@ -226,11 +226,9 @@
             const filter = input.value.toUpperCase();
             
             if (filter === "") {
-                // Si recherche vide, on remet la pagination normale
                 paginationContainer.style.display = "flex";
                 showPage(1);
             } else {
-                // Si recherche active, on cache la pagination et on filtre TOUT
                 paginationContainer.style.display = "none";
                 allItems.forEach(item => {
                     const text = item.textContent || item.innerText;
