@@ -22,10 +22,7 @@ HEADERS = {
 
 def clean_subject_prefixes(subject):
     """Retire les Fwd:, Re:, Tr: et autres préfixes en boucle"""
-    # Regex pour capturer les préfixes classiques (insensible à la casse)
-    # [Fwd:] ou Fwd: ou Re: etc.
     pattern = r'^\s*\[?(?:Fwd|Fw|Tr|Re|Aw|Wg)\s*:\s*\]?\s*'
-    
     cleaned = subject
     while re.match(pattern, cleaned, re.IGNORECASE):
         cleaned = re.sub(pattern, '', cleaned, flags=re.IGNORECASE)
@@ -46,6 +43,27 @@ def get_page_title(filepath):
     except Exception:
         pass
     return "Sans titre"
+
+def clean_output_folder():
+    """Nettoie le dossier docs pour éviter les doublons (anciens dossiers Fwd vs nouveaux)"""
+    if os.path.exists(OUTPUT_FOLDER):
+        for item in os.listdir(OUTPUT_FOLDER):
+            item_path = os.path.join(OUTPUT_FOLDER, item)
+            # On ne supprime pas le dossier .git s'il existe, ni CNAME
+            if item.startswith('.'):
+                continue
+            if item == "CNAME":
+                continue
+                
+            try:
+                if os.path.isdir(item_path):
+                    shutil.rmtree(item_path)
+                else:
+                    os.remove(item_path)
+            except Exception as e:
+                print(f"Erreur lors du nettoyage de {item}: {e}")
+    else:
+        os.makedirs(OUTPUT_FOLDER)
 
 def generate_index():
     print("Génération du sommaire global...")
@@ -115,7 +133,6 @@ def generate_index():
     
     with open(f"{OUTPUT_FOLDER}/index.html", "w", encoding='utf-8') as f:
         f.write(index_content)
-    print("Sommaire généré.")
 
 def get_decoded_email_subject(msg):
     subject_header = msg["Subject"]
@@ -132,6 +149,9 @@ def get_decoded_email_subject(msg):
 
 def process_emails():
     try:
+        # ETAPE 1 : Nettoyage préalable pour repartir sur une base saine
+        clean_output_folder()
+        
         if not os.path.exists(OUTPUT_FOLDER):
             os.makedirs(OUTPUT_FOLDER)
 
@@ -141,7 +161,7 @@ def process_emails():
         
         rv, data = mail.select(f'"{TARGET_LABEL}"')
         if rv != 'OK':
-            print(f"ERREUR: Impossible de trouver le libellé '{TARGET_LABEL}'. Vérifiez le nom exact.")
+            print(f"ERREUR: Impossible de trouver le libellé '{TARGET_LABEL}'.")
             return
 
         status, messages = mail.search(None, 'ALL')
@@ -151,18 +171,19 @@ def process_emails():
             print(f"{len(email_ids)} emails trouvés.")
 
             for num in email_ids:
+                # Récupération partielle pour le sujet
                 status, msg_data = mail.fetch(num, '(BODY.PEEK[HEADER.FIELDS (SUBJECT)])')
                 msg_header = email.message_from_bytes(msg_data[0][1])
                 
-                # 1. NETTOYAGE SUJET (Fwd: Re: etc)
+                # Nettoyage du titre (Fwd, Re...)
                 raw_subject = get_decoded_email_subject(msg_header)
                 subject = clean_subject_prefixes(raw_subject)
                 
                 folder_id = get_deterministic_id(subject)
                 newsletter_path = os.path.join(OUTPUT_FOLDER, folder_id)
 
-                if os.path.exists(newsletter_path):
-                    continue
+                # NOTE : On ne skip plus si le dossier existe, car on a nettoyé au début
+                # et on veut être sûr de tout régénérer proprement.
 
                 print(f"Traitement : {subject[:30]}...")
                 
@@ -190,85 +211,24 @@ def process_emails():
                 for s in soup(["script", "iframe", "object"]):
                     s.extract()
 
-                # 2. NETTOYAGE DU CONTENU (Suppression de l'historique)
-                # On cherche si le mail est dans une citation (gmail_quote)
-                # C'est typique des transferts (Fwd). On ne garde que ce qu'il y a DEDANS.
+                # --- LOGIQUE DE NETTOYAGE DES TRANSFERTS ---
+                # 1. Si on détecte une citation Gmail (le bloc transféré), on ne garde que lui
                 quote = soup.find(class_="gmail_quote")
                 if quote:
-                    # On remplace tout le corps par le contenu de la citation
-                    # Cela supprime votre message "Pour info..." au dessus
                     soup.body.clear()
                     soup.body.append(quote)
                 
-                # On cherche les balises d'en-têtes de transfert (gmail_attr) et on les supprime
-                # Ex: "De : Machin <machin@mail.com>..."
+                # 2. Suppression des en-têtes de transfert (De: ..., Envoyé le: ...)
                 for attr in soup.find_all(class_="gmail_attr"):
                     attr.decompose()
                 
-                # Nettoyage supplémentaire des séparateurs texte (au cas où)
-                # Ex: ---------- Forwarded message ---------
+                # 3. Nettoyage des divs "Forwarded message" génériques
                 for div in soup.find_all("div"):
                     if div.string and "Forwarded message" in div.string:
                         div.decompose()
+                    if div.string and "Message transféré" in div.string:
+                        div.decompose()
 
-                # Titre dans <head>
-                if soup.title:
-                    soup.title.string = subject
-                else:
-                    new_title = soup.new_tag('title')
-                    new_title.string = subject
-                    if soup.head:
-                        soup.head.append(new_title)
-                    else:
-                        new_head = soup.new_tag('head')
-                        new_head.append(new_title)
-                        soup.insert(0, new_head)
-
-                # Bandeau Titre
-                header_div = soup.new_tag("div")
-                header_div['style'] = "background:#fff; border-bottom:1px solid #ddd; padding:15px; margin-bottom:20px; font-family:sans-serif; text-align:center;"
-                h1_tag = soup.new_tag("h1")
-                h1_tag.string = subject
-                h1_tag['style'] = "margin:0; font-size:18px; color:#333; font-weight:600;"
-                header_div.append(h1_tag)
-                if soup.body:
-                    soup.body.insert(0, header_div)
-
-                # Images
-                img_counter = 0
-                for img in soup.find_all("img"):
-                    src = img.get("src")
-                    if not src or src.startswith("data:") or src.startswith("cid:"):
-                        continue
-                    try:
-                        if src.startswith("//"): src = "https:" + src
-                        response = requests.get(src, headers=HEADERS, timeout=10)
-                        if response.status_code == 200:
-                            content_type = response.headers.get('content-type')
-                            ext = mimetypes.guess_extension(content_type) or ".jpg"
-                            img_name = f"img_{img_counter}{ext}"
-                            img_path = os.path.join(newsletter_path, img_name)
-                            with open(img_path, "wb") as f:
-                                f.write(response.content)
-                            img['src'] = img_name
-                            if img.has_attr('srcset'): del img['srcset']
-                            img_counter += 1
-                    except Exception: pass
-
-                filename = os.path.join(newsletter_path, "index.html")
-                with open(filename, "w", encoding='utf-8') as f:
-                    f.write(str(soup))
-            
-            generate_index()
-            print("Terminé.")
-        else:
-            print("Aucun email trouvé.")
-
-        mail.close()
-        mail.logout()
-
-    except Exception as e:
-        print(f"Erreur critique: {e}")
-
-if __name__ == "__main__":
-    process_emails()
+                # --- RECONSTRUCTION DE LA PAGE ---
+                
+                # Titre dans <head
