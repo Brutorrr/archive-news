@@ -41,3 +41,45 @@ graph LR
     B -- "Extract HTML & Clean History" --> C["Sanitize & Download Images"]
     C -- "Commit Changes" --> D["GitHub Repository (/docs)"]
     D -- "Auto Deploy" --> E["GitHub Pages Website"]
+```
+---
+
+## 🔧 Setup & Configuration
+
+### 1. Gmail Configuration
+* **Alias:** Use an alias (e.g., `you+news@gmail.com`) to subscribe to newsletters.
+* **Filter:** Create a filter to apply the label `Github/archive-newsletters` to these emails.
+* **Security:** Generate an **App Password** in your Google Account (required for IMAP).
+
+### 2. Repository Secrets
+Go to `Settings` > `Secrets and variables` > `Actions` and add:
+* `GMAIL_USER`: Your email address.
+* `GMAIL_PASSWORD`: The App Password generated above.
+
+### 3. GitHub Pages
+Go to `Settings` > `Pages`:
+* **Source:** Deploy from a branch.
+* **Branch:** `main`.
+* **Folder:** `/docs` (root folder).
+
+---
+
+## ⚖️ Legal & Privacy
+
+* **Publisher:** Benoît Prentout
+* **Hosting:** GitHub Inc.
+* **Content:** This is a personal archive for portfolio and technical demonstration purposes. Newsletter contents remain the property of their respective authors.
+
+---
+
+## 👤 Author
+
+**Benoît Prentout**
+* GitHub: [@benoit-prentout](https://github.com/benoit-prentout)
+* Website: [getinside.fr](https://www.getinside.fr/)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
