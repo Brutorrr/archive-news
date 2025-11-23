@@ -2,7 +2,7 @@ name: Check Newsletter
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # Vérification toutes les 30 min
+    - cron: '*/30 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -29,9 +29,10 @@ jobs:
           GMAIL_PASSWORD: ${{ secrets.GMAIL_PASSWORD }}
         run: python process_email.py
 
-      # Envoi des modifications sur GitHub
       - name: Commit and Push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "Archivage automatique newsletter"
+          commit_message: "Mise à jour archives newsletters"
           file_pattern: 'docs/*'
+          # Cette option permet d'ajouter les nouveaux fichiers ET de noter les suppressions
+          add_options: '-A'
