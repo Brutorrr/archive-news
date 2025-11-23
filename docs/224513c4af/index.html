@@ -292,8 +292,76 @@ h4 {
         padding-right: 18px !important;
         padding-left: 18px !important
         }
-    }</style><meta content="2025-11-20" name="creation_date"/><meta content="Atelier Loupiote | Lampes artisanales françaises" name="sender"/></head>
-<body style="word-spacing:normal;background-color:#F7F7F7;"><div style="background:#fff; border-bottom:1px solid #ddd; padding:15px; margin-bottom:20px; font-family:sans-serif; text-align:center;"><h1 style="margin:0; font-size:18px; color:#333; font-weight:600;">Offrez un colis de Noël pour un aîné isoléet illuminez son réveillon ! ✨</h1></div>
+    }</style><style>
+                        body { margin: 0; padding: 0; background-color: #f4f4f4; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+                        
+                        /* TOOLBAR */
+                        #preview-toolbar {
+                            position: fixed; top: 0; left: 0; right: 0;
+                            height: 60px; background: #222; color: white;
+                            display: flex; align-items: center; justify-content: space-between;
+                            padding: 0 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                            z-index: 10000;
+                        }
+                        #preview-toolbar h1 { margin: 0; font-size: 16px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50%; }
+                        .toolbar-actions { display: flex; gap: 10px; }
+                        .tool-btn {
+                            background: #333; border: 1px solid #444; color: #eee;
+                            padding: 6px 12px; border-radius: 4px; cursor: pointer;
+                            font-size: 13px; transition: all 0.2s; display: flex; align-items: center; gap: 5px;
+                        }
+                        .tool-btn:hover { background: #444; }
+                        .tool-btn.active { background: #0070f3; border-color: #0070f3; }
+                        .back-btn { text-decoration: none; color: #aaa; font-size: 14px; margin-right: 15px; }
+                        .back-btn:hover { color: white; }
+
+                        /* EMAIL CONTAINER */
+                        #email-wrapper {
+                            margin-top: 60px; /* Espace pour la toolbar */
+                            width: 100%;
+                            min-height: calc(100vh - 60px);
+                            display: flex; justify-content: center;
+                            padding: 20px 0;
+                            transition: background-color 0.3s;
+                        }
+                        
+                        #email-content {
+                            width: 100%; max-width: 800px; /* Largeur desktop par défaut */
+                            background: #ffffff;
+                            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+                            transition: all 0.3s ease;
+                        }
+
+                        /* MOBILE VIEW */
+                        .mobile-active #email-content {
+                            max-width: 375px !important;
+                            border: 1px solid #ddd;
+                            border-radius: 20px;
+                            overflow: hidden;
+                        }
+
+                        /* DARK MODE SIMULATION */
+                        .dark-active #email-wrapper { background-color: #121212; }
+                        .dark-active #email-content {
+                            filter: invert(1) hue-rotate(180deg);
+                        }
+                        /* On réinverse les images pour qu'elles restent normales */
+                        .dark-active #email-content img {
+                            filter: invert(1) hue-rotate(180deg);
+                        }
+                    </style><meta content="2025-11-20" name="creation_date"/><meta content="Atelier Loupiote | Lampes artisanales françaises" name="sender"/></head>
+<body style="word-spacing:normal;background-color:#F7F7F7;">
+<div id="preview-toolbar">
+<div style="display:flex; align-items:center;">
+<a class="back-btn" href="../index.html">← Retour</a>
+<h1>Offrez un colis de Noël pour un aîné isoléet illuminez son réveillon ! ✨</h1>
+</div>
+<div class="toolbar-actions">
+<button class="tool-btn" id="btn-mobile" onclick="toggleMobile()">📱 Mobile</button>
+<button class="tool-btn" id="btn-dark" onclick="toggleDark()">🌙 Dark Mode</button>
+</div>
+</div>
+<div id="email-wrapper"><div id="email-content">
 <div style="display:none;font-size:1px;color:#ffffff;line-height:1px;max-height:0px;max-width:0px;opacity:0;overflow:hidden;">
       En association avec Petits Frères des Pauvres 👴👵💓 ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏  ͏ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­ ­
     </div>
@@ -829,4 +897,15 @@ h4 {
 </div>
 </div>
 <!-- TRACKING_PIXEL_BOTTOM -->
-<img alt="" border="0" height="1" loading="lazy" src="img_6.gif" style="height:1px !important;width:1px !important;border-width:0 !important;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;padding-left:0 !important;" width="1"/></body></html>
+<img alt="" border="0" height="1" loading="lazy" src="img_6.gif" style="height:1px !important;width:1px !important;border-width:0 !important;margin-top:0 !important;margin-bottom:0 !important;margin-right:0 !important;margin-left:0 !important;padding-top:0 !important;padding-bottom:0 !important;padding-right:0 !important;padding-left:0 !important;" width="1"/></div></div><script>
+                        function toggleMobile() {
+                            document.body.classList.toggle('mobile-active');
+                            const btn = document.getElementById('btn-mobile');
+                            btn.classList.toggle('active');
+                        }
+                        function toggleDark() {
+                            document.body.classList.toggle('dark-active');
+                            const btn = document.getElementById('btn-dark');
+                            btn.classList.toggle('active');
+                        }
+                    </script></body></html>
