@@ -7,7 +7,7 @@
 
 An automated DevOps solution that captures incoming newsletters from Gmail, sanitizes them (removing forward history), and archives them as a static website hosted on GitHub Pages.
 
-**🔗 [Accéder à l'archive en ligne / Access Online Archive](https://benoit-prentout.github.io/archive-news/)**
+**🔗 [Access Online Archive](https://benoit-prentout.github.io/archive-news/)**
 
 ---
 
