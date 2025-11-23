@@ -435,4 +435,123 @@ def process_emails():
                         
                         body.dark-active .btn { background-color: #2c2c2c; border-color: #444; color: #ccc; }
                         body.dark-active .btn:hover { background-color: #383838; }
-                        body.dark-active .btn.active { background-color: #
+                        body.dark-active .btn.active { background-color: #0070f3; color: white; }
+
+                        body.dark-active #email-content {
+                            filter: invert(1) hue-rotate(180deg);
+                            border-color: #333;
+                        }
+                        body.dark-active img, 
+                        body.dark-active video, 
+                        body.dark-active iframe {
+                            filter: invert(1) hue-rotate(180deg) !important;
+                        }
+                    """
+                    if soup.head: soup.head.append(style_tag)
+                    else:
+                        new_head = soup.new_tag("head")
+                        new_head.append(style_tag)
+                        soup.insert(0, new_head)
+
+                    # 2. JS
+                    script_tag = soup.new_tag("script")
+                    script_tag.string = """
+                        function toggleMobile() {
+                            document.body.classList.toggle('mobile-active');
+                            document.getElementById('btn-mobile').classList.toggle('active');
+                        }
+                        function toggleDark() {
+                            document.body.classList.toggle('dark-active');
+                            document.getElementById('btn-dark').classList.toggle('active');
+                        }
+                    """
+                    soup.body.append(script_tag)
+
+                    # 3. Header
+                    header_html = BeautifulSoup(f"""
+                    <header class="preview-header">
+                        <div class="header-inner">
+                            <div class="header-title">
+                                <h1>Sujet : {subject}</h1>
+                            </div>
+                            <div class="controls">
+                                <button id="btn-mobile" class="btn" onclick="toggleMobile()">
+                                    <span>📱</span> Mobile
+                                </button>
+                                <button id="btn-dark" class="btn" onclick="toggleDark()">
+                                    <span>🌙</span> Sombre
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+                    """, 'html.parser')
+
+                    # 4. Wrappings
+                    wrapper_div = soup.new_tag("div", id="email-wrapper")
+                    content_div = soup.new_tag("div", id="email-content")
+                    
+                    to_move = []
+                    for child in soup.body.contents:
+                        if child != script_tag and child != header_html:
+                            to_move.append(child)
+                    
+                    for child in to_move:
+                        content_div.append(child)
+                    
+                    wrapper_div.append(content_div)
+                    
+                    soup.body.clear()
+                    soup.body.append(header_html)
+                    soup.body.append(wrapper_div)
+                    soup.body.append(script_tag)
+
+                    # Méta-données
+                    meta_date = soup.new_tag("meta", attrs={"name": "creation_date", "content": email_date_str})
+                    meta_sender = soup.new_tag("meta", attrs={"name": "sender", "content": sender_name})
+                    if soup.head: 
+                        soup.head.append(meta_date)
+                        soup.head.append(meta_sender)
+
+                    if soup.title: soup.title.string = subject
+                    else:
+                        new_title = soup.new_tag('title')
+                        new_title.string = subject
+                        if soup.head: soup.head.append(new_title)
+
+                    # Images (Lazy Loading)
+                    img_counter = 0
+                    for img in soup.find_all("img"):
+                        src = img.get("src")
+                        if not src or src.startswith("data:") or src.startswith("cid:"): continue
+                        try:
+                            if src.startswith("//"): src = "https:" + src
+                            response = requests.get(src, headers=HEADERS, timeout=10)
+                            if response.status_code == 200:
+                                content_type = response.headers.get('content-type')
+                                ext = mimetypes.guess_extension(content_type) or ".jpg"
+                                img_name = f"img_{img_counter}{ext}"
+                                img_path = os.path.join(newsletter_path, img_name)
+                                with open(img_path, "wb") as f: f.write(response.content)
+                                img['src'] = img_name
+                                img['loading'] = 'lazy'
+                                if img.has_attr('srcset'): del img['srcset']
+                                img_counter += 1
+                        except Exception: pass
+
+                    filename = os.path.join(newsletter_path, "index.html")
+                    with open(filename, "w", encoding='utf-8') as f:
+                        f.write(str(soup))
+                except Exception as e_mail:
+                    print(f"Erreur email {num}: {e_mail}")
+                    continue
+            generate_index()
+            print("Terminé.")
+        else:
+            print("Aucun email trouvé.")
+        mail.close()
+        mail.logout()
+    except Exception as e:
+        print(f"Erreur critique: {e}")
+
+if __name__ == "__main__":
+    process_emails()
