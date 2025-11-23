@@ -17,7 +17,7 @@ GMAIL_USER = os.environ["GMAIL_USER"]
 GMAIL_PASSWORD = os.environ["GMAIL_PASSWORD"]
 TARGET_LABEL = "Github/archive-newsletters"
 OUTPUT_FOLDER = "docs"
-# BATCH_SIZE augmenté car on ne retélécharge pas les images existantes, donc c'est plus rapide.
+# Augmenté car on ne retélécharge pas les images existantes, c'est donc très rapide
 BATCH_SIZE = 50  
 
 HEADERS = {
@@ -271,13 +271,8 @@ def generate_index():
             currentPage = page;
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
-            
             allItems.forEach((item, index) => {{
-                if (index >= start && index < end) {{
-                    item.style.display = "";
-                }} else {{
-                    item.style.display = "none";
-                }}
+                if (index >= start && index < end) {{ item.style.display = ""; }} else {{ item.style.display = "none"; }}
             }});
             renderPaginationControls();
             window.scrollTo(0, 0);
@@ -286,7 +281,6 @@ def generate_index():
         function renderPaginationControls() {{
             const totalPages = Math.ceil(allItems.length / itemsPerPage);
             paginationContainer.innerHTML = '';
-            
             if (totalPages <= 1) return;
 
             const prevBtn = document.createElement('button');
@@ -298,7 +292,6 @@ def generate_index():
 
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, currentPage + 2);
-            
             if (startPage > 1) {{
                 const firstPage = document.createElement('button');
                 firstPage.className = 'page-btn';
@@ -307,7 +300,6 @@ def generate_index():
                 paginationContainer.appendChild(firstPage);
                 if (startPage > 2) paginationContainer.appendChild(document.createTextNode('...'));
             }}
-
             for (let i = startPage; i <= endPage; i++) {{
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${{i === currentPage ? 'active' : ''}}`;
@@ -315,7 +307,6 @@ def generate_index():
                 btn.onclick = () => showPage(i);
                 paginationContainer.appendChild(btn);
             }}
-
             if (endPage < totalPages) {{
                 if (endPage < totalPages - 1) paginationContainer.appendChild(document.createTextNode('...'));
                 const lastPage = document.createElement('button');
@@ -324,7 +315,6 @@ def generate_index():
                 lastPage.onclick = () => showPage(totalPages);
                 paginationContainer.appendChild(lastPage);
             }}
-
             const nextBtn = document.createElement('button');
             nextBtn.className = 'page-btn';
             nextBtn.innerHTML = '&raquo;';
@@ -336,7 +326,6 @@ def generate_index():
         function filterList() {{
             const input = document.getElementById('searchInput');
             const filter = input.value.toUpperCase();
-            
             if (filter === "") {{
                 paginationContainer.style.display = "flex";
                 showPage(1);
@@ -344,15 +333,10 @@ def generate_index():
                 paginationContainer.style.display = "none";
                 allItems.forEach(item => {{
                     const text = item.textContent || item.innerText;
-                    if (text.toUpperCase().indexOf(filter) > -1) {{
-                        item.style.display = "";
-                    }} else {{
-                        item.style.display = "none";
-                    }}
+                    if (text.toUpperCase().indexOf(filter) > -1) {{ item.style.display = ""; }} else {{ item.style.display = "none"; }}
                 }});
             }}
         }}
-
         showPage(1);
         </script>
     </body>
@@ -399,9 +383,7 @@ def process_emails():
                 shutil.rmtree(os.path.join(OUTPUT_FOLDER, f_id), ignore_errors=True)
                 print(f"Supprimé (Synchro): {f_id}")
 
-            # PHASE 2 : Traitement (FORCE UPDATE pour appliquer les fix CSS, mais SKIP download images)
-            # On traite TOUT le monde, mais on ne retélécharge pas les images existantes.
-            # Cela permet de mettre à jour l'affichage sans consommer trop de quota.
+            # PHASE 2 : Traitement (UPDATE MASSIF INTELLIGENT)
             folders_to_process = list(valid_folder_ids)[:BATCH_SIZE]
             
             print(f"Mise à jour de {len(folders_to_process)} emails (batch)...")
@@ -420,8 +402,6 @@ def process_emails():
                     newsletter_path = os.path.join(OUTPUT_FOLDER, f_id)
                     os.makedirs(newsletter_path, exist_ok=True)
                     
-                    print(f"   -> Traitement : {subject[:30]}...")
-
                     # Extraction HTML
                     html_content = ""
                     for part in msg.walk():
@@ -468,9 +448,7 @@ def process_emails():
                         try:
                             if src.startswith("//"): src = "https:" + src
                             
-                            # On devine l'extension
-                            # Pour éviter une requête, on regarde l'extension dans l'url
-                            # Si pas d'extension, on met jpg par défaut et on verra
+                            # Détermination de l'extension
                             ext = os.path.splitext(src.split('?')[0])[1]
                             if not ext or len(ext) > 5: ext = ".jpg"
                             
@@ -483,11 +461,10 @@ def process_emails():
                                 if r.status_code == 200:
                                     if 'image' in r.headers.get('content-type', ''):
                                         real_ext = mimetypes.guess_extension(r.headers.get('content-type')) or ".jpg"
-                                        local_name = f"img_{img_counter}{real_ext}" # Correction extension
+                                        local_name = f"img_{img_counter}{real_ext}"
                                         local_path = os.path.join(newsletter_path, local_name)
                                         with open(local_path, "wb") as f: f.write(r.content)
                             
-                            # Dans tous les cas on met à jour le lien dans le HTML
                             img['src'] = local_name
                             img['loading'] = 'lazy'
                             if img.has_attr('srcset'): del img['srcset']
@@ -524,47 +501,40 @@ def process_emails():
                             
                             /* Iframe Wrapper - Desktop Default */
                             .iframe-wrapper {{ 
-                                width: 1200px; 
-                                max-width: 95%;
-                                height: 90%;
+                                width: 1200px; max-width: 95%; height: 90%;
                                 transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); 
-                                background: white; 
-                                box-shadow: 0 5px 30px rgba(0,0,0,0.1); 
-                                border-radius: 8px;
+                                background: white; box-shadow: 0 5px 30px rgba(0,0,0,0.1); border-radius: 8px;
                             }}
                             
                             iframe {{ width: 100%; height: 100%; border: none; display: block; border-radius: inherit; }}
                             
-                            /* Mobile Mode */
+                            /* Mobile Mode - FIXED CLIPPING */
                             body.mobile-mode .iframe-wrapper {{ 
-                                width: 375px; 
-                                height: 812px; 
-                                max-height: 90vh;
-                                border-radius: 40px; 
-                                border: 12px solid #333; 
+                                width: 375px; height: 812px; max-height: 90vh;
+                                border-radius: 40px; border: 12px solid #333; 
                                 box-shadow: 0 20px 50px rgba(0,0,0,0.2);
                                 overflow: hidden;
-                                transform: translateZ(0); /* Fix for border-radius clipping */
+                                transform: translateZ(0); /* Force hardware accel for clipping */
                             }}
                             
                             /* Links Sidebar */
                             .sidebar {{ position: fixed; top: 60px; right: -350px; width: 350px; height: calc(100vh - 60px); background: white; border-left: 1px solid #ddd; transition: right 0.3s; overflow-y: auto; z-index: 90; padding: 20px; box-sizing: border-box; }}
                             .sidebar.open {{ right: 0; }}
-                            .sidebar h3 {{ margin-top: 0; font-size: 16px; border-bottom: 1px solid #eee; padding-bottom: 10px; }}
+                            .sidebar h3 {{ margin-top: 0; font-size: 16px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }}
                             .sidebar ul {{ list-style: none; padding: 0; }}
                             .sidebar li {{ margin-bottom: 15px; word-break: break-all; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }}
                             .sidebar a {{ text-decoration: none; color: inherit; font-size: 12px; }}
                             .link-txt {{ font-weight: bold; color: #0070f3; margin-bottom: 4px; }}
                             .link-url {{ color: #666; }}
                             
-                            /* Dark Mode */
+                            /* Dark Mode - HEADER ONLY */
                             body.dark-mode .main-view {{ background: #121212; }}
                             body.dark-mode .header {{ background: #1e1e1e; border-bottom-color: #333; }}
                             body.dark-mode .title {{ color: #e0e0e0; }}
                             body.dark-mode .btn {{ background: #2c2c2c; border-color: #444; color: #ccc; }}
                             body.dark-mode .btn.active {{ background: #0070f3; color: white; }}
-                            body.dark-mode iframe {{ filter: invert(1) hue-rotate(180deg); }}
                             
+                            /* Dark Mode - Sidebar */
                             body.dark-mode .sidebar {{ background: #1e1e1e; border-left-color: #333; }}
                             body.dark-mode .sidebar h3 {{ color: #fff; border-bottom-color: #333; }}
                             body.dark-mode .link-txt {{ color: #4da3ff; }}
@@ -601,7 +571,18 @@ def process_emails():
                             frame.contentDocument.close();
                             
                             const style = frame.contentDocument.createElement('style');
-                            style.textContent = 'body {{ margin: 0; overflow-x: hidden; }} img {{ max-width: 100%; height: auto; }}';
+                            style.textContent = `
+                                body {{ margin: 0; overflow-x: hidden; }} 
+                                img {{ max-width: 100%; height: auto; }}
+                                
+                                /* SMART INVERT DARK MODE (Injecté dans l'iframe) */
+                                html.dark-mode-internal {{ filter: invert(1) hue-rotate(180deg); }}
+                                html.dark-mode-internal img, 
+                                html.dark-mode-internal video, 
+                                html.dark-mode-internal [style*="background-image"] {{ 
+                                    filter: invert(1) hue-rotate(180deg); 
+                                }}
+                            `;
                             frame.contentDocument.head.appendChild(style);
 
                             function toggleMobile() {{
@@ -611,6 +592,8 @@ def process_emails():
                             function toggleDark() {{
                                 document.body.classList.toggle('dark-mode');
                                 document.getElementById('btn-dark').classList.toggle('active');
+                                // Toggle class INSIDE the iframe for smart invert
+                                frame.contentDocument.documentElement.classList.toggle('dark-mode-internal');
                             }}
                             function toggleLinks() {{
                                 document.getElementById('sidebar').classList.toggle('open');
