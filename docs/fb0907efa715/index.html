@@ -97,8 +97,11 @@
                             // Inject Styles into Iframe
                             const style = frame.contentDocument.createElement('style');
                             style.textContent = `
-                                body { margin: 0; overflow-x: hidden; background-color: white; } 
-                                img { max-width: 100%; height: auto; }
+                                body { margin: 0 !important; padding: 0 !important; width: 100% !important; min-width: 0 !important; background-color: white; overflow-x: hidden; } 
+                                
+                                /* FORCE RESPONSIVE IMAGES & TABLES */
+                                img { max-width: 100% !important; height: auto !important; display: block; }
+                                table, td, tr { max-width: 100% !important; min-width: 0 !important; height: auto !important; }
                                 
                                 /* SMART INVERT DARK MODE (Injected inside iframe) */
                                 html.dark-mode-internal { 
