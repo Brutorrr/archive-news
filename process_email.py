@@ -17,12 +17,17 @@ GMAIL_USER = os.environ["GMAIL_USER"]
 GMAIL_PASSWORD = os.environ["GMAIL_PASSWORD"]
 TARGET_LABEL = "Github/archive-newsletters"
 OUTPUT_FOLDER = "docs"
-# BATCH_SIZE illimité pour tout mettre à jour d'un coup (rapide car pas de download d'images existantes)
-BATCH_SIZE = 9999  
+BATCH_SIZE = 9999
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
+
+# --- ICONS SVG ---
+ICON_MOON = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>'
+ICON_SUN = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>'
+ICON_MOBILE = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>'
+ICON_LINK = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>'
 
 def clean_subject_prefixes(subject):
     if not subject: return "Sans titre"
@@ -177,21 +182,24 @@ def generate_index():
             :root {{
                 --bg-body: #f6f9fc; --bg-card: #ffffff; --text-main: #333333; --text-muted: #666666; --text-light: #888888;
                 --border-color: #eaeaea; --accent-color: #0070f3; --hover-bg: #f8f9fa; --input-bg: #fcfcfc; --shadow: rgba(0,0,0,0.05);
-                --toggle-icon: "🌙";
             }}
             [data-theme="dark"] {{
                 --bg-body: #121212; --bg-card: #1e1e1e; --text-main: #e0e0e0; --text-muted: #a0a0a0; --text-light: #666666;
                 --border-color: #333333; --accent-color: #4da3ff; --hover-bg: #252525; --input-bg: #252525; --shadow: rgba(0,0,0,0.3);
-                --toggle-icon: "☀️";
             }}
             body {{ font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg-body); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; min-height: 100vh; box-sizing: border-box; transition: background-color 0.3s, color 0.3s; }}
             .container {{ max-width: 800px; width: 100%; margin: 0 auto; background: var(--bg-card); padding: 40px; border-radius: 12px; box-shadow: 0 4px 12px var(--shadow); flex: 1; position: relative; }}
             .header-row {{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid var(--border-color); padding-bottom: 20px; }}
             h1 {{ text-align: center; color: var(--text-main); margin: 0; font-size: 1.8rem; flex-grow: 1; }}
             
-            #theme-toggle {{ background: none; border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }}
+            #theme-toggle {{ background: none; border: 1px solid var(--border-color); border-radius: 50%; width: 40px; height: 40px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: all 0.2s; color: var(--text-main); }}
             #theme-toggle:hover {{ background-color: var(--hover-bg); border-color: var(--accent-color); }}
-            #theme-toggle::after {{ content: var(--toggle-icon); }}
+            
+            /* Icon Switching Logic */
+            .icon-moon {{ display: block; }}
+            .icon-sun {{ display: none; }}
+            [data-theme="dark"] .icon-moon {{ display: none; }}
+            [data-theme="dark"] .icon-sun {{ display: block; }}
             
             #searchInput {{ width: 100%; padding: 12px 20px; margin-bottom: 25px; box-sizing: border-box; border: 2px solid var(--border-color); border-radius: 8px; font-size: 16px; background-color: var(--input-bg); color: var(--text-main); transition: border-color 0.3s; }}
             #searchInput:focus {{ border-color: var(--accent-color); outline: none; }}
@@ -230,11 +238,14 @@ def generate_index():
             <div class="header-row">
                 <div style="width: 40px;"></div>
                 <h1>📬 Archives Newsletters</h1>
-                <button id="theme-toggle" title="Changer le thème"></button>
+                <button id="theme-toggle" title="Changer le thème">
+                    <span class="icon-moon">{ICON_MOON}</span>
+                    <span class="icon-sun">{ICON_SUN}</span>
+                </button>
             </div>
             <input type="text" id="searchInput" onkeyup="filterList()" placeholder="Rechercher par titre, expéditeur ou date...">
             <ul id="newsList">
-                {links_html}
+                {{links_html}}
             </ul>
             <div id="pagination" class="pagination"></div>
             <footer>
@@ -271,8 +282,13 @@ def generate_index():
             currentPage = page;
             const start = (page - 1) * itemsPerPage;
             const end = start + itemsPerPage;
+            
             allItems.forEach((item, index) => {{
-                if (index >= start && index < end) {{ item.style.display = ""; }} else {{ item.style.display = "none"; }}
+                if (index >= start && index < end) {{
+                    item.style.display = "";
+                }} else {{
+                    item.style.display = "none";
+                }}
             }});
             renderPaginationControls();
             window.scrollTo(0, 0);
@@ -281,6 +297,7 @@ def generate_index():
         function renderPaginationControls() {{
             const totalPages = Math.ceil(allItems.length / itemsPerPage);
             paginationContainer.innerHTML = '';
+            
             if (totalPages <= 1) return;
 
             const prevBtn = document.createElement('button');
@@ -292,6 +309,7 @@ def generate_index():
 
             let startPage = Math.max(1, currentPage - 2);
             let endPage = Math.min(totalPages, currentPage + 2);
+            
             if (startPage > 1) {{
                 const firstPage = document.createElement('button');
                 firstPage.className = 'page-btn';
@@ -300,6 +318,7 @@ def generate_index():
                 paginationContainer.appendChild(firstPage);
                 if (startPage > 2) paginationContainer.appendChild(document.createTextNode('...'));
             }}
+
             for (let i = startPage; i <= endPage; i++) {{
                 const btn = document.createElement('button');
                 btn.className = `page-btn ${{i === currentPage ? 'active' : ''}}`;
@@ -307,6 +326,7 @@ def generate_index():
                 btn.onclick = () => showPage(i);
                 paginationContainer.appendChild(btn);
             }}
+
             if (endPage < totalPages) {{
                 if (endPage < totalPages - 1) paginationContainer.appendChild(document.createTextNode('...'));
                 const lastPage = document.createElement('button');
@@ -315,6 +335,7 @@ def generate_index():
                 lastPage.onclick = () => showPage(totalPages);
                 paginationContainer.appendChild(lastPage);
             }}
+
             const nextBtn = document.createElement('button');
             nextBtn.className = 'page-btn';
             nextBtn.innerHTML = '&raquo;';
@@ -326,6 +347,7 @@ def generate_index():
         function filterList() {{
             const input = document.getElementById('searchInput');
             const filter = input.value.toUpperCase();
+            
             if (filter === "") {{
                 paginationContainer.style.display = "flex";
                 showPage(1);
@@ -333,10 +355,15 @@ def generate_index():
                 paginationContainer.style.display = "none";
                 allItems.forEach(item => {{
                     const text = item.textContent || item.innerText;
-                    if (text.toUpperCase().indexOf(filter) > -1) {{ item.style.display = ""; }} else {{ item.style.display = "none"; }}
+                    if (text.toUpperCase().indexOf(filter) > -1) {{
+                        item.style.display = "";
+                    }} else {{
+                        item.style.display = "none";
+                    }}
                 }});
             }}
         }}
+
         showPage(1);
         </script>
     </body>
@@ -491,9 +518,10 @@ def process_emails():
                             .header {{ position: fixed; top: 0; left: 0; right: 0; height: 60px; background: white; border-bottom: 1px solid #ddd; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }}
                             .title {{ font-size: 16px; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 20px; }}
                             .controls {{ display: flex; gap: 10px; flex-shrink: 0; }}
-                            .btn {{ padding: 6px 12px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 5px; transition: all 0.2s; }}
+                            .btn {{ padding: 6px 12px; border: 1px solid #ccc; background: #f9f9f9; border-radius: 6px; cursor: pointer; font-size: 13px; display: flex; align-items: center; gap: 6px; transition: all 0.2s; color: #333; }}
                             .btn:hover {{ background: #eee; }}
                             .btn.active {{ background: #0070f3; color: white; border-color: #0070f3; }}
+                            .btn svg {{ display: block; }}
                             
                             /* Main Container */
                             .main-view {{ margin-top: 60px; height: calc(100vh - 60px); display: flex; justify-content: center; align-items: center; background: #eef2f5; overflow: hidden; }}
@@ -544,9 +572,9 @@ def process_emails():
                         <header class="header">
                             <div class="title">{subject}</div>
                             <div class="controls">
-                                <button class="btn" onclick="toggleLinks()" id="btn-links">🔗 Liens ({nb_links})</button>
-                                <button class="btn" onclick="toggleMobile()" id="btn-mobile">📱 Mobile</button>
-                                <button class="btn" onclick="toggleDark()" id="btn-dark">🌙 Sombre</button>
+                                <button class="btn" onclick="toggleLinks()" id="btn-links"><span>{ICON_LINK}</span>&nbsp;Liens ({nb_links})</button>
+                                <button class="btn" onclick="toggleMobile()" id="btn-mobile"><span>{ICON_MOBILE}</span>&nbsp;Mobile</button>
+                                <button class="btn" onclick="toggleDark()" id="btn-dark"><span>{ICON_MOON}</span>&nbsp;Sombre</button>
                             </div>
                         </header>
                         
