@@ -511,6 +511,15 @@ def process_emails():
                             img_counter += 1
                         except: pass
 
+                    # WRAPPING (Pour centrage global)
+                    # On enveloppe tout le contenu du body dans une div conteneur pour aider le CSS
+                    if soup.body:
+                        inner_html = "".join([str(x) for x in soup.body.contents])
+                        soup.body.clear()
+                        wrapper = soup.new_tag("div", id="email-container")
+                        wrapper.append(BeautifulSoup(inner_html, "html.parser"))
+                        soup.body.append(wrapper)
+
                     # VIEWER
                     safe_html = json.dumps(str(soup))
                     nb_links = len(links)
@@ -526,7 +535,7 @@ def process_emails():
                         <meta name="archiving_date" content="{datetime.datetime.now().strftime('%Y-%m-%d')}">
                         <title>{subject}</title>
                         <style>
-                            body {{ margin: 0; padding: 0; background: #eef2f5; font-family: system-ui, sans-serif; overflow: hidden; }}
+                            body {{ margin: 0; padding: 0; background: #eef2f5; font-family: Roboto, Helvetica, Arial, sans-serif; overflow: hidden; }}
                             
                             .header {{ position: fixed; top: 0; left: 0; right: 0; height: 60px; background: white; border-bottom: 1px solid #ddd; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.02); }}
                             .title {{ font-size: 16px; font-weight: 600; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-right: 20px; }}
@@ -536,26 +545,23 @@ def process_emails():
                             .btn.active {{ background: #0070f3; color: white; border-color: #0070f3; }}
                             .btn svg {{ display: block; }}
                             
-                            .main-view {{ margin-top: 60px; height: calc(100vh - 60px); display: flex; justify-content: center; align-items: center; background: #eef2f5; overflow: hidden; }}
+                            .main-view {{ margin-top: 60px; height: calc(100vh - 60px); display: flex; justify-content: center; align-items: flex-start; background: #eef2f5; overflow: hidden; padding-top: 20px; }}
                             
-                            /* STYLE DU CONTENEUR DESKTOP */
+                            /* STYLE DU CONTENEUR */
                             .iframe-wrapper {{ 
-                                width: 1200px; max-width: 95%; height: 90%;
-                                transition: all 0.3s ease; 
-                                background: white; box-shadow: 0 5px 30px rgba(0,0,0,0.1); border-radius: 8px;
+                                width: 1000px; max-width: 95%; height: 90%;
+                                transition: width 0.3s ease; 
+                                background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 4px;
                             }}
                             
                             iframe {{ width: 100%; height: 100%; border: none; display: block; border-radius: inherit; }}
                             
-                            /* STYLE MOBILE : Ratio et dimensions fixes type iPhone X */
+                            /* STYLE MOBILE */
                             body.mobile-mode .iframe-wrapper {{ 
-                                width: 375px;
-                                height: 812px; 
-                                max-height: 90vh; /* Pour ne pas dépasser sur les petits écrans */
-                                max-width: 100%;
-                                border-radius: 0; /* Suppression des coins arrondis comme demandé */
+                                width: 375px; height: 812px; 
+                                max-height: 85vh; 
                                 border: none; 
-                                box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+                                box-shadow: 0 10px 40px rgba(0,0,0,0.15);
                             }}
                             
                             .sidebar {{ position: fixed; top: 60px; right: -350px; width: 350px; height: calc(100vh - 60px); background: white; border-left: 1px solid #ddd; transition: right 0.3s; overflow-y: auto; z-index: 90; padding: 20px; box-sizing: border-box; }}
@@ -607,54 +613,55 @@ def process_emails():
                             frame.contentDocument.write(emailContent);
                             frame.contentDocument.close();
                             
-                            // --- CSS INJECTÉ DANS L'IFRAME ---
+                            // --- GMAIL-LIKE CSS INJECTION ---
                             const style = frame.contentDocument.createElement('style');
                             style.textContent = `
-                                * {{ box-sizing: border-box !important; }}
-
-                                /* CACHER LA SCROLLBAR mais garder le scroll */
-                                html {{ scrollbar-width: none; }} /* Firefox */
-                                body::-webkit-scrollbar {{ display: none; }} /* Chrome/Safari */
+                                /* 1. RESET MINIMALISTE */
+                                html {{ scrollbar-width: none; }} 
+                                body::-webkit-scrollbar {{ display: none; }}
                                 
-                                /* CORRECTION DESKTOP : Contrainte stricte */
                                 body {{ 
-                                    margin: 0 auto !important; 
-                                    padding: 10px !important;
-                                    width: 100% !important;
-                                    max-width: 800px !important; /* Force la largeur max du contenu texte */
+                                    margin: 0 !important; 
+                                    padding: 0 !important;
                                     background-color: white; 
-                                    font-family: sans-serif;
-                                    overflow-x: hidden; /* Coupe ce qui dépasse horizontalement */
+                                    font-family: Roboto, Helvetica, Arial, sans-serif; /* Police Gmail */
+                                    color: #222;
+                                    line-height: 1.5;
                                 }}
                                 
-                                /* Force TOUS les éléments à ne pas dépasser */
-                                div, table, p, span, pre, code {{ 
-                                    max-width: 100% !important;
+                                /* 2. LE CONTENEUR PRINCIPAL */
+                                /* C'est lui qui gère le centrage et la largeur max, pas le body */
+                                #email-container {{
+                                    width: 100%;
+                                    max-width: 800px; /* Largeur de lecture standard */
+                                    margin: 0 auto;   /* Centrage horizontal */
+                                    padding: 20px 10px; /* Un peu d'air */
                                 }}
 
-                                table, tbody, tr, td {{ 
-                                    height: auto !important; 
+                                /* 3. PROTECTION DU CONTENU (Non-Destructif) */
+                                /* On ne force PAS width: 100% sur les tables, car ça casse les layouts fixes */
+                                table {{
+                                    max-width: 100% !important; 
+                                    border-spacing: 0;
+                                    border-collapse: collapse;
                                 }}
                                 
-                                /* Permet le redimensionnement fluide */
-                                table {{ min-width: 0 !important; }}
-                                td {{ min-width: 0 !important; }}
-
+                                /* On ne touche PAS au padding des td pour préserver les boutons */
+                                
+                                /* Images fluides mais pas étirées */
                                 img {{ 
                                     max-width: 100% !important; 
                                     height: auto !important; 
-                                    display: inline-block; 
+                                    display: block; 
+                                    border: 0;
                                 }}
 
-                                /* CÉSURE VIOLENTE pour les URL ou mots longs qui dépassent */
-                                p, h1, h2, h3, h4, span, div, td, a, li {{
-                                    word-break: break-word !important; 
-                                    overflow-wrap: break-word !important;
-                                    white-space: normal !important;
-                                    max-width: 100% !important;
+                                /* Césure de sécurité uniquement */
+                                a, .link-text {{ 
+                                    word-break: break-all; 
                                 }}
-
-                                /* DARK MODE */
+                                
+                                /* DARK MODE (Inversion intelligente) */
                                 html.dark-mode-internal {{ filter: invert(1) hue-rotate(180deg); }}
                                 html.dark-mode-internal img, 
                                 html.dark-mode-internal video, 
