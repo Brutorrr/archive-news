@@ -245,7 +245,7 @@ def generate_index():
             </div>
             <input type="text" id="searchInput" onkeyup="filterList()" placeholder="Rechercher par titre, expéditeur ou date...">
             <ul id="newsList">
-                {{links_html}}
+                {links_html}
             </ul>
             <div id="pagination" class="pagination"></div>
             <footer>
