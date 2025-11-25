@@ -17,54 +17,42 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Call Gemini API
+      - name: Call Gemini 1.5 Pro API
         id: gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
         run: |
-          # 1. Construction PROPRE du JSON
+          # 1. Construction du JSON
           jq -n \
             --arg title "$ISSUE_TITLE" \
             --arg body "$ISSUE_BODY" \
             '{
               contents: [{
                 parts: [{
-                  text: ("Tu es un expert technique. Analyse cette issue GitHub : " + $title + ".\n\nDescription :\n" + $body + "\n\nDonne une réponse concise : 1. Cause probable, 2. Solution technique suggérée.")
+                  text: ("Tu es un expert Senior Developer. Analyse cette issue GitHub : " + $title + ".\n\nDescription :\n" + $body + "\n\n1. Analyse la cause potentielle (Front-end/CSS/Rendering).\n2. Propose une solution technique précise.\n3. Si pertinent, donne un exemple de code.")
                 }]
               }]
             }' > payload.json
 
-          # 2. Appel API avec le modèle "gemini-1.5-flash-latest"
-          # Changement ici : ajout de "-latest" pour forcer la version
+          # 2. Appel API vers GEMINI 1.5 PRO
+          # Note le changement dans l'URL : gemini-1.5-pro-latest
           curl -s \
             -H "Content-Type: application/json" \
             -d @payload.json \
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=$GEMINI_API_KEY" > response.json
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-pro-latest:generateContent?key=$GEMINI_API_KEY" > response.json
           
-          # 3. DEBUG
-          echo "--- DEBUG: RAW API RESPONSE ---"
-          cat response.json
-          echo "-------------------------------"
-
-          # 4. Extraction de la réponse
+          # 3. Extraction de la réponse
           ANSWER=$(cat response.json | jq -r '.candidates[0].content.parts[0].text')
           
-          # Si ça échoue encore avec Flash, on tente un repli (fallback) rapide (optionnel mais robuste)
-          if [ "$ANSWER" == "null" ]; then
-             echo "Tentative de repli sur gemini-pro..."
-             curl -s -H "Content-Type: application/json" -d @payload.json "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$GEMINI_API_KEY" > response_retry.json
-             ANSWER=$(cat response_retry.json | jq -r '.candidates[0].content.parts[0].text')
-          fi
-
-          # Gestion erreur finale
+          # Gestion d'erreur si le modèle n'est pas trouvé ou erreur serveur
           if [ "$ANSWER" == "null" ]; then
             ERROR_MSG=$(cat response.json | jq -r '.error.message // "Erreur inconnue"')
-            ANSWER="❌ **Erreur API Gemini :** Impossible de joindre le modèle. Détail : $ERROR_MSG"
+            ANSWER="❌ **Erreur Gemini Pro :** $ERROR_MSG"
           fi
 
-          # 5. Sauvegarde
+          # 4. Sauvegarde environment
           echo "ANSWER<<EOF" >> $GITHUB_ENV
           echo "$ANSWER" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -75,6 +63,6 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           AI_RESPONSE: ${{ env.ANSWER }}
         run: |
-          gh issue comment "$ISSUE_NUMBER" --body "🤖 **Analyse Gemini :**
+          gh issue comment "$ISSUE_NUMBER" --body "🧠 **Analyse Gemini 1.5 Pro :**
           
           $AI_RESPONSE"
