@@ -24,25 +24,26 @@ jobs:
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
         run: |
-          # 1. Construction PROPRE du JSON avec jq (évite les erreurs de guillemets)
+          # 1. Construction PROPRE du JSON
           jq -n \
             --arg title "$ISSUE_TITLE" \
             --arg body "$ISSUE_BODY" \
             '{
               contents: [{
                 parts: [{
-                  text: ("Tu es un expert technique assistant sur GitHub. Voici une issue intitulée : " + $title + ".\n\nContenu de l issue :\n" + $body + "\n\nPeux-tu proposer une solution, des pistes de débogage ou une réponse utile ?")
+                  text: ("Tu es un expert technique. Analyse cette issue GitHub : " + $title + ".\n\nDescription :\n" + $body + "\n\nDonne une réponse concise : 1. Cause probable, 2. Solution technique suggérée.")
                 }]
               }]
             }' > payload.json
 
-          # 2. Appel API et sauvegarde de la réponse brute dans un fichier
+          # 2. Appel API avec le modèle "gemini-1.5-flash-latest"
+          # Changement ici : ajout de "-latest" pour forcer la version
           curl -s \
             -H "Content-Type: application/json" \
             -d @payload.json \
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY" > response.json
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=$GEMINI_API_KEY" > response.json
           
-          # 3. DEBUG : Afficher la réponse brute dans les logs GitHub (pour comprendre l'erreur si null)
+          # 3. DEBUG
           echo "--- DEBUG: RAW API RESPONSE ---"
           cat response.json
           echo "-------------------------------"
@@ -50,13 +51,20 @@ jobs:
           # 4. Extraction de la réponse
           ANSWER=$(cat response.json | jq -r '.candidates[0].content.parts[0].text')
           
-          # Gestion du cas où ANSWER est null (erreur API)
+          # Si ça échoue encore avec Flash, on tente un repli (fallback) rapide (optionnel mais robuste)
           if [ "$ANSWER" == "null" ]; then
-            ERROR_MSG=$(cat response.json | jq -r '.error.message // "Erreur inconnue"')
-            ANSWER="❌ **Erreur API Gemini :** Je n'ai pas pu générer de réponse. Détail : $ERROR_MSG"
+             echo "Tentative de repli sur gemini-pro..."
+             curl -s -H "Content-Type: application/json" -d @payload.json "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=$GEMINI_API_KEY" > response_retry.json
+             ANSWER=$(cat response_retry.json | jq -r '.candidates[0].content.parts[0].text')
           fi
 
-          # 5. Sauvegarde pour l'étape suivante
+          # Gestion erreur finale
+          if [ "$ANSWER" == "null" ]; then
+            ERROR_MSG=$(cat response.json | jq -r '.error.message // "Erreur inconnue"')
+            ANSWER="❌ **Erreur API Gemini :** Impossible de joindre le modèle. Détail : $ERROR_MSG"
+          fi
+
+          # 5. Sauvegarde
           echo "ANSWER<<EOF" >> $GITHUB_ENV
           echo "$ANSWER" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
@@ -67,6 +75,6 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           AI_RESPONSE: ${{ env.ANSWER }}
         run: |
-          gh issue comment "$ISSUE_NUMBER" --body "🤖 **Réponse de Gemini :**
+          gh issue comment "$ISSUE_NUMBER" --body "🤖 **Analyse Gemini :**
           
           $AI_RESPONSE"
