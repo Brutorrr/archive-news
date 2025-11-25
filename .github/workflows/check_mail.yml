@@ -1,4 +1,4 @@
-name: Gemini Debugger
+name: Gemini Brute Force Responder
 
 on:
   issues:
@@ -9,7 +9,7 @@ permissions:
   issues: write
 
 jobs:
-  debug_and_respond:
+  try_all_models:
     if: github.event.label.name == 'question-gemini'
     runs-on: ubuntu-latest
 
@@ -17,68 +17,84 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔍 STEP 1 - LIST AVAILABLE MODELS
-        id: list_models
-        env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: |
-          echo ">>> Interrogation de l'API pour connaître les modèles disponibles..."
-          
-          curl -s "https://generativelanguage.googleapis.com/v1beta/models?key=$GEMINI_API_KEY" > models_list.json
-          
-          echo ">>> VOICI LA LISTE DES MODÈLES DISPONIBLES POUR TA CLÉ :"
-          cat models_list.json
-          echo ">>> FIN DE LA LISTE"
-
-      - name: 🧪 STEP 2 - TEST GENERATION (Gemini 1.5 Flash)
-        id: test_gen
+      - name: 🔄 Try Multiple Models Loop
+        id: gemini
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           ISSUE_BODY: ${{ github.event.issue.body }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
         run: |
-          # Construction du JSON
+          # Préparation du JSON (Prompt)
           jq -n \
             --arg title "$ISSUE_TITLE" \
             --arg body "$ISSUE_BODY" \
             '{
               contents: [{
                 parts: [{
-                  text: ("Analisis technique de l issue : " + $title + ". " + $body)
+                  text: ("Tu es un expert développeur. Analyse cette issue GitHub : " + $title + ".\n\nDescription :\n" + $body + "\n\nDonne une solution technique concrète et concise.")
                 }]
               }]
             }' > payload.json
 
-          echo ">>> Envoi de la requête au modèle 'models/gemini-1.5-flash'..."
+          # Liste des modèles à tester par ordre de priorité
+          MODELS=("gemini-1.5-flash-002" "gemini-1.5-flash-001" "gemini-1.5-flash" "gemini-1.5-pro" "gemini-pro")
+          
+          SUCCESS=0
+          FINAL_ANSWER=""
+          USED_MODEL=""
 
-          # On utilise le nom "models/gemini-1.5-flash" qui est souvent requis formellement
-          curl -s \
-            -H "Content-Type: application/json" \
-            -d @payload.json \
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=$GEMINI_API_KEY" > response.json
-          
-          echo ">>> RÉPONSE BRUTE DE L'API :"
-          cat response.json
-          
-          # Extraction propre
-          ANSWER=$(cat response.json | jq -r '.candidates[0].content.parts[0].text')
-          
-          # Gestion d'erreur pour le commentaire
-          if [ "$ANSWER" == "null" ]; then
-            ERROR_MSG=$(cat response.json | jq -r '.error.message // "Erreur inconnue"')
-            ANSWER="❌ **ECHEC DEBUG** : $ERROR_MSG"
+          echo "🚀 Démarrage des tentatives..."
+
+          for model in "${MODELS[@]}"; do
+            echo "---------------------------------------------------"
+            echo "👉 Tentative avec le modèle : $model"
+            
+            # Appel API
+            curl -s \
+              -H "Content-Type: application/json" \
+              -d @payload.json \
+              "https://generativelanguage.googleapis.com/v1beta/models/$model:generateContent?key=$GEMINI_API_KEY" > response.json
+            
+            # Vérification si erreur
+            ERROR_CHECK=$(cat response.json | jq -r '.error.message // empty')
+            
+            if [ -z "$ERROR_CHECK" ]; then
+               # Pas d'erreur détectée dans le JSON
+               CANDIDATE=$(cat response.json | jq -r '.candidates[0].content.parts[0].text')
+               
+               if [ "$CANDIDATE" != "null" ] && [ "$CANDIDATE" != "" ]; then
+                  echo "✅ SUCCÈS avec $model !"
+                  FINAL_ANSWER="$CANDIDATE"
+                  USED_MODEL="$model"
+                  SUCCESS=1
+                  break # On sort de la boucle, on a trouvé !
+               else
+                  echo "⚠️ Réponse vide reçue de $model."
+               fi
+            else
+               echo "❌ Échec avec $model. Raison : $ERROR_CHECK"
+            fi
+          done
+
+          # Si après tout ça, rien ne marche...
+          if [ $SUCCESS -eq 0 ]; then
+             FINAL_ANSWER="❌ **Échec total** : J'ai essayé 5 modèles différents (${MODELS[*]}) et aucun n'a fonctionné. Vérifie tes quotas API Google."
+             USED_MODEL="Aucun"
           fi
-          
-          echo "ANSWER<<EOF" >> $GITHUB_ENV
-          echo "$ANSWER" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
 
-      - name: Post Result
+          # Export pour l'étape suivante
+          echo "ANSWER<<EOF" >> $GITHUB_ENV
+          echo "$FINAL_ANSWER" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+          echo "USED_MODEL=$USED_MODEL" >> $GITHUB_ENV
+
+      - name: Post Comment
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           AI_RESPONSE: ${{ env.ANSWER }}
+          MODEL_NAME: ${{ env.USED_MODEL }}
         run: |
-          gh issue comment "$ISSUE_NUMBER" --body "🛠️ **Résultat du Debug :**
+          gh issue comment "$ISSUE_NUMBER" --body "🤖 **Réponse de Gemini** (via $MODEL_NAME) :
           
           $AI_RESPONSE"
