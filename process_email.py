@@ -80,6 +80,39 @@ def get_decoded_email_subject(msg):
             full_subject += str(part)
     return full_subject.strip()
 
+def clean_layout_constraints(soup):
+    """
+    Nettoie les attributs 'width' et 'height' fixes qui empêchent le responsive,
+    mais conserve les petites dimensions (ex: icônes, spacers).
+    """
+    # 1. Traitement des Tableaux
+    for table in soup.find_all("table"):
+        # On retire width="600" etc. mais on garde width="100%"
+        if table.has_attr("width"):
+            try:
+                w = table["width"]
+                if "%" not in str(w) and int(str(w).replace("px", "")) > 300:
+                    del table["width"]
+                    # On ajoute une classe pour aider le CSS
+                    table["class"] = table.get("class", []) + ["responsive-table"]
+                    # On force le style inline pour être sûr
+                    if table.has_attr("style"):
+                        table["style"] = re.sub(r'width\s*:\s*[\d\.]+(px|em|pt)', 'width: 100%', table["style"], flags=re.IGNORECASE)
+            except:
+                del table["width"]
+    
+    # 2. Traitement des Images (pour éviter les débordements)
+    for img in soup.find_all("img"):
+        if img.has_attr("width"):
+            try:
+                # Si l'image est très large, on supprime la contrainte dure
+                if int(str(img["width"]).replace("px", "")) > 300:
+                    del img["width"]
+                    if img.has_attr("height"): del img["height"]
+            except: pass
+            
+    return soup
+
 def get_page_metadata(filepath):
     title = "Sans titre"
     date_str = None
@@ -464,9 +497,11 @@ def process_emails():
                     # PARSING
                     soup = BeautifulSoup(html_content, "html.parser")
                     
+                    # NETTOYAGE PRELIMINAIRE
                     for s in soup(["script", "iframe", "object", "meta"]): 
                         s.extract()
 
+                    # GESTION DES BLOCS DE TRANSFERT GMAIL
                     for div in soup.find_all("div"):
                         if any(k in div.get_text() for k in ["Forwarded message", "Message transféré"]) and "-----" in div.get_text():
                             new_body = soup.new_tag("body")
@@ -475,6 +510,12 @@ def process_emails():
                                 soup.body.replace_with(new_body)
                             break
                     
+                    # ----------------------------------------------------
+                    # NOUVELLE ETAPE : Nettoyage Layout pour Mobile
+                    # ----------------------------------------------------
+                    soup = clean_layout_constraints(soup)
+                    # ----------------------------------------------------
+
                     links = []
                     for a in soup.find_all('a', href=True):
                         txt = a.get_text(strip=True) or "[Image/Vide]"
@@ -610,20 +651,23 @@ def process_emails():
                             frame.contentDocument.open();
                             frame.contentDocument.write(emailContent);
                             
+                            // 1. INJECTION DU VIEWPORT
                             const meta = frame.contentDocument.createElement('meta');
                             meta.name = 'viewport';
                             meta.content = 'width=device-width, initial-scale=1.0';
                             frame.contentDocument.head.appendChild(meta);
                             
+                            // 2. INJECTION BASE TARGET
                             const base = frame.contentDocument.createElement('base');
                             base.target = '_blank';
                             frame.contentDocument.head.appendChild(base);
 
                             frame.contentDocument.close();
                             
+                            // --- CSS INTELLIGENT ---
                             const style = frame.contentDocument.createElement('style');
                             style.textContent = `
-                                /* SCROLLBAR CACHÉE (Mais scroll actif) */
+                                /* --- 1. RESET GLOBAL --- */
                                 html {{ 
                                     -ms-overflow-style: none; 
                                     scrollbar-width: none; 
@@ -637,8 +681,9 @@ def process_emails():
                                     font-family: Roboto, Helvetica, Arial, sans-serif;
                                     color: #222;
                                     line-height: 1.5;
-                                    overflow-wrap: break-word;
-                                    overflow-x: auto !important; /* IMPORTANT: Permet le scroll horizontal si ça dépasse */
+                                    overflow-wrap: break-word; 
+                                    word-wrap: break-word;
+                                    word-break: break-word;
                                 }}
                                 
                                 #email-container {{
@@ -649,45 +694,68 @@ def process_emails():
                                     box-sizing: border-box; 
                                 }}
 
-                                /* FORCE RESPONSIVE */
-                                table, tbody, tr, td, div {{
-                                    max-width: 100% !important;
-                                    box-sizing: border-box;
+                                table {{
+                                    max-width: 100% !important; 
+                                    border-spacing: 0;
+                                    border-collapse: collapse;
                                 }}
-                                /* ECRASE LES LARGEURS FIXES DES TABLES */
-                                table[width], td[width] {{
-                                    min-width: 0 !important; /* Permet aux cellules de rétrécir */
-                                    /* width: 100% !important; <-- Parfois trop agressif, on préfère max-width */
-                                    height: auto !important;
-                                }}
-
+                                
                                 img {{ 
                                     max-width: 100% !important; 
                                     height: auto !important; 
-                                    vertical-align: middle;
+                                    vertical-align: middle; 
                                     border: 0;
                                 }}
 
+                                /* Si l'email force explicitement le bloc, on centre l'image */
                                 img[style*="display: block"], img[style*="display:block"] {{
                                     margin-left: auto !important;
                                     margin-right: auto !important;
                                 }}
 
                                 a, .link-text {{ 
-                                    word-break: break-all; 
                                     color: #1a0dab; 
                                 }}
                                 
+                                /* --- 2. DARK MODE --- */
                                 html.dark-mode-internal {{ filter: invert(1) hue-rotate(180deg); }}
                                 html.dark-mode-internal img, 
                                 html.dark-mode-internal video, 
                                 html.dark-mode-internal [style*="background-image"] {{ filter: invert(1) hue-rotate(180deg); }}
+
+                                /* --- 3. FIX MOBILE SPECIFIQUE (Le Correctif) --- */
+                                /* Ces règles ne s'appliquent que si le parent (viewer) a activé le mode mobile */
+                                @media screen and (max-width: 600px) {{
+                                    table, tbody, tr, td {{
+                                        width: 100% !important;
+                                        min-width: 0 !important;
+                                        box-sizing: border-box !important;
+                                    }}
+                                    
+                                    /* Pour éviter que des conteneurs fixes ne débordent */
+                                    div[style*="width"] {{
+                                        width: 100% !important;
+                                        max-width: 100% !important;
+                                    }}
+                                    
+                                    img {{
+                                        width: auto !important; /* Laisse l'image respirer */
+                                        max-width: 100% !important;
+                                    }}
+                                }}
                             `;
                             frame.contentDocument.head.appendChild(style);
 
+                            // Communication Parent <-> Iframe pour le mode mobile
                             function toggleMobile() {{
                                 document.body.classList.toggle('mobile-mode');
                                 document.getElementById('btn-mobile').classList.toggle('active');
+                                
+                                // On force un redessin dans l'iframe si nécessaire (trick pour certains vieux moteurs)
+                                // Mais surtout, on simule une petite largeur via le viewport pour que les Media Queries CSS s'activent
+                                if(document.body.classList.contains('mobile-mode')) {{
+                                    // Rien de spécial côté JS, c'est le redimensionnement de l'iframe qui déclenche le media query
+                                }}
                             }}
                             
                             function toggleDark() {{
