@@ -80,39 +80,6 @@ def get_decoded_email_subject(msg):
             full_subject += str(part)
     return full_subject.strip()
 
-def clean_layout_constraints(soup):
-    """
-    Nettoie les attributs 'width' et 'height' fixes qui empêchent le responsive,
-    mais conserve les petites dimensions (ex: icônes, spacers).
-    """
-    # 1. Traitement des Tableaux
-    for table in soup.find_all("table"):
-        # On retire width="600" etc. mais on garde width="100%"
-        if table.has_attr("width"):
-            try:
-                w = table["width"]
-                if "%" not in str(w) and int(str(w).replace("px", "")) > 300:
-                    del table["width"]
-                    # On ajoute une classe pour aider le CSS
-                    table["class"] = table.get("class", []) + ["responsive-table"]
-                    # On force le style inline pour être sûr
-                    if table.has_attr("style"):
-                        table["style"] = re.sub(r'width\s*:\s*[\d\.]+(px|em|pt)', 'width: 100%', table["style"], flags=re.IGNORECASE)
-            except:
-                del table["width"]
-    
-    # 2. Traitement des Images (pour éviter les débordements)
-    for img in soup.find_all("img"):
-        if img.has_attr("width"):
-            try:
-                # Si l'image est très large, on supprime la contrainte dure
-                if int(str(img["width"]).replace("px", "")) > 300:
-                    del img["width"]
-                    if img.has_attr("height"): del img["height"]
-            except: pass
-            
-    return soup
-
 def get_page_metadata(filepath):
     title = "Sans titre"
     date_str = None
@@ -497,7 +464,7 @@ def process_emails():
                     # PARSING
                     soup = BeautifulSoup(html_content, "html.parser")
                     
-                    # NETTOYAGE PRELIMINAIRE
+                    # NETTOYAGE LEGER (Uniquement scripts/meta dangereux)
                     for s in soup(["script", "iframe", "object", "meta"]): 
                         s.extract()
 
@@ -510,11 +477,8 @@ def process_emails():
                                 soup.body.replace_with(new_body)
                             break
                     
-                    # ----------------------------------------------------
-                    # NOUVELLE ETAPE : Nettoyage Layout pour Mobile
-                    # ----------------------------------------------------
-                    soup = clean_layout_constraints(soup)
-                    # ----------------------------------------------------
+                    # --- NOTE: On NE modifie PLUS les attributs width/height du HTML ici ---
+                    # --- On laisse le CSS gérer l'adaptation mobile ---
 
                     links = []
                     for a in soup.find_all('a', href=True):
@@ -523,7 +487,7 @@ def process_emails():
                     
                     links_html = "".join([f'<li><a href="{l["url"]}" target="_blank"><div class="link-txt">{l["txt"]}</div><div class="link-url">{l["url"]}</div></a></li>' for l in links])
 
-                    # IMAGES
+                    # IMAGES LOCALES
                     img_counter = 0
                     for img in soup.find_all("img"):
                         src = img.get("src")
@@ -552,14 +516,10 @@ def process_emails():
                             img_counter += 1
                         except: pass
 
-                    # WRAPPING (Pour centrage global mais non-destructif)
-                    if soup.body:
-                        wrapper = soup.new_tag("div", id="email-container")
-                        for content in list(soup.body.contents):
-                            wrapper.append(content.extract())
-                        soup.body.append(wrapper)
+                    # --- NOTE: ON NE WRAP PLUS LE CONTENU DANS UN DIV ---
+                    # Cela préserve les attributs du body original (bgcolor, align, etc.)
 
-                    # VIEWER
+                    # VIEWER GENERATION
                     safe_html = json.dumps(str(soup))
                     nb_links = len(links)
                     
@@ -595,7 +555,7 @@ def process_emails():
                             
                             iframe {{ width: 100%; height: 100%; border: none; display: block; border-radius: inherit; }}
                             
-                            /* STYLE MOBILE */
+                            /* STYLE MOBILE (C'est la fenêtre qui change, pas l'email à l'intérieur pour l'instant) */
                             body.mobile-mode .iframe-wrapper {{ 
                                 width: 375px; height: 812px; 
                                 max-height: 85vh; 
@@ -676,32 +636,21 @@ def process_emails():
                                 body::-webkit-scrollbar {{ display: none; width: 0; }}
                                 
                                 body {{ 
-                                    margin: 0 !important; 
-                                    padding: 0 !important;
+                                    margin: 0; 
+                                    padding: 0;
                                     font-family: Roboto, Helvetica, Arial, sans-serif;
                                     color: #222;
                                     line-height: 1.5;
                                     overflow-wrap: break-word; 
-                                    word-wrap: break-word;
-                                    word-break: break-word;
+                                    /* background-color: transparent !important; /* Laisse voir le fond blanc du container */
                                 }}
                                 
-                                #email-container {{
-                                    width: 100%;
-                                    max-width: 800px;
-                                    margin: 0 auto;
-                                    padding: 20px 10px;
-                                    box-sizing: border-box; 
-                                }}
-
                                 table {{
-                                    max-width: 100% !important; 
                                     border-spacing: 0;
                                     border-collapse: collapse;
                                 }}
                                 
                                 img {{ 
-                                    max-width: 100% !important; 
                                     height: auto !important; 
                                     vertical-align: middle; 
                                     border: 0;
@@ -723,13 +672,14 @@ def process_emails():
                                 html.dark-mode-internal video, 
                                 html.dark-mode-internal [style*="background-image"] {{ filter: invert(1) hue-rotate(180deg); }}
 
-                                /* --- 3. FIX MOBILE SPECIFIQUE (Le Correctif) --- */
+                                /* --- 3. FIX MOBILE SPECIFIQUE --- */
                                 /* Ces règles ne s'appliquent que si le parent (viewer) a activé le mode mobile */
                                 @media screen and (max-width: 600px) {{
                                     table, tbody, tr, td {{
                                         width: 100% !important;
                                         min-width: 0 !important;
                                         box-sizing: border-box !important;
+                                        height: auto !important;
                                     }}
                                     
                                     /* Pour éviter que des conteneurs fixes ne débordent */
@@ -739,7 +689,7 @@ def process_emails():
                                     }}
                                     
                                     img {{
-                                        width: auto !important; /* Laisse l'image respirer */
+                                        width: auto !important;
                                         max-width: 100% !important;
                                     }}
                                 }}
@@ -750,12 +700,6 @@ def process_emails():
                             function toggleMobile() {{
                                 document.body.classList.toggle('mobile-mode');
                                 document.getElementById('btn-mobile').classList.toggle('active');
-                                
-                                // On force un redessin dans l'iframe si nécessaire (trick pour certains vieux moteurs)
-                                // Mais surtout, on simule une petite largeur via le viewport pour que les Media Queries CSS s'activent
-                                if(document.body.classList.contains('mobile-mode')) {{
-                                    // Rien de spécial côté JS, c'est le redimensionnement de l'iframe qui déclenche le media query
-                                }}
                             }}
                             
                             function toggleDark() {{
