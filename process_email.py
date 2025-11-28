@@ -1,3 +1,5 @@
+--- START OF FILE process_email.py ---
+
 import imaplib
 import email
 from email.header import decode_header
@@ -32,6 +34,11 @@ ICON_LINK = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColo
 ICON_INFO = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
 ICON_CLOCK = '<svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>'
 ICON_LANG = '<svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>'
+ICON_TARGET = '<svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>'
+ICON_COPY = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>'
+ICON_CHECK = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="green" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+ICON_WARN = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="orange" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+ICON_ERROR = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="red" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>'
 
 # --- DICTIONNAIRE DE TRADUCTION ---
 TRANSLATIONS = {
@@ -41,18 +48,26 @@ TRANSLATIONS = {
         "btn_infos": "Infos",
         "btn_mobile": "Mobile",
         "btn_dark": "Dark",
+        "btn_highlight": "Highlight",
         "meta_section": "Metadata",
+        "pixel_section": "GetInside Tracking",
         "label_sent": "Sent Date",
         "label_archived": "Archived Date",
         "label_reading": "Reading Time",
         "label_preheader": "Preheader",
+        "label_pixel_status": "Status",
+        "label_pixel_url": "Pixel URL",
+        "status_ok": "Integrated (End of Body)",
+        "status_warn": "Found (Misplaced)",
+        "status_miss": "Not Found",
         "links_section": "Detected Links",
         "legal_summary": "Legal Notice",
         "legal_publisher": "Publisher",
         "legal_hosting": "Hosting",
         "legal_text": "This site is a personal archive.",
         "tooltip_sent": "Received Date",
-        "tooltip_archived": "Archived Date"
+        "tooltip_archived": "Archived Date",
+        "copy_msg": "Copied!"
     },
     "fr": {
         "page_title": "Archives Newsletters",
@@ -60,18 +75,26 @@ TRANSLATIONS = {
         "btn_infos": "Infos",
         "btn_mobile": "Mobile",
         "btn_dark": "Sombre",
+        "btn_highlight": "Surligner",
         "meta_section": "Métadonnées",
+        "pixel_section": "Tracking GetInside",
         "label_sent": "Date d'envoi",
         "label_archived": "Date d'archivage",
         "label_reading": "Temps de lecture",
         "label_preheader": "Pré-header",
+        "label_pixel_status": "Statut",
+        "label_pixel_url": "URL Pixel",
+        "status_ok": "Bien intégré (Fin du Body)",
+        "status_warn": "Trouvé (Mal placé)",
+        "status_miss": "Non trouvé",
         "links_section": "Liens détectés",
         "legal_summary": "Mentions Légales",
         "legal_publisher": "Éditeur",
         "legal_hosting": "Hébergement",
         "legal_text": "Ce site est une archive personnelle.",
         "tooltip_sent": "Date de réception",
-        "tooltip_archived": "Date d'archivage"
+        "tooltip_archived": "Date d'archivage",
+        "copy_msg": "Copié !"
     }
 }
 
@@ -84,27 +107,22 @@ function updateLanguage(lang) {{
     localStorage.setItem('lang', lang);
     const t = TRANSLATIONS[lang];
     
-    // Update simple text elements
     document.querySelectorAll('[data-i18n]').forEach(el => {{
         const key = el.getAttribute('data-i18n');
         if (t[key]) el.textContent = t[key];
     }});
     
-    // Update placeholders
     const searchInput = document.getElementById('searchInput');
     if (searchInput && t['search_placeholder']) searchInput.placeholder = t['search_placeholder'];
     
-    // Update tooltips (titles)
     document.querySelectorAll('[data-i18n-title]').forEach(el => {{
         const key = el.getAttribute('data-i18n-title');
         if (t[key]) el.title = t[key];
     }});
 
-    // Update button text content with icon preservation
     document.querySelectorAll('.btn[data-i18n-btn]').forEach(el => {{
         const key = el.getAttribute('data-i18n-btn');
         if (t[key]) {{
-            // Keep the SVG icon (first child) and update text node
             const icon = el.firstElementChild;
             el.innerHTML = ''; 
             el.appendChild(icon);
@@ -112,7 +130,6 @@ function updateLanguage(lang) {{
         }}
     }});
     
-    // Update Lang Button State
     const langBtn = document.getElementById('lang-toggle');
     if(langBtn) langBtn.innerHTML = `<span>{ICON_LANG}</span>&nbsp;${{lang === 'en' ? 'FR' : 'EN'}}`;
 }}
@@ -122,7 +139,6 @@ function toggleLanguage() {{
     updateLanguage(newLang);
 }}
 
-// Init
 updateLanguage(currentLang);
 """
 
@@ -263,7 +279,6 @@ def generate_index():
 
     links_html = ""
     for page in pages_data:
-        # Note: Pas de reading_time ici selon votre demande
         links_html += f'''
         <li class="news-item">
             <a href="{page['folder']}/index.html" class="item-link">
@@ -589,6 +604,35 @@ def process_emails():
                     # PARSING
                     soup = BeautifulSoup(html_content, "html.parser")
                     
+                    # --- DETECTION GETINSIDE PIXEL ---
+                    pixel_url = None
+                    pixel_status = "miss" # miss, warn, ok
+                    pixel_icon = ICON_ERROR
+                    pixel_status_key = "status_miss"
+
+                    # 1. Recherche du pixel
+                    pixel_img = None
+                    for img in soup.find_all("img"):
+                        src = img.get("src", "")
+                        if "api.getinside.media" in src:
+                            pixel_url = src
+                            pixel_img = img
+                            pixel_status = "warn" # trouvé mais potentiellement mal placé
+                            pixel_icon = ICON_WARN
+                            pixel_status_key = "status_warn"
+                            break
+                    
+                    # 2. Vérification Position (Approximation : doit être dans les derniers éléments du body)
+                    if pixel_img and soup.body:
+                        # On regarde si l'image est un des derniers enfants directs ou imbriqués du body
+                        # Méthode simple : vérifier si c'est la dernière balise img du document
+                        all_imgs = soup.find_all("img")
+                        if all_imgs and all_imgs[-1] == pixel_img:
+                            # C'est la dernière image, c'est bon signe.
+                            pixel_status = "ok"
+                            pixel_icon = ICON_CHECK
+                            pixel_status_key = "status_ok"
+
                     # Nettoyage léger
                     for s in soup(["script", "iframe", "object", "meta"]): 
                         s.extract()
@@ -617,12 +661,30 @@ def process_emails():
                         txt = a.get_text(strip=True) or "[Image/Vide]"
                         links.append({'txt': txt[:50] + "..." if len(txt)>50 else txt, 'url': a['href']})
                     
-                    links_html = "".join([f'<li><a href="{l["url"]}" target="_blank"><div class="link-txt">{l["txt"]}</div><div class="link-url">{l["url"]}</div></a></li>' for l in links])
+                    # Génération HTML des liens avec bouton Copier
+                    links_html = ""
+                    for l in links:
+                        links_html += f'''
+                        <li>
+                            <div class="link-row">
+                                <a href="{l["url"]}" target="_blank" class="link-data">
+                                    <div class="link-txt">{l["txt"]}</div>
+                                    <div class="link-url">{l["url"]}</div>
+                                </a>
+                                <button class="btn-copy" onclick="copyToClipboard('{l["url"]}')" title="Copy URL">
+                                    {ICON_COPY}
+                                </button>
+                            </div>
+                        </li>
+                        '''
 
                     # IMAGES LOCALES
                     img_counter = 0
                     for img in soup.find_all("img"):
                         src = img.get("src")
+                        # Ne pas télécharger le pixel de tracking
+                        if src and "api.getinside.media" in src: continue
+
                         if not src or src.startswith("data:") or src.startswith("cid:"): continue
                         try:
                             if src.startswith("//"): src = "https:" + src
@@ -653,6 +715,30 @@ def process_emails():
                     nb_links = len(links)
                     date_arch_str = datetime.datetime.now().strftime('%Y-%m-%d')
                     
+                    # Bloc Pixel HTML
+                    pixel_html_block = ""
+                    if pixel_url:
+                        pixel_html_block = f"""
+                        <div class="meta-item">
+                            <span class="meta-label" data-i18n="label_pixel_status">Status</span>
+                            <span class="status-badge {pixel_status}"><span class="icon-status">{pixel_icon}</span> <span data-i18n="{pixel_status_key}">Found</span></span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-label" data-i18n="label_pixel_url">Pixel URL</span>
+                            <div class="pixel-box">
+                                <div class="pixel-url">{pixel_url}</div>
+                                <button class="btn-copy" onclick="copyToClipboard('{pixel_url}')" title="Copy Pixel URL">{ICON_COPY}</button>
+                            </div>
+                        </div>
+                        """
+                    else:
+                         pixel_html_block = f"""
+                        <div class="meta-item">
+                            <span class="meta-label" data-i18n="label_pixel_status">Status</span>
+                            <span class="status-badge miss"><span class="icon-status">{pixel_icon}</span> <span data-i18n="{pixel_status_key}">Not Found</span></span>
+                        </div>
+                        """
+
                     viewer_content = f"""
                     <!DOCTYPE html>
                     <html lang="en">
@@ -706,12 +792,25 @@ def process_emails():
                             .meta-val {{ word-break: break-word; line-height: 1.4; }}
                             .preheader-box {{ background: #f8f9fa; padding: 10px; border-radius: 6px; border: 1px solid #eee; font-style: italic; color: #666; font-size: 12px; }}
 
+                            /* Pixel Tracking Styles */
+                            .status-badge {{ display: inline-flex; align-items: center; gap: 5px; font-weight: 500; }}
+                            .status-badge.ok {{ color: green; }}
+                            .status-badge.warn {{ color: orange; }}
+                            .status-badge.miss {{ color: red; }}
+                            .pixel-box {{ display: flex; align-items: center; background: #f8f9fa; border: 1px solid #eee; border-radius: 4px; overflow: hidden; }}
+                            .pixel-url {{ flex: 1; font-family: monospace; font-size: 11px; padding: 6px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: #666; }}
+                            
+                            /* Bouton Copie */
+                            .btn-copy {{ border: none; background: transparent; padding: 6px; cursor: pointer; color: #999; display: flex; align-items: center; justify-content: center; }}
+                            .btn-copy:hover {{ color: #0070f3; background: #eee; }}
+
                             /* Liste Liens */
                             .sidebar ul {{ list-style: none; padding: 0; margin: 0; }}
-                            .sidebar li {{ margin-bottom: 15px; word-break: break-all; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }}
-                            .sidebar a {{ text-decoration: none; color: inherit; font-size: 12px; }}
+                            .sidebar li {{ margin-bottom: 15px; border-bottom: 1px solid #f5f5f5; padding-bottom: 10px; }}
+                            .link-row {{ display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }}
+                            .link-data {{ text-decoration: none; color: inherit; font-size: 12px; flex: 1; min-width: 0; }}
                             .link-txt {{ font-weight: bold; color: #0070f3; margin-bottom: 4px; }}
-                            .link-url {{ color: #666; }}
+                            .link-url {{ color: #666; word-break: break-all; font-family: monospace; font-size: 11px; }}
                             
                             /* DARK MODE */
                             body.dark-mode .main-view {{ background: #121212; }}
@@ -731,8 +830,12 @@ def process_emails():
                             body.dark-mode .meta-label {{ color: #ccc; }}
                             body.dark-mode .meta-item {{ color: #aaa; }}
                             body.dark-mode .preheader-box {{ background: #252525; border-color: #333; color: #aaa; }}
+                            body.dark-mode .pixel-box {{ background: #252525; border-color: #333; }}
+                            body.dark-mode .pixel-url {{ color: #aaa; }}
                             body.dark-mode .link-txt {{ color: #4da3ff; }}
                             body.dark-mode .link-url {{ color: #aaa; }}
+                            body.dark-mode .btn-copy {{ color: #666; }}
+                            body.dark-mode .btn-copy:hover {{ color: #4da3ff; background: #333; }}
                         </style>
                     </head>
                     <body>
@@ -741,6 +844,9 @@ def process_emails():
                             <div class="controls">
                                 <button class="btn" onclick="toggleLanguage()" id="lang-toggle" title="Switch Language">
                                     <span>{ICON_LANG}</span>&nbsp;FR
+                                </button>
+                                <button class="btn" onclick="toggleHighlight()" id="btn-highlight" data-i18n-btn="btn_highlight">
+                                    <span>{ICON_TARGET}</span>&nbsp;Highlight
                                 </button>
                                 <button class="btn" onclick="toggleLinks()" id="btn-links" data-i18n-btn="btn_infos">
                                     <span>{ICON_INFO}</span>&nbsp;Infos
@@ -761,6 +867,12 @@ def process_emails():
                         </div>
                         
                         <div class="sidebar" id="sidebar">
+                            
+                            <div class="sidebar-section">
+                                <h3 data-i18n="pixel_section">GetInside Tracking</h3>
+                                {pixel_html_block}
+                            </div>
+
                             <div class="sidebar-section">
                                 <h3 data-i18n="meta_section">{ICON_INFO} Metadata</h3>
                                 <div class="meta-item">
@@ -822,6 +934,19 @@ def process_emails():
                                 a, .link-text {{ color: #1a0dab; }}
                                 html.dark-mode-internal {{ filter: invert(1) hue-rotate(180deg); }}
                                 html.dark-mode-internal img, html.dark-mode-internal video, html.dark-mode-internal [style*="background-image"] {{ filter: invert(1) hue-rotate(180deg); }}
+                                
+                                /* Highlight Class */
+                                body.highlight-links a {{
+                                    border: 2px solid red !important;
+                                    background-color: yellow !important;
+                                    color: black !important;
+                                    position: relative;
+                                    z-index: 9999;
+                                    box-shadow: 0 0 5px rgba(255,0,0,0.5);
+                                    animation: flash 1s infinite alternate;
+                                }}
+                                @keyframes flash {{ from {{ opacity: 1; }} to {{ opacity: 0.7; }} }}
+
                                 @media screen and (max-width: 600px) {{
                                     table, tbody, tr, td {{ width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; height: auto !important; }}
                                     div[style*="width"] {{ width: 100% !important; max-width: 100% !important; }}
@@ -847,6 +972,24 @@ def process_emails():
                                 document.getElementById('sidebar').classList.toggle('open');
                                 document.getElementById('btn-links').classList.toggle('active');
                             }}
+
+                            function toggleHighlight() {{
+                                const btn = document.getElementById('btn-highlight');
+                                btn.classList.toggle('active');
+                                if(frame.contentDocument.body) {{
+                                    frame.contentDocument.body.classList.toggle('highlight-links');
+                                }}
+                            }}
+
+                            function copyToClipboard(text) {{
+                                navigator.clipboard.writeText(text).then(() => {{
+                                    // Feedback visuel simple (alert ou toast custom, ici alert simple)
+                                    // Ou changer l'icone temporairement si on veut faire plus complexe
+                                    // alert(TRANSLATIONS[currentLang]['copy_msg'] || 'Copied!');
+                                }}).catch(err => {{
+                                    console.error('Failed to copy: ', err);
+                                }});
+                            }}
                         </script>
                     </body>
                     </html>
@@ -869,4 +1012,3 @@ def process_emails():
 
 if __name__ == "__main__":
     process_emails()
-def generate_index():
