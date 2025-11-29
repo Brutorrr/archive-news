@@ -56,7 +56,6 @@ ICON_CHECK = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="green" str
 ICON_WARN = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="orange" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
 ICON_BUG = '<svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>'
 ICON_CHAIN = '<svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>'
-# Nouvelles icônes pour le viewer de liens
 ICON_ORIGIN = '<svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>'
 ICON_DEST = '<svg viewBox="0 0 24 24" width="12" height="12" stroke="#0070f3" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>'
 ICON_ARROW_DOWN = '<svg viewBox="0 0 24 24" width="10" height="10" stroke="#ccc" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>'
@@ -201,7 +200,6 @@ def get_email_date(msg):
         date_header = msg["Date"]
         if date_header:
             dt = parsedate_to_datetime(date_header)
-            # INCLUDE TIME
             return dt.strftime('%Y-%m-%d %H:%M')
     except Exception:
         pass
@@ -285,7 +283,6 @@ def get_page_metadata(filepath):
     return title, date_str, sender, archiving_date_str, preheader, reading_time
 
 def format_date_fr(date_iso):
-    # Handles both YYYY-MM-DD and YYYY-MM-DD HH:MM
     try:
         if len(date_iso) > 10:
             dt = datetime.datetime.strptime(date_iso, '%Y-%m-%d %H:%M')
@@ -378,18 +375,18 @@ def generate_index():
             #searchInput {{ width: 100%; padding: 12px 20px; margin-bottom: 25px; box-sizing: border-box; border: 2px solid var(--border-color); border-radius: 8px; font-size: 16px; background-color: var(--input-bg); color: var(--text-main); transition: border-color 0.3s; }}
             #searchInput:focus {{ border-color: var(--accent-color); outline: none; }}
             
-            ul {{ list-style: none; padding: 0; margin: 0; overflow: hidden; }}
-            /* MODIF: Card Style for Index Items */
+            /* MODIF FIX: Overflow visible to allow hover scaling without clipping */
+            ul {{ list-style: none; padding: 0; margin: 0; overflow: visible; }}
+            
             li.news-item {{ 
                 border: 1px solid var(--border-color); margin-bottom: 12px; border-radius: 8px; background: var(--bg-card);
                 transition: transform 0.2s, box-shadow 0.2s;
             }}
-            li.news-item:hover {{ transform: translateY(-2px); box-shadow: 0 4px 12px var(--shadow); border-color: var(--accent-color); }}
+            li.news-item:hover {{ transform: translateY(-2px); box-shadow: 0 4px 12px var(--shadow); border-color: var(--accent-color); z-index: 10; position: relative; }}
             
             a.item-link {{ display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; text-decoration: none; color: var(--text-main); }}
             
             .info-col {{ display: flex; flex-direction: column; flex: 1; min-width: 0; margin-right: 15px; }}
-            /* MODIF: Lowercase sender + fonts */
             .sender {{ font-size: 0.8rem; text-transform: lowercase; color: var(--text-muted); margin-bottom: 6px; }}
             .title {{ font-weight: 600; font-size: 1.05rem; color: var(--text-main); margin-bottom: 6px; }}
             .preheader-preview {{ font-size: 0.85rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }}
@@ -696,6 +693,9 @@ def process_emails():
                     print(f"   -> Résolution de {len(all_links)} liens...")
                     
                     for a in all_links:
+                        # MODIF: Ajouter un index de données pour la correspondance
+                        a['data-index'] = str(link_idx + 1)
+                        
                         txt = a.get_text(strip=True) or "[Image/Vide]"
                         link_id = f"detected-link-{link_idx}"
                         a['id'] = link_id
@@ -703,11 +703,11 @@ def process_emails():
                         original_url = a['href']
                         final_dest, chain = resolve_redirect_chain(original_url)
                         
-                        # --- MODIF : SAUTS DE LIGNE VERTICAUX + FLÈCHE ---
                         chain_text = "\n⬇\n".join(chain)
                         
                         links.append({
                             'id': link_id,
+                            'index': link_idx + 1,
                             'txt': txt[:50] + "..." if len(txt)>50 else txt, 
                             'original_url': original_url,
                             'final_url': final_dest,
@@ -715,13 +715,16 @@ def process_emails():
                         })
                         link_idx += 1
                     
-                    # Génération HTML des liens (Avec Design "Cell/Card")
+                    # Génération HTML des liens
                     links_html = ""
                     for l in links:
                         safe_tooltip = html.escape(l["chain_text"], quote=True)
                         links_html += f'''
                         <li class="link-card">
-                            <div class="link-card-header">{l["txt"]}</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#{l['index']}</span>
+                                {l["txt"]}
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box">{ICON_ORIGIN}</span>
@@ -734,7 +737,7 @@ def process_emails():
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="{safe_tooltip}" title="Show Redirect Path">
+                                <button class="btn-action btn-chain" data-tooltip="{safe_tooltip}" title="Show Redirect Path">
                                     {ICON_CHAIN} Path
                                 </button>
                                 <button class="btn-action" onclick="scrollToLink('{l["id"]}')" title="Locate in Email">
@@ -893,7 +896,7 @@ def process_emails():
                             .pixel-row {{ display: flex; align-items: center; gap: 6px; color: #155724; font-size: 11px; }}
                             .pixel-url {{ word-break: break-all; font-family: monospace; }}
                             
-                            /* --- NEW LINK CARD DESIGN --- */
+                            /* --- LINK CARD DESIGN --- */
                             .sidebar ul {{ list-style: none; padding: 0; margin: 0; }}
                             .link-card {{
                                 border: 1px solid #eee; border-radius: 8px; background: #fff; margin-bottom: 12px;
@@ -902,6 +905,10 @@ def process_emails():
                             .link-card-header {{
                                 padding: 8px 12px; background: #fcfcfc; border-bottom: 1px solid #f0f0f0;
                                 font-weight: 600; color: #333; font-size: 12px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+                                display: flex; align-items: center; gap: 8px;
+                            }}
+                            .link-number {{
+                                background: #eee; color: #555; padding: 1px 5px; border-radius: 4px; font-size: 10px; font-family: monospace;
                             }}
                             .link-card-body {{ padding: 10px 12px; }}
                             .link-line {{ display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }}
@@ -947,6 +954,7 @@ def process_emails():
                             
                             body.dark-mode .link-card {{ background: #252525; border-color: #333; }}
                             body.dark-mode .link-card-header {{ background: #2c2c2c; border-bottom-color: #333; color: #ddd; }}
+                            body.dark-mode .link-number {{ background: #333; color: #ccc; }}
                             body.dark-mode .link-card-footer {{ background: #2c2c2c; border-top-color: #333; }}
                             body.dark-mode .link-url-text.dest {{ color: #4da3ff; }}
                             body.dark-mode .btn-action {{ color: #aaa; }}
@@ -1030,6 +1038,27 @@ def process_emails():
                                 body.highlight-links a {{ border: 2px solid red !important; background-color: yellow !important; color: black !important; position: relative; z-index: 9999; box-shadow: 0 0 5px rgba(255,0,0,0.5); animation: flash 1s infinite alternate; display: inline-block; }}
                                 body.highlight-links a img {{ outline: 4px solid #ff0000 !important; outline-offset: -2px; opacity: 0.8; filter: grayscale(50%); }}
                                 
+                                /* MODIF: NUMBER BADGE IN IFRAME */
+                                body.highlight-links a::after {{
+                                    content: attr(data-index);
+                                    position: absolute;
+                                    top: -10px;
+                                    left: -10px;
+                                    background: black;
+                                    color: white;
+                                    border-radius: 50%;
+                                    width: 18px;
+                                    height: 18px;
+                                    font-size: 10px;
+                                    font-weight: bold;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    z-index: 100000;
+                                    border: 1px solid white;
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                                }}
+
                                 @keyframes target-pulse {{ 
                                     0% {{ transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }}
                                     50% {{ transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0); }}
@@ -1054,7 +1083,7 @@ def process_emails():
                             function copyToClipboard(text) {{ navigator.clipboard.writeText(text).then(() => {{ }}).catch(err => {{ console.error('Failed to copy: ', err); }}); }}
                             function scrollToLink(id) {{ const el = frame.contentDocument.getElementById(id); if(el) {{ el.scrollIntoView({{behavior: 'smooth', block: 'center'}}); el.classList.add('flash-target'); setTimeout(() => el.classList.remove('flash-target'), 2000); }} else {{ console.warn('Link not found in iframe:', id); }} }}
                             
-                            // TOOLTIP LOGIC
+                            // TOOLTIP LOGIC SMART POSITION
                             const tooltip = document.getElementById('global-tooltip');
                             document.querySelectorAll('[data-tooltip]').forEach(btn => {{
                                 btn.addEventListener('mouseenter', e => {{
@@ -1062,10 +1091,24 @@ def process_emails():
                                     if(text) {{
                                         tooltip.textContent = text;
                                         tooltip.classList.add('visible');
+                                        
                                         const rect = btn.getBoundingClientRect();
-                                        tooltip.style.top = rect.top + 'px';
+                                        const viewportHeight = window.innerHeight;
+                                        
+                                        // Position horizontale (gauche du bouton)
                                         tooltip.style.right = (window.innerWidth - rect.left + 10) + 'px';
                                         tooltip.style.left = 'auto';
+
+                                        // Position verticale intelligente
+                                        if (rect.top > viewportHeight / 2) {{
+                                            // Bouton en bas -> Tooltip au-dessus
+                                            tooltip.style.top = 'auto';
+                                            tooltip.style.bottom = (viewportHeight - rect.bottom) + 'px';
+                                        }} else {{
+                                            // Bouton en haut -> Tooltip en dessous
+                                            tooltip.style.top = rect.top + 'px';
+                                            tooltip.style.bottom = 'auto';
+                                        }}
                                     }}
                                 }});
                                 btn.addEventListener('mouseleave', () => {{
