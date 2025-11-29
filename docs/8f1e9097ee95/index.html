@@ -6,7 +6,7 @@
                         <meta name="viewport" content="width=device-width, initial-scale=1.0">
                         <meta name="creation_date" content="2025-11-27 03:53">
                         <meta name="sender" content="benoit@getinside.fr">
-                        <meta name="archiving_date" content="2025-11-29 14:57">
+                        <meta name="archiving_date" content="2025-11-29 15:17">
                         <meta name="preheader" content="Téléchargez l’app Wash, rechargez votre compte et faites des économies ! Version en ligne ‌ EN EXCLUSIVITÉ AVEC SHOWROOMPRIVÉ 10€ de lavage OFFERTS * sur l’appl...">
                         <meta name="reading_time" content="1 min">
                         <title>EXCLUSIVITÉ AVEC SHOWROOMPRIVÉ 10€ de lavage OFFERTS</title>
@@ -45,7 +45,7 @@
                             .pixel-row { display: flex; align-items: center; gap: 6px; color: #155724; font-size: 11px; }
                             .pixel-url { word-break: break-all; font-family: monospace; }
                             
-                            /* --- NEW LINK CARD DESIGN --- */
+                            /* --- LINK CARD DESIGN --- */
                             .sidebar ul { list-style: none; padding: 0; margin: 0; }
                             .link-card {
                                 border: 1px solid #eee; border-radius: 8px; background: #fff; margin-bottom: 12px;
@@ -54,6 +54,10 @@
                             .link-card-header {
                                 padding: 8px 12px; background: #fcfcfc; border-bottom: 1px solid #f0f0f0;
                                 font-weight: 600; color: #333; font-size: 12px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+                                display: flex; align-items: center; gap: 8px;
+                            }
+                            .link-number {
+                                background: #eee; color: #555; padding: 1px 5px; border-radius: 4px; font-size: 10px; font-family: monospace;
                             }
                             .link-card-body { padding: 10px 12px; }
                             .link-line { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
@@ -99,6 +103,7 @@
                             
                             body.dark-mode .link-card { background: #252525; border-color: #333; }
                             body.dark-mode .link-card-header { background: #2c2c2c; border-bottom-color: #333; color: #ddd; }
+                            body.dark-mode .link-number { background: #333; color: #ccc; }
                             body.dark-mode .link-card-footer { background: #2c2c2c; border-top-color: #333; }
                             body.dark-mode .link-url-text.dest { color: #4da3ff; }
                             body.dark-mode .btn-action { color: #aaa; }
@@ -136,7 +141,7 @@
                             <div class="sidebar-section">
                                 <h3 data-i18n="meta_section"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> Metadata</h3>
                                 <div class="meta-item"><span class="meta-label" data-i18n="label_sent">📅 Sent Date</span><span class="meta-val">27/11/2025 à 03:53</span></div>
-                                <div class="meta-item"><span class="meta-label" data-i18n="label_archived">🗄️ Archived Date</span><span class="meta-val">29/11/2025 à 14:57</span></div>
+                                <div class="meta-item"><span class="meta-label" data-i18n="label_archived">🗄️ Archived Date</span><span class="meta-val">29/11/2025 à 15:17</span></div>
                                 <div class="meta-item"><span class="meta-label" data-i18n="label_reading">⏱️ Reading Time</span><span class="meta-val">1 min</span></div>
                                 <div class="meta-item"><span class="meta-label" data-i18n="label_preheader">👀 Preheader (Preview)</span><div class="preheader-box">Téléchargez l’app Wash, rechargez votre compte et faites des économies ! Version en ligne ‌ EN EXCLUSIVITÉ AVEC SHOWROOMPRIVÉ 10€ de lavage OFFERTS * sur l’appl...</div></div>
                             </div>
@@ -155,7 +160,10 @@
                                 <h3 data-i18n="links_section"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Detected Links (27)</h3>
                                 <ul>
                         <li class="link-card">
-                            <div class="link-card-header">Téléchargez l’app Wash, rechargez votre compte et ...</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#1</span>
+                                Téléchargez l’app Wash, rechargez votre compte et ...
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -168,7 +176,7 @@
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://gtinsi.de/68d28cab3de3e
+                                <button class="btn-action btn-chain" data-tooltip="https://gtinsi.de/68d28cab3de3e
 ⬇
 https://wash.go.link/bzSYb
 ⬇
@@ -185,7 +193,10 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Version en ligne</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#2</span>
+                                Version en ligne
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -198,7 +209,7 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://pub-ac397c96ae2647d4a45221e91f4ce5dd.r2.dev/%%view_email_url%%" title="Show Redirect Path">
+                                <button class="btn-action btn-chain" data-tooltip="https://pub-ac397c96ae2647d4a45221e91f4ce5dd.r2.dev/%%view_email_url%%" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
                                 </button>
                                 <button class="btn-action" onclick="scrollToLink('detected-link-1')" title="Locate in Email">
@@ -211,7 +222,10 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#3</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -224,7 +238,7 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx
 ⬇
 https://www.showroomprive.com/accueil.aspx
 ⬇
@@ -241,7 +255,10 @@ https://www.showroomprive.com/?mes=0&amp;direction=%2faccueil.aspx" title="Show 
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#4</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -254,7 +271,7 @@ https://www.showroomprive.com/?mes=0&amp;direction=%2faccueil.aspx" title="Show 
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://gtinsi.de/68d28cab3de3e
+                                <button class="btn-action btn-chain" data-tooltip="https://gtinsi.de/68d28cab3de3e
 ⬇
 https://wash.go.link/bzSYb
 ⬇
@@ -271,7 +288,10 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Je profite de 10€ offerts</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#5</span>
+                                Je profite de 10€ offerts
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -284,7 +304,7 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://gtinsi.de/68d28cab3de3e
+                                <button class="btn-action btn-chain" data-tooltip="https://gtinsi.de/68d28cab3de3e
 ⬇
 https://wash.go.link/bzSYb
 ⬇
@@ -301,7 +321,10 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#6</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -314,7 +337,7 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://gtinsi.de/68d28cab3de3e
+                                <button class="btn-action btn-chain" data-tooltip="https://gtinsi.de/68d28cab3de3e
 ⬇
 https://wash.go.link/bzSYb
 ⬇
@@ -331,7 +354,10 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Je lave ma voiture gratuitement</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#7</span>
+                                Je lave ma voiture gratuitement
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -344,7 +370,7 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://gtinsi.de/68d28cab3de3e
+                                <button class="btn-action btn-chain" data-tooltip="https://gtinsi.de/68d28cab3de3e
 ⬇
 https://wash.go.link/bzSYb
 ⬇
@@ -361,7 +387,10 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#8</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -374,7 +403,7 @@ https://wash-totalenergies.fr/pourquoi-wash/application-wash/" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx
 ⬇
 https://www.showroomprive.com/accueil.aspx
 ⬇
@@ -391,7 +420,10 @@ https://www.showroomprive.com/?mes=0&amp;direction=%2faccueil.aspx" title="Show 
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#9</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -400,28 +432,29 @@ https://www.showroomprive.com/?mes=0&amp;direction=%2faccueil.aspx" title="Show 
                                 <div class="link-arrow-sep"><svg viewBox="0 0 24 24" width="10" height="10" stroke="#ccc" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg></div>
                                 <div class="link-line" title="Destination Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#0070f3" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
-                                    <span class="link-url-text dest">https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fshowroomprive%2F&is_from_rle</span>
+                                    <span class="link-url-text dest">https://www.instagram.com/showroomprive/</span>
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://instagram.com/showroomprive/
+                                <button class="btn-action btn-chain" data-tooltip="https://instagram.com/showroomprive/
 ⬇
-https://www.instagram.com/showroomprive/
-⬇
-https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fshowroomprive%2F&amp;is_from_rle" title="Show Redirect Path">
+https://www.instagram.com/showroomprive/" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
                                 </button>
                                 <button class="btn-action" onclick="scrollToLink('detected-link-8')" title="Locate in Email">
                                     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg> Locate
                                 </button>
-                                <button class="btn-action" onclick="copyToClipboard('https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fshowroomprive%2F&is_from_rle')" title="Copy Final URL">
+                                <button class="btn-action" onclick="copyToClipboard('https://www.instagram.com/showroomprive/')" title="Copy Final URL">
                                     <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg> Copy
                                 </button>
                             </div>
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#10</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -434,7 +467,7 @@ https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.facebook.com/showroomprivecom
+                                <button class="btn-action btn-chain" data-tooltip="https://www.facebook.com/showroomprivecom
 ⬇
 https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fshowroomprivecom" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -449,7 +482,10 @@ https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fshowroompr
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#11</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -462,7 +498,7 @@ https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fshowroompr
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.tiktok.com/@showroomprive" title="Show Redirect Path">
+                                <button class="btn-action btn-chain" data-tooltip="https://www.tiktok.com/@showroomprive" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
                                 </button>
                                 <button class="btn-action" onclick="scrollToLink('detected-link-10')" title="Locate in Email">
@@ -475,7 +511,10 @@ https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fshowroompr
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#12</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -488,7 +527,7 @@ https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fshowroompr
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://fr.linkedin.com/company/showroomprive-com
+                                <button class="btn-action btn-chain" data-tooltip="https://fr.linkedin.com/company/showroomprive-com
 ⬇
 https://fr.linkedin.com/company/showroomprive" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -503,7 +542,10 @@ https://fr.linkedin.com/company/showroomprive" title="Show Redirect Path">
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">[Image/Vide]</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#13</span>
+                                [Image/Vide]
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -516,7 +558,7 @@ https://fr.linkedin.com/company/showroomprive" title="Show Redirect Path">
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=mobile.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=mobile.aspx
 ⬇
 https://www.showroomprive.com/mobile.aspx" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -531,7 +573,10 @@ https://www.showroomprive.com/mobile.aspx" title="Show Redirect Path">
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Mes commandes</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#14</span>
+                                Mes commandes
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -544,7 +589,7 @@ https://www.showroomprive.com/mobile.aspx" title="Show Redirect Path">
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/Mescommandes.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/Mescommandes.aspx
 ⬇
 https://www.showroomprive.com/MonCompte/Mescommandes.aspx" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -559,7 +604,10 @@ https://www.showroomprive.com/MonCompte/Mescommandes.aspx" title="Show Redirect 
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Mes bons d'achat</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#15</span>
+                                Mes bons d'achat
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -572,7 +620,7 @@ https://www.showroomprive.com/MonCompte/Mescommandes.aspx" title="Show Redirect 
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/mesba.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/mesba.aspx
 ⬇
 https://www.showroomprive.com/MonCompte/mesba.aspx" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -587,7 +635,10 @@ https://www.showroomprive.com/MonCompte/mesba.aspx" title="Show Redirect Path">
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Mes communications</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#16</span>
+                                Mes communications
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -600,7 +651,7 @@ https://www.showroomprive.com/MonCompte/mesba.aspx" title="Show Redirect Path">
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx
 ⬇
 https://www.showroomprive.com/moncompte/mespreferences.aspx" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -615,7 +666,10 @@ https://www.showroomprive.com/moncompte/mespreferences.aspx" title="Show Redirec
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Mode</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#17</span>
+                                Mode
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -628,7 +682,7 @@ https://www.showroomprive.com/moncompte/mespreferences.aspx" title="Show Redirec
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/mode%3fu%3d1%3Fwebview%3D1
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/mode%3fu%3d1%3Fwebview%3D1
 ⬇
 https://www.showroomprive.com/univers-srp/mode%3Fu%3D1%3Fwebview%3D1
 ⬇
@@ -645,7 +699,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/mode?u=1?we
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Maison</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#18</span>
+                                Maison
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -658,7 +715,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/mode?u=1?we
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universmaison%3fu%3d4%3Fwebview%3D1
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universmaison%3fu%3d4%3Fwebview%3D1
 ⬇
 https://www.showroomprive.com/ope/universmaison%3Fu%3D4%3Fwebview%3D1
 ⬇
@@ -675,7 +732,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/ope/universmaison?u=4?w
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Voyage</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#19</span>
+                                Voyage
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -688,7 +748,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/ope/universmaison?u=4?w
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilvoyage.aspx%3fu%3d5
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilvoyage.aspx%3fu%3d5
 ⬇
 https://www.showroomprive.com/accueilvoyage.aspx%3Fu%3D5
 ⬇
@@ -707,7 +767,10 @@ https://www.showroomprive.com/?mes=&amp;direction=%2fvoyage%2forchestra%2fsrporc
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Beauté</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#20</span>
+                                Beauté
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -720,7 +783,7 @@ https://www.showroomprive.com/?mes=&amp;direction=%2fvoyage%2forchestra%2fsrporc
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universbeaute%3fu%3d6%3Fwebview%3D1
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universbeaute%3fu%3d6%3Fwebview%3D1
 ⬇
 https://www.showroomprive.com/ope/universbeaute%3Fu%3D6%3Fwebview%3D1
 ⬇
@@ -737,7 +800,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/ope/universbeaute?u=6?w
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Enfant</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#21</span>
+                                Enfant
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -750,7 +816,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/ope/universbeaute?u=6?w
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/enfant%3fu%3d3%3Fwebview%3D1
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/enfant%3fu%3d3%3Fwebview%3D1
 ⬇
 https://www.showroomprive.com/univers-srp/enfant%3Fu%3D3%3Fwebview%3D1
 ⬇
@@ -767,7 +833,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/enfant?u=3?
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Hi-tech</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#22</span>
+                                Hi-tech
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -780,7 +849,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/enfant?u=3?
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1
 ⬇
 https://www.showroomprive.com/univers-srp/ht/electromenager%3Fu%3D147%3Fwebview%3D1
 ⬇
@@ -797,7 +866,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/ht/electrom
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Electromenager</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#23</span>
+                                Electromenager
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -810,7 +882,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/ht/electrom
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1
 ⬇
 https://www.showroomprive.com/univers-srp/ht/electromenager%3Fu%3D147%3Fwebview%3D1
 ⬇
@@ -827,7 +899,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/ht/electrom
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Loisirs</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#24</span>
+                                Loisirs
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -840,7 +915,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/ht/electrom
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilbilletterie.aspx%3fu%3d9
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilbilletterie.aspx%3fu%3d9
 ⬇
 https://www.showroomprive.com/accueilbilletterie.aspx%3Fu%3D9" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -855,7 +930,10 @@ https://www.showroomprive.com/accueilbilletterie.aspx%3Fu%3D9" title="Show Redir
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Marché</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#25</span>
+                                Marché
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -868,7 +946,7 @@ https://www.showroomprive.com/accueilbilletterie.aspx%3Fu%3D9" title="Show Redir
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/legrandmarche%3fu%3d161
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/legrandmarche%3fu%3d161
 ⬇
 https://www.showroomprive.com/univers-srp/legrandmarche%3Fu%3D161
 ⬇
@@ -885,7 +963,10 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/legrandmarc
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">Outlet</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#26</span>
+                                Outlet
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -898,7 +979,7 @@ https://www.showroomprive.com/erreur.aspx?aspxerrorpath=/univers-srp/legrandmarc
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=outlet.aspx%3fu%3d8
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=outlet.aspx%3fu%3d8
 ⬇
 https://www.showroomprive.com/outlet.aspx%3Fu%3D8" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -913,7 +994,10 @@ https://www.showroomprive.com/outlet.aspx%3Fu%3D8" title="Show Redirect Path">
                         </li>
                         
                         <li class="link-card">
-                            <div class="link-card-header">ici</div>
+                            <div class="link-card-header">
+                                <span class="link-number">#27</span>
+                                ici
+                            </div>
                             <div class="link-card-body">
                                 <div class="link-line" title="Original Link">
                                     <span class="link-icon-box"><svg viewBox="0 0 24 24" width="12" height="12" stroke="#666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg></span>
@@ -926,7 +1010,7 @@ https://www.showroomprive.com/outlet.aspx%3Fu%3D8" title="Show Redirect Path">
                                 </div>
                             </div>
                             <div class="link-card-footer">
-                                <button class="btn-action" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx
+                                <button class="btn-action btn-chain" data-tooltip="https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx
 ⬇
 https://www.showroomprive.com/moncompte/mespreferences.aspx" title="Show Redirect Path">
                                     <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Path
@@ -986,7 +1070,7 @@ function toggleLanguage() {
 
 updateLanguage(currentLang);
 
-                            const emailContent = "<td class=\"t_bgcffffff m_bgcffffff\" role=\"main\" style=\"background-color:#f5f5f5\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_bgcffffff m_w100p\" role=\"none\" style=\"margin:auto\" width=\"640\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div class=\"t_bdtlrs0px t_bdtrrs0px t_bdblrs0px t_bdbrrs0px m_bdtlrs0px m_bdtrrs0px m_bdblrs0px m_bdbrrs0px\" style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#ffffff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_dnone m_dnone\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#cccccc;text-align:center;font-size:11px;padding-top:10px;padding-bottom:5px;vertical-align:middle\">\n<a href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-0\" style=\"color:#cccccc;display:block;text-decoration:none;outline:0\" target=\"_blank\" title=\"Je d\u00e9couvre\"> T\u00e9l\u00e9chargez l\u2019app Wash, rechargez votre compte et faites des \u00e9conomies ! </a>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_dnone m_dnone\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td>\n<div style=\"border-bottom:1px solid #f1f2f6;mso-border-alt:none\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#cccccc;text-align:center;font-size:11px;padding-bottom:13px;vertical-align:middle;mso-border-bottom-alt:1px solid #f1f2f6\">\n<a href=\"https://pub-ac397c96ae2647d4a45221e91f4ce5dd.r2.dev/%%view_email_url%%\" id=\"detected-link-1\" style=\"color:#cccccc;display:block;text-decoration:none;outline:0\" title=\"Version en ligne\">\n<span style=\"text-decoration:underline;color:#cccccc\">Version en ligne</span></a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w265px m_w265px\" role=\"none\" style=\"margin:auto\" width=\"265\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"t_pt0px m_pt0px\" style=\"padding-top:10px;padding-bottom:10px;text-align:center\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx\" id=\"detected-link-2\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je fonce\" width=\"100%\">\n<img alt=\"Showroompriv\u00e9\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_0.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:13px;display:block;border:none\" width=\"265\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_dnone m_dnone\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"15\" style=\"height:15px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"640\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#ffffff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w200px m_w200px\" role=\"none\" style=\"margin:auto\" width=\"180\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"t_pt0px m_pt0px\" style=\"padding-top:15px;padding-bottom:20px;text-align:center;vertical-align:middle\">\n<a href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-3\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je decouvre\" width=\"100%\">\n<img alt=\"Wash logo\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_1.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"180\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w420px m_w90p\" role=\"none\" style=\"margin:auto\" width=\"80%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#89a5ff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#ffffff;text-align:center;font-size:15px;letter-spacing:1px;padding-top:20px;vertical-align:middle;line-height:21px\"> EN EXCLUSIVIT\u00c9 AVEC SHOWROOMPRIV\u00c9 </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"t_pr4p t_pl4p m_pr4p m_pl4p\" style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#ffffff;text-align:center;text-transform:uppercase;font-size:30px;letter-spacing:1px;padding-top:10px;padding-bottom:5px;vertical-align:middle;line-height:36px;font-weight:700\"> 10\u20ac de lavage OFFERTS<sup>*</sup>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:16px;padding-bottom:20px;vertical-align:middle;line-height:22px\"> sur l\u2019application Wash </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"20\" style=\"height:20px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w420px m_w90p\" role=\"none\" style=\"margin:auto\" width=\"85%\">\n<tbody><tr><td class=\"t_w60p m_w100p m_flright\" valign=\"top\" width=\"60%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td class=\"t_pt0px m_pt0px m_pb20px\" style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:center;font-size:16px;padding-top:30px;vertical-align:middle;line-height:22px\"> Avec l\u2019application Wash, trouvez le centre de lavage le plus proche, et achetez votre lavage directement depuis votre\u00a0mobile\u00a0!<br role=\"none\"/><br role=\"none\"/>Vous rechargez votre compte lavage en profitant des\u00a0bonus, <span style=\"font-weight:700\">c\u2019est\u00a0jusqu\u2019\u00e0 25\u20ac de lavage offert.</span>\n</td></tr></tbody></table></td>\n<td class=\"t_w40p m_w100p m_flright\" valign=\"top\" width=\"40%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w80p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_2.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"217\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"20\" style=\"height:20px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"220\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid #FFFFFF;border-right:1px solid #FFFFFF;border-bottom:1px solid #FFFFFF;border-left:1px solid #FFFFFF;overflow:hidden;mso-border-alt:none\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:16px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px;mso-border-top-alt:1px solid #FFFFFF;mso-border-right-alt:1px solid #FFFFFF;mso-border-bottom-alt:1px solid #FFFFFF;mso-border-left-alt:1px solid #FFFFFF\">\n<a href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-4\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Je profite de 10\u20ac offerts </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div class=\"t_bdtlrs15px t_bdtrrs15px t_bdblrs15px t_bdbrrs15px m_bdtlrs15px m_bdtrrs15px m_bdblrs15px m_bdbrrs15px\" style=\"overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-top:25px;text-align:center;vertical-align:middle\">\n<a href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-5\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je decouvre\" width=\"100%\">\n<img alt=\"Total Wash cover\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_3.jpg\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"640\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90p m_w90p\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:center;font-size:17px;padding-top:20px;vertical-align:middle;line-height:23px\"> Avec Wash, profitez du <span style=\"font-weight:700\">premier r\u00e9seau de lavage auto</span> en\u00a0France\u00a0: </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w405px m_w90p\" role=\"none\" style=\"margin:auto\" width=\"70%\">\n<tbody><tr><td class=\"t_fz15px m_fz15px\" style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:left;font-size:16px;padding-top:10px;padding-bottom:20px;vertical-align:middle;line-height:22px\"> \u2022 <span style=\"font-weight:700\">1100 centres de lavage</span> dans toute la\u00a0France<br role=\"none\"/>\u2022 <span style=\"font-weight:700\">75% d\u2019utilisation d\u2019eau recycl\u00e9e</span> pour un lavage rouleaux<br role=\"none\"/>\u2022 <span style=\"font-weight:700\">100%</span> des eaux de lavage sont <span style=\"font-weight:700\">trait\u00e9es</span><br role=\"none\"/>\u2022 <span style=\"font-weight:700\">80%</span> des produits de lavage sont <span style=\"font-weight:700\">biod\u00e9gradables</span>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"270\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid #FFFFFF;border-right:1px solid #FFFFFF;border-bottom:1px solid #FFFFFF;border-left:1px solid #FFFFFF;overflow:hidden;mso-border-alt:none\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:16px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px;mso-border-top-alt:1px solid #FFFFFF;mso-border-right-alt:1px solid #FFFFFF;mso-border-bottom-alt:1px solid #FFFFFF;mso-border-left-alt:1px solid #FFFFFF\">\n<a href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-6\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Je lave ma voiture gratuitement </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"40\" style=\"height:40px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"640\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"40\" style=\"height:40px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#000000\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td class=\"m_h10px m_fz10px m_lh10px\" height=\"15\" style=\"height:15px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w95p m_w90p\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td class=\"t_w24p m_w100p m_flright\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w132px\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"m_pt0px\" style=\"padding-top:10px;text-align:center;vertical-align:middle\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx\" id=\"detected-link-7\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je fonce\" width=\"100%\">\n<img alt=\"Showroomprive\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_4.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"133\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td aria-hidden=\"true\" class=\"t_w2p m_w100p m_flright\" valign=\"top\" width=\"7%\">\n<span>\u200c</span></td>\n<td class=\"t_w24d66p m_w33d33p m_flleft\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w50px m_w50px\" role=\"none\" style=\"margin:auto\" width=\"50\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-bottom:5px;text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_5.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"50\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90px m_w90px\" role=\"none\" style=\"margin:auto\" width=\"90\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:13px;vertical-align:middle;line-height:19px\"> Les <span style=\"font-weight:700\">+</span> grandes marques jusqu'\u00e0 <span style=\"font-weight:700\">-</span>75% </td></tr></tbody></table></td>\n<td class=\"t_w24d67p m_w33d33p m_flleft\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w50px m_w50px\" role=\"none\" style=\"margin:auto\" width=\"50\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-bottom:5px;text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_6.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"50\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90px m_w90px\" role=\"none\" style=\"margin:auto\" width=\"90\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:13px;vertical-align:middle;line-height:19px\"> 14 jours <br role=\"none\"/>pour changer d'avis </td></tr></tbody></table></td>\n<td class=\"t_w24d67p m_w33d34p m_flright\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w50px m_w50px\" role=\"none\" style=\"margin:auto\" width=\"50\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-bottom:5px;text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_7.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"50\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90px m_w90px\" role=\"none\" style=\"margin:auto\" width=\"90\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:13px;vertical-align:middle;line-height:19px\"> Un service client rapide et personnalis\u00e9 </td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"25\" style=\"height:25px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#ffffff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w89p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td class=\"t_w60p m_w100p m_flright\" valign=\"top\" width=\"61%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#000000;text-align:center;font-size:18px;letter-spacing:1px;padding-top:30px;padding-bottom:5px;vertical-align:middle;line-height:24px;font-weight:700\"> SUIVEZ-NOUS </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w220px m_w230px\" role=\"none\" style=\"margin:auto\" width=\"250\">\n<tbody><tr><td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a href=\"https://instagram.com/showroomprive/\" id=\"detected-link-8\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Instagram\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_8.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a href=\"https://www.facebook.com/showroomprivecom\" id=\"detected-link-9\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Facebook\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_9.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a href=\"https://www.tiktok.com/@showroomprive\" id=\"detected-link-10\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Tiktok\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_10.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a href=\"https://fr.linkedin.com/company/showroomprive-com\" id=\"detected-link-11\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Linkedin\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_11.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w40p m_w100p m_flright\" valign=\"top\" width=\"39%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#000000;text-align:center;font-size:18px;letter-spacing:1px;padding-top:30px;padding-bottom:5px;vertical-align:middle;line-height:24px;font-weight:700\"> APP MOBILE </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=mobile.aspx\" id=\"detected-link-12\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Application mobile\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_12.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"30\" style=\"height:30px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w400px m_w200px\" role=\"none\" style=\"margin:auto\" width=\"95%\">\n<tbody><tr><td class=\"t_w47d5p t_flleft m_w100p m_flright\" valign=\"top\" width=\"32%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w180px m_w100p\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"180\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:15px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/Mescommandes.aspx\" id=\"detected-link-13\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Mes commandes </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table></td>\n<td aria-hidden=\"true\" class=\"t_w5p t_flleft m_w100p m_flright\" valign=\"top\" width=\"2%\">\n<span>\u200c</span></td>\n<td class=\"t_w47d5p t_flright m_w100p m_flright\" valign=\"top\" width=\"32%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w180px m_w100p\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"180\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:15px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/mesba.aspx\" id=\"detected-link-14\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Mes bons d'achat </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table></td>\n<td aria-hidden=\"true\" class=\"t_w100p t_flright m_w100p m_flright\" valign=\"top\" width=\"2%\">\n<span>\u200c</span></td>\n<td class=\"t_w100p t_flright m_w100p m_flright\" valign=\"top\" width=\"32%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w200px m_w100p\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"190\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:15px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx\" id=\"detected-link-15\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Mes communications </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"30\" style=\"height:30px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#000000\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w350px m_w280px\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:14px;padding-top:30px;padding-bottom:30px;vertical-align:middle;line-height:24px\">\n<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/mode%3fu%3d1%3Fwebview%3D1\" id=\"detected-link-16\" style=\"color:#ffffff;text-decoration:underline\">Mode</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universmaison%3fu%3d4%3Fwebview%3D1\" id=\"detected-link-17\" style=\"color:#ffffff;text-decoration:underline\">Maison</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilvoyage.aspx%3fu%3d5\" id=\"detected-link-18\" style=\"color:#ffffff;text-decoration:underline\">Voyage</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universbeaute%3fu%3d6%3Fwebview%3D1\" id=\"detected-link-19\" style=\"color:#ffffff;text-decoration:underline\">Beaut\u00e9</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/enfant%3fu%3d3%3Fwebview%3D1\" id=\"detected-link-20\" style=\"color:#ffffff;text-decoration:underline\">Enfant</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1\" id=\"detected-link-21\" style=\"color:#ffffff;text-decoration:underline\">Hi-tech</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1\" id=\"detected-link-22\" style=\"color:#ffffff;text-decoration:underline\">Electromenager</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilbilletterie.aspx%3fu%3d9\" id=\"detected-link-23\" style=\"color:#ffffff;text-decoration:underline\">Loisirs</a> | <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/legrandmarche%3fu%3d161\" id=\"detected-link-24\" style=\"color:#ffffff;text-decoration:underline\">March\u00e9</a>\u00a0|\u00a0<a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=outlet.aspx%3fu%3d8\" id=\"detected-link-25\" style=\"color:#ffffff;text-decoration:underline\">Outlet</a>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w95p m_w90p\" role=\"none\" style=\"margin:auto\" width=\"95%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#646464;text-align:left;font-size:11px;padding-bottom:30px;vertical-align:middle;line-height:16px\"> * Pour les trajets courts, privil\u00e9giez la marche ou le v\u00e9lo. Code \u00e0 usage unique, offre valable pour tous les nouveaux clients jusqu\u2019au 31 ao\u00fbt 2026.<br role=\"none\"/><br role=\"none\"/>TotalEnergies Wash France SAS, 1 rue Eug\u00e8ne et Armand Peugeot, 92500 Rueil-Malmaison, Capital social: 3 750 000,00\u20ac, RCS Nanterre 539 075 598.<br role=\"none\"/><br role=\"none\"/>Vous ne souhaitez plus recevoir de communications de notre part, param\u00e9trez vos choix <a href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx\" id=\"detected-link-26\" style=\"color:#646464;text-decoration:underline\">ici</a>.<br role=\"none\"/><br role=\"none\"/>Showroomprive.com - ZAC de la Montjoie - 1 Impasse du Pilier - 93210 La plaine St Denis - France est une SARL au capital de 115 481 749,68 Euros, RCS Bobigny n\u00b0 538 811 837, TVA FR 72 538 811 837. </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td>";
+                            const emailContent = "<td class=\"t_bgcffffff m_bgcffffff\" role=\"main\" style=\"background-color:#f5f5f5\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_bgcffffff m_w100p\" role=\"none\" style=\"margin:auto\" width=\"640\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div class=\"t_bdtlrs0px t_bdtrrs0px t_bdblrs0px t_bdbrrs0px m_bdtlrs0px m_bdtrrs0px m_bdblrs0px m_bdbrrs0px\" style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#ffffff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_dnone m_dnone\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#cccccc;text-align:center;font-size:11px;padding-top:10px;padding-bottom:5px;vertical-align:middle\">\n<a data-index=\"1\" href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-0\" style=\"color:#cccccc;display:block;text-decoration:none;outline:0\" target=\"_blank\" title=\"Je d\u00e9couvre\"> T\u00e9l\u00e9chargez l\u2019app Wash, rechargez votre compte et faites des \u00e9conomies ! </a>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_dnone m_dnone\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td>\n<div style=\"border-bottom:1px solid #f1f2f6;mso-border-alt:none\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#cccccc;text-align:center;font-size:11px;padding-bottom:13px;vertical-align:middle;mso-border-bottom-alt:1px solid #f1f2f6\">\n<a data-index=\"2\" href=\"https://pub-ac397c96ae2647d4a45221e91f4ce5dd.r2.dev/%%view_email_url%%\" id=\"detected-link-1\" style=\"color:#cccccc;display:block;text-decoration:none;outline:0\" title=\"Version en ligne\">\n<span style=\"text-decoration:underline;color:#cccccc\">Version en ligne</span></a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w265px m_w265px\" role=\"none\" style=\"margin:auto\" width=\"265\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"t_pt0px m_pt0px\" style=\"padding-top:10px;padding-bottom:10px;text-align:center\">\n<a data-index=\"3\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx\" id=\"detected-link-2\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je fonce\" width=\"100%\">\n<img alt=\"Showroompriv\u00e9\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_0.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:13px;display:block;border:none\" width=\"265\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_dnone m_dnone\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"15\" style=\"height:15px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"640\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#ffffff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w200px m_w200px\" role=\"none\" style=\"margin:auto\" width=\"180\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"t_pt0px m_pt0px\" style=\"padding-top:15px;padding-bottom:20px;text-align:center;vertical-align:middle\">\n<a data-index=\"4\" href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-3\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je decouvre\" width=\"100%\">\n<img alt=\"Wash logo\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_1.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"180\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w420px m_w90p\" role=\"none\" style=\"margin:auto\" width=\"80%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#89a5ff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#ffffff;text-align:center;font-size:15px;letter-spacing:1px;padding-top:20px;vertical-align:middle;line-height:21px\"> EN EXCLUSIVIT\u00c9 AVEC SHOWROOMPRIV\u00c9 </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:10px;border-top-right-radius:10px;border-bottom-left-radius:10px;border-bottom-right-radius:10px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"t_pr4p t_pl4p m_pr4p m_pl4p\" style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#ffffff;text-align:center;text-transform:uppercase;font-size:30px;letter-spacing:1px;padding-top:10px;padding-bottom:5px;vertical-align:middle;line-height:36px;font-weight:700\"> 10\u20ac de lavage OFFERTS<sup>*</sup>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:16px;padding-bottom:20px;vertical-align:middle;line-height:22px\"> sur l\u2019application Wash </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"20\" style=\"height:20px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w420px m_w90p\" role=\"none\" style=\"margin:auto\" width=\"85%\">\n<tbody><tr><td class=\"t_w60p m_w100p m_flright\" valign=\"top\" width=\"60%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td class=\"t_pt0px m_pt0px m_pb20px\" style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:center;font-size:16px;padding-top:30px;vertical-align:middle;line-height:22px\"> Avec l\u2019application Wash, trouvez le centre de lavage le plus proche, et achetez votre lavage directement depuis votre\u00a0mobile\u00a0!<br role=\"none\"/><br role=\"none\"/>Vous rechargez votre compte lavage en profitant des\u00a0bonus, <span style=\"font-weight:700\">c\u2019est\u00a0jusqu\u2019\u00e0 25\u20ac de lavage offert.</span>\n</td></tr></tbody></table></td>\n<td class=\"t_w40p m_w100p m_flright\" valign=\"top\" width=\"40%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w80p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_2.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"217\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"20\" style=\"height:20px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"220\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid #FFFFFF;border-right:1px solid #FFFFFF;border-bottom:1px solid #FFFFFF;border-left:1px solid #FFFFFF;overflow:hidden;mso-border-alt:none\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:16px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px;mso-border-top-alt:1px solid #FFFFFF;mso-border-right-alt:1px solid #FFFFFF;mso-border-bottom-alt:1px solid #FFFFFF;mso-border-left-alt:1px solid #FFFFFF\">\n<a data-index=\"5\" href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-4\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Je profite de 10\u20ac offerts </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div class=\"t_bdtlrs15px t_bdtrrs15px t_bdblrs15px t_bdbrrs15px m_bdtlrs15px m_bdtrrs15px m_bdblrs15px m_bdbrrs15px\" style=\"overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-top:25px;text-align:center;vertical-align:middle\">\n<a data-index=\"6\" href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-5\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je decouvre\" width=\"100%\">\n<img alt=\"Total Wash cover\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_3.jpg\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"640\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90p m_w90p\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:center;font-size:17px;padding-top:20px;vertical-align:middle;line-height:23px\"> Avec Wash, profitez du <span style=\"font-weight:700\">premier r\u00e9seau de lavage auto</span> en\u00a0France\u00a0: </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w405px m_w90p\" role=\"none\" style=\"margin:auto\" width=\"70%\">\n<tbody><tr><td class=\"t_fz15px m_fz15px\" style=\"font-family:Arial,Helvetica,sans-serif;color:#000000;text-align:left;font-size:16px;padding-top:10px;padding-bottom:20px;vertical-align:middle;line-height:22px\"> \u2022 <span style=\"font-weight:700\">1100 centres de lavage</span> dans toute la\u00a0France<br role=\"none\"/>\u2022 <span style=\"font-weight:700\">75% d\u2019utilisation d\u2019eau recycl\u00e9e</span> pour un lavage rouleaux<br role=\"none\"/>\u2022 <span style=\"font-weight:700\">100%</span> des eaux de lavage sont <span style=\"font-weight:700\">trait\u00e9es</span><br role=\"none\"/>\u2022 <span style=\"font-weight:700\">80%</span> des produits de lavage sont <span style=\"font-weight:700\">biod\u00e9gradables</span>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"270\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;border-top:1px solid #FFFFFF;border-right:1px solid #FFFFFF;border-bottom:1px solid #FFFFFF;border-left:1px solid #FFFFFF;overflow:hidden;mso-border-alt:none\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:16px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px;mso-border-top-alt:1px solid #FFFFFF;mso-border-right-alt:1px solid #FFFFFF;mso-border-bottom-alt:1px solid #FFFFFF;mso-border-left-alt:1px solid #FFFFFF\">\n<a data-index=\"7\" href=\"https://gtinsi.de/68d28cab3de3e\" id=\"detected-link-6\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Je lave ma voiture gratuitement </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"40\" style=\"height:40px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"640\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"40\" style=\"height:40px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#000000\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td class=\"m_h10px m_fz10px m_lh10px\" height=\"15\" style=\"height:15px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w95p m_w90p\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td class=\"t_w24p m_w100p m_flright\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w132px\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td class=\"m_pt0px\" style=\"padding-top:10px;text-align:center;vertical-align:middle\">\n<a data-index=\"8\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueil.aspx\" id=\"detected-link-7\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" title=\"Je fonce\" width=\"100%\">\n<img alt=\"Showroomprive\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_4.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"133\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td aria-hidden=\"true\" class=\"t_w2p m_w100p m_flright\" valign=\"top\" width=\"7%\">\n<span>\u200c</span></td>\n<td class=\"t_w24d66p m_w33d33p m_flleft\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w50px m_w50px\" role=\"none\" style=\"margin:auto\" width=\"50\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-bottom:5px;text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_5.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"50\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90px m_w90px\" role=\"none\" style=\"margin:auto\" width=\"90\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:13px;vertical-align:middle;line-height:19px\"> Les <span style=\"font-weight:700\">+</span> grandes marques jusqu'\u00e0 <span style=\"font-weight:700\">-</span>75% </td></tr></tbody></table></td>\n<td class=\"t_w24d67p m_w33d33p m_flleft\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w50px m_w50px\" role=\"none\" style=\"margin:auto\" width=\"50\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-bottom:5px;text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_6.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"50\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90px m_w90px\" role=\"none\" style=\"margin:auto\" width=\"90\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:13px;vertical-align:middle;line-height:19px\"> 14 jours <br role=\"none\"/>pour changer d'avis </td></tr></tbody></table></td>\n<td class=\"t_w24d67p m_w33d34p m_flright\" valign=\"top\" width=\"23.25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w50px m_w50px\" role=\"none\" style=\"margin:auto\" width=\"50\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"padding-bottom:5px;text-align:center;vertical-align:middle\">\n<img alt=\"\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_7.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;color:#000000;line-height:16px;display:block;border:none\" width=\"50\"/>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w90px m_w90px\" role=\"none\" style=\"margin:auto\" width=\"90\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:13px;vertical-align:middle;line-height:19px\"> Un service client rapide et personnalis\u00e9 </td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"25\" style=\"height:25px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#ffffff\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w89p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"90%\">\n<tbody><tr><td class=\"t_w60p m_w100p m_flright\" valign=\"top\" width=\"61%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#000000;text-align:center;font-size:18px;letter-spacing:1px;padding-top:30px;padding-bottom:5px;vertical-align:middle;line-height:24px;font-weight:700\"> SUIVEZ-NOUS </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w220px m_w230px\" role=\"none\" style=\"margin:auto\" width=\"250\">\n<tbody><tr><td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a data-index=\"9\" href=\"https://instagram.com/showroomprive/\" id=\"detected-link-8\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Instagram\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_8.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a data-index=\"10\" href=\"https://www.facebook.com/showroomprivecom\" id=\"detected-link-9\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Facebook\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_9.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a data-index=\"11\" href=\"https://www.tiktok.com/@showroomprive\" id=\"detected-link-10\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Tiktok\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_10.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w25p m_w25p\" valign=\"top\" width=\"25%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a data-index=\"12\" href=\"https://fr.linkedin.com/company/showroomprive-com\" id=\"detected-link-11\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Linkedin\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_11.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table></td>\n<td class=\"t_w40p m_w100p m_flright\" valign=\"top\" width=\"39%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Trebuchet MS,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Tahoma,sans-serif;color:#000000;text-align:center;font-size:18px;letter-spacing:1px;padding-top:30px;padding-bottom:5px;vertical-align:middle;line-height:24px;font-weight:700\"> APP MOBILE </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w45px m_w45px\" role=\"none\" style=\"margin:auto\" width=\"45\">\n<tbody><tr><td>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"text-align:center;vertical-align:middle\">\n<a data-index=\"13\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=mobile.aspx\" id=\"detected-link-12\" style=\"color:#000000;outline:0;border:none;margin:auto;display:block\" target=\"_blank\" width=\"100%\">\n<img alt=\"Application mobile\" class=\"t_w100p m_w100p\" loading=\"lazy\" src=\"img_12.png\" style=\"font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:16px;display:block;border:none\" width=\"45\"/></a>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"30\" style=\"height:30px;font-size:8px\"> \u200c </td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w400px m_w200px\" role=\"none\" style=\"margin:auto\" width=\"95%\">\n<tbody><tr><td class=\"t_w47d5p t_flleft m_w100p m_flright\" valign=\"top\" width=\"32%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w180px m_w100p\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"180\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:15px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px\">\n<a data-index=\"14\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/Mescommandes.aspx\" id=\"detected-link-13\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Mes commandes </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table></td>\n<td aria-hidden=\"true\" class=\"t_w5p t_flleft m_w100p m_flright\" valign=\"top\" width=\"2%\">\n<span>\u200c</span></td>\n<td class=\"t_w47d5p t_flright m_w100p m_flright\" valign=\"top\" width=\"32%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w180px m_w100p\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"180\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:15px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px\">\n<a data-index=\"15\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=MonCompte/mesba.aspx\" id=\"detected-link-14\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Mes bons d'achat </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table></td>\n<td aria-hidden=\"true\" class=\"t_w100p t_flright m_w100p m_flright\" valign=\"top\" width=\"2%\">\n<span>\u200c</span></td>\n<td class=\"t_w100p t_flright m_w100p m_flright\" valign=\"top\" width=\"32%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w200px m_w100p\" role=\"none\" style=\"margin:auto;border-collapse:separate\" width=\"190\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:8px;border-top-right-radius:8px;border-bottom-left-radius:8px;border-bottom-right-radius:8px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:15px;background-color:#000000;padding-top:10px;padding-bottom:10px;vertical-align:middle;line-height:24px\">\n<a data-index=\"16\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx\" id=\"detected-link-15\" style=\"color:#ffffff;line-height:24px;display:block;text-decoration:none;outline:0\" target=\"_blank\"> Mes communications </a>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n<table align=\"center\" aria-hidden=\"true\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" style=\"margin:auto;clear:both\" width=\"100%\">\n<tbody><tr><td height=\"30\" style=\"height:30px;font-size:8px\"> \u200c </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w100p m_w100p\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td>\n<div style=\"border-top-left-radius:15px;border-top-right-radius:15px;border-bottom-left-radius:15px;border-bottom-right-radius:15px;overflow:hidden\">\n<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" role=\"none\" style=\"border-collapse:separate;background-color:#000000\" width=\"100%\">\n<tbody><tr><td class=\"t_w100p m_w100p\" valign=\"top\" width=\"100%\">\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w350px m_w280px\" role=\"none\" style=\"margin:auto\" width=\"100%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#ffffff;text-align:center;font-size:14px;padding-top:30px;padding-bottom:30px;vertical-align:middle;line-height:24px\">\n<a data-index=\"17\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/mode%3fu%3d1%3Fwebview%3D1\" id=\"detected-link-16\" style=\"color:#ffffff;text-decoration:underline\">Mode</a> | <a data-index=\"18\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universmaison%3fu%3d4%3Fwebview%3D1\" id=\"detected-link-17\" style=\"color:#ffffff;text-decoration:underline\">Maison</a> | <a data-index=\"19\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilvoyage.aspx%3fu%3d5\" id=\"detected-link-18\" style=\"color:#ffffff;text-decoration:underline\">Voyage</a> | <a data-index=\"20\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=ope/universbeaute%3fu%3d6%3Fwebview%3D1\" id=\"detected-link-19\" style=\"color:#ffffff;text-decoration:underline\">Beaut\u00e9</a> | <a data-index=\"21\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/enfant%3fu%3d3%3Fwebview%3D1\" id=\"detected-link-20\" style=\"color:#ffffff;text-decoration:underline\">Enfant</a> | <a data-index=\"22\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1\" id=\"detected-link-21\" style=\"color:#ffffff;text-decoration:underline\">Hi-tech</a> | <a data-index=\"23\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/ht/electromenager%3fu%3d147%3Fwebview%3D1\" id=\"detected-link-22\" style=\"color:#ffffff;text-decoration:underline\">Electromenager</a> | <a data-index=\"24\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=accueilbilletterie.aspx%3fu%3d9\" id=\"detected-link-23\" style=\"color:#ffffff;text-decoration:underline\">Loisirs</a> | <a data-index=\"25\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=univers-srp/legrandmarche%3fu%3d161\" id=\"detected-link-24\" style=\"color:#ffffff;text-decoration:underline\">March\u00e9</a>\u00a0|\u00a0<a data-index=\"26\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20Email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=outlet.aspx%3fu%3d8\" id=\"detected-link-25\" style=\"color:#ffffff;text-decoration:underline\">Outlet</a>\n</td></tr></tbody></table>\n<table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"d_center t_w95p m_w90p\" role=\"none\" style=\"margin:auto\" width=\"95%\">\n<tbody><tr><td style=\"font-family:Arial,Helvetica,sans-serif;color:#646464;text-align:left;font-size:11px;padding-bottom:30px;vertical-align:middle;line-height:16px\"> * Pour les trajets courts, privil\u00e9giez la marche ou le v\u00e9lo. Code \u00e0 usage unique, offre valable pour tous les nouveaux clients jusqu\u2019au 31 ao\u00fbt 2026.<br role=\"none\"/><br role=\"none\"/>TotalEnergies Wash France SAS, 1 rue Eug\u00e8ne et Armand Peugeot, 92500 Rueil-Malmaison, Capital social: 3 750 000,00\u20ac, RCS Nanterre 539 075 598.<br role=\"none\"/><br role=\"none\"/>Vous ne souhaitez plus recevoir de communications de notre part, param\u00e9trez vos choix <a data-index=\"27\" href=\"https://www.showroomprive.com/remoteconnexion.aspx?u=%%Member%20email%%&amp;p=%%Member%20Encrypted%20Password%%&amp;direction=moncompte/mespreferences.aspx\" id=\"detected-link-26\" style=\"color:#646464;text-decoration:underline\">ici</a>.<br role=\"none\"/><br role=\"none\"/>Showroomprive.com - ZAC de la Montjoie - 1 Impasse du Pilier - 93210 La plaine St Denis - France est une SARL au capital de 115 481 749,68 Euros, RCS Bobigny n\u00b0 538 811 837, TVA FR 72 538 811 837. </td></tr></tbody></table>\n</td></tr></tbody></table></div>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td></tr></tbody></table>\n</td>";
                             const frame = document.getElementById('emailFrame');
                             frame.contentDocument.open();
                             frame.contentDocument.write(emailContent);
@@ -1014,6 +1098,27 @@ updateLanguage(currentLang);
                                 body.highlight-links a { border: 2px solid red !important; background-color: yellow !important; color: black !important; position: relative; z-index: 9999; box-shadow: 0 0 5px rgba(255,0,0,0.5); animation: flash 1s infinite alternate; display: inline-block; }
                                 body.highlight-links a img { outline: 4px solid #ff0000 !important; outline-offset: -2px; opacity: 0.8; filter: grayscale(50%); }
                                 
+                                /* MODIF: NUMBER BADGE IN IFRAME */
+                                body.highlight-links a::after {
+                                    content: attr(data-index);
+                                    position: absolute;
+                                    top: -10px;
+                                    left: -10px;
+                                    background: black;
+                                    color: white;
+                                    border-radius: 50%;
+                                    width: 18px;
+                                    height: 18px;
+                                    font-size: 10px;
+                                    font-weight: bold;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;
+                                    z-index: 100000;
+                                    border: 1px solid white;
+                                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+                                }
+
                                 @keyframes target-pulse { 
                                     0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
                                     50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0); }
@@ -1038,7 +1143,7 @@ updateLanguage(currentLang);
                             function copyToClipboard(text) { navigator.clipboard.writeText(text).then(() => { }).catch(err => { console.error('Failed to copy: ', err); }); }
                             function scrollToLink(id) { const el = frame.contentDocument.getElementById(id); if(el) { el.scrollIntoView({behavior: 'smooth', block: 'center'}); el.classList.add('flash-target'); setTimeout(() => el.classList.remove('flash-target'), 2000); } else { console.warn('Link not found in iframe:', id); } }
                             
-                            // TOOLTIP LOGIC
+                            // TOOLTIP LOGIC SMART POSITION
                             const tooltip = document.getElementById('global-tooltip');
                             document.querySelectorAll('[data-tooltip]').forEach(btn => {
                                 btn.addEventListener('mouseenter', e => {
@@ -1046,10 +1151,24 @@ updateLanguage(currentLang);
                                     if(text) {
                                         tooltip.textContent = text;
                                         tooltip.classList.add('visible');
+                                        
                                         const rect = btn.getBoundingClientRect();
-                                        tooltip.style.top = rect.top + 'px';
+                                        const viewportHeight = window.innerHeight;
+                                        
+                                        // Position horizontale (gauche du bouton)
                                         tooltip.style.right = (window.innerWidth - rect.left + 10) + 'px';
                                         tooltip.style.left = 'auto';
+
+                                        // Position verticale intelligente
+                                        if (rect.top > viewportHeight / 2) {
+                                            // Bouton en bas -> Tooltip au-dessus
+                                            tooltip.style.top = 'auto';
+                                            tooltip.style.bottom = (viewportHeight - rect.bottom) + 'px';
+                                        } else {
+                                            // Bouton en haut -> Tooltip en dessous
+                                            tooltip.style.top = rect.top + 'px';
+                                            tooltip.style.bottom = 'auto';
+                                        }
                                     }
                                 });
                                 btn.addEventListener('mouseleave', () => {

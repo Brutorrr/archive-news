@@ -32,18 +32,18 @@
             #searchInput { width: 100%; padding: 12px 20px; margin-bottom: 25px; box-sizing: border-box; border: 2px solid var(--border-color); border-radius: 8px; font-size: 16px; background-color: var(--input-bg); color: var(--text-main); transition: border-color 0.3s; }
             #searchInput:focus { border-color: var(--accent-color); outline: none; }
             
-            ul { list-style: none; padding: 0; margin: 0; overflow: hidden; }
-            /* MODIF: Card Style for Index Items */
+            /* MODIF FIX: Overflow visible to allow hover scaling without clipping */
+            ul { list-style: none; padding: 0; margin: 0; overflow: visible; }
+            
             li.news-item { 
                 border: 1px solid var(--border-color); margin-bottom: 12px; border-radius: 8px; background: var(--bg-card);
                 transition: transform 0.2s, box-shadow 0.2s;
             }
-            li.news-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--shadow); border-color: var(--accent-color); }
+            li.news-item:hover { transform: translateY(-2px); box-shadow: 0 4px 12px var(--shadow); border-color: var(--accent-color); z-index: 10; position: relative; }
             
             a.item-link { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; text-decoration: none; color: var(--text-main); }
             
             .info-col { display: flex; flex-direction: column; flex: 1; min-width: 0; margin-right: 15px; }
-            /* MODIF: Lowercase sender + fonts */
             .sender { font-size: 0.8rem; text-transform: lowercase; color: var(--text-muted); margin-bottom: 6px; }
             .title { font-weight: 600; font-size: 1.05rem; color: var(--text-main); margin-bottom: 6px; }
             .preheader-preview { font-size: 0.85rem; color: var(--text-light); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; }
@@ -92,7 +92,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 28/11/2025 à 17:40</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:56</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:17</span>
                 </div>
             </a>
         </li>
@@ -106,7 +106,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 28/11/2025 à 14:09</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:59</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:18</span>
                 </div>
             </a>
         </li>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 28/11/2025 à 10:17</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:55</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:20</span>
                 </div>
             </a>
         </li>
@@ -134,7 +134,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 28/11/2025 à 08:37</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:55</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:19</span>
                 </div>
             </a>
         </li>
@@ -149,7 +149,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 28/11/2025 à 08:36</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:59</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:17</span>
                 </div>
             </a>
         </li>
@@ -163,7 +163,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 27/11/2025 à 03:53</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:57</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:17</span>
                 </div>
             </a>
         </li>
@@ -177,7 +177,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 26/11/2025 à 13:22</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:56</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:19</span>
                 </div>
             </a>
         </li>
@@ -191,7 +191,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 26/11/2025 à 13:20</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:58</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:16</span>
                 </div>
             </a>
         </li>
@@ -205,7 +205,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 24/11/2025 à 05:48</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:57</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:17</span>
                 </div>
             </a>
         </li>
@@ -219,7 +219,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 24/11/2025 à 05:24</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:57</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:19</span>
                 </div>
             </a>
         </li>
@@ -233,7 +233,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 24/11/2025 à 05:21</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:57</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:16</span>
                 </div>
             </a>
         </li>
@@ -247,7 +247,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 20/11/2025 à 10:01</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:57</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:19</span>
                 </div>
             </a>
         </li>
@@ -261,7 +261,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 17/11/2025 à 18:10</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:57</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:18</span>
                 </div>
             </a>
         </li>
@@ -275,7 +275,7 @@
                 </div>
                 <div class="date-col">
                     <span class="date" title="Received Date" data-i18n-title="tooltip_sent">📩 19/09/2025 à 14:23</span>
-                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 14:58</span>
+                    <span class="date-arch" title="Archived Date" data-i18n-title="tooltip_archived">🗄️ 29/11/2025 à 15:18</span>
                 </div>
             </a>
         </li>
