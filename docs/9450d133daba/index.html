@@ -23,8 +23,11 @@
                             .iframe-wrapper { width: 1000px; max-width: 95%; height: 90%; transition: width 0.3s ease; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05); border-radius: 4px; }
                             iframe { width: 100%; height: 100%; border: none; display: block; border-radius: inherit; }
                             body.mobile-mode .iframe-wrapper { width: 375px; height: 812px; max-height: 85vh; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-                            .sidebar { position: fixed; top: 60px; right: -350px; width: 350px; height: calc(100vh - 60px); background: white; border-left: 1px solid #ddd; transition: right 0.3s; overflow-y: auto; z-index: 90; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; }
+                            
+                            /* --- MODIF : SIDEBAR PLUS LARGE --- */
+                            .sidebar { position: fixed; top: 60px; right: -420px; width: 420px; height: calc(100vh - 60px); background: white; border-left: 1px solid #ddd; transition: right 0.3s; overflow-y: auto; z-index: 90; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; gap: 20px; }
                             .sidebar.open { right: 0; }
+                            
                             .sidebar h3 { margin-top: 0; font-size: 16px; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
                             .meta-item { margin-bottom: 12px; font-size: 13px; color: #555; }
                             .meta-label { font-weight: 600; display: block; margin-bottom: 3px; color: #333; }
@@ -64,7 +67,7 @@
                                 pointer-events: none;
                                 display: none;
                                 box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-                                white-space: pre-wrap;
+                                white-space: pre-wrap; /* Preserve newlines */
                                 word-break: break-all;
                                 line-height: 1.4;
                             }
@@ -117,6 +120,17 @@
                             <div class="iframe-wrapper"><iframe id="emailFrame"></iframe></div>
                         </div>
                         <div class="sidebar" id="sidebar">
+                            
+                            <!-- 1. METADATA (FIRST) -->
+                            <div class="sidebar-section">
+                                <h3 data-i18n="meta_section"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> Metadata</h3>
+                                <div class="meta-item"><span class="meta-label" data-i18n="label_sent">📅 Sent Date</span><span class="meta-val">26/11/2025</span></div>
+                                <div class="meta-item"><span class="meta-label" data-i18n="label_archived">🗄️ Archived Date</span><span class="meta-val">29/11/2025</span></div>
+                                <div class="meta-item"><span class="meta-label" data-i18n="label_reading">⏱️ Reading Time</span><span class="meta-val">1 min</span></div>
+                                <div class="meta-item"><span class="meta-label" data-i18n="label_preheader">👀 Preheader (Preview)</span><div class="preheader-box">Si vous ne visualisez pas correctement ce message, cliquez-ici TOUTE L&#x27;OFFRE L&#x27;ARMURERIE BONS PLANS MARQUES VIDÉOS Offre spéciale sur vos magazines préférés ! L...</div></div>
+                            </div>
+                            
+                            <!-- 2. PIXELS (SECOND) -->
                             <div class="sidebar-section">
                                 <h3 data-i18n="pixel_section"><svg viewBox="0 0 24 24" width="14" height="14" stroke="orange" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg> Tracking Pixels</h3>
                                 
@@ -125,13 +139,7 @@
                         </div>
                         
                             </div>
-                            <div class="sidebar-section">
-                                <h3 data-i18n="meta_section"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> Metadata</h3>
-                                <div class="meta-item"><span class="meta-label" data-i18n="label_sent">📅 Sent Date</span><span class="meta-val">26/11/2025</span></div>
-                                <div class="meta-item"><span class="meta-label" data-i18n="label_archived">🗄️ Archived Date</span><span class="meta-val">29/11/2025</span></div>
-                                <div class="meta-item"><span class="meta-label" data-i18n="label_reading">⏱️ Reading Time</span><span class="meta-val">1 min</span></div>
-                                <div class="meta-item"><span class="meta-label" data-i18n="label_preheader">👀 Preheader (Preview)</span><div class="preheader-box">Si vous ne visualisez pas correctement ce message, cliquez-ici TOUTE L&#x27;OFFRE L&#x27;ARMURERIE BONS PLANS MARQUES VIDÉOS Offre spéciale sur vos magazines préférés ! L...</div></div>
-                            </div>
+                            
                             <div class="sidebar-section">
                                 <h3 data-i18n="links_section"><svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg> Detected Links (30)</h3>
                                 <ul>
@@ -164,7 +172,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2bb9TX2IwJ3dZVr8Sc-RLCQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RkssdfVc-gKAxEgRY80z5gSjJ_iUqpApLxELHR9DT1-Mg</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2bb9TX2IwJ3dZVr8Sc-RLCQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RkssdfVc-gKAxEgRY80z5gSjJ_iUqpApLxELHR9DT1-Mg &gt; https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2bb9TX2IwJ3dZVr8Sc-RLCQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RkssdfVc-gKAxEgRY80z5gSjJ_iUqpApLxELHR9DT1-Mg
+⬇
+https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-1')" title="Locate in Email">
@@ -185,7 +195,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2bb9TX2IwJ3dZVr8Sc-RLCQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RkssdfVc-gKAxEgRY80z5gS8mZDaRAKsW5MjYWZy9UxDg</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2bb9TX2IwJ3dZVr8Sc-RLCQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RkssdfVc-gKAxEgRY80z5gS8mZDaRAKsW5MjYWZy9UxDg &gt; https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2bb9TX2IwJ3dZVr8Sc-RLCQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RkssdfVc-gKAxEgRY80z5gS8mZDaRAKsW5MjYWZy9UxDg
+⬇
+https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-2')" title="Locate in Email">
@@ -206,7 +218,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2-6vKVlrVRdMa5rj8PLtz0gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuA2VBRzD7ZulvwchFUKBPxCZBtzb7NTTMlAHqNNWwysMCUMUAnKgUHc1KuG6GqXGPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtmFhd_CLm1aKPp2gz--moGS2k37zU9ckXFewyhths_C5A3tmsxe3wKNUmoKvjOuAE</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2-6vKVlrVRdMa5rj8PLtz0gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuA2VBRzD7ZulvwchFUKBPxCZBtzb7NTTMlAHqNNWwysMCUMUAnKgUHc1KuG6GqXGPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtmFhd_CLm1aKPp2gz--moGS2k37zU9ckXFewyhths_C5A3tmsxe3wKNUmoKvjOuAE &gt; https://www.armurerie-chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2-6vKVlrVRdMa5rj8PLtz0gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuA2VBRzD7ZulvwchFUKBPxCZBtzb7NTTMlAHqNNWwysMCUMUAnKgUHc1KuG6GqXGPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtmFhd_CLm1aKPp2gz--moGS2k37zU9ckXFewyhths_C5A3tmsxe3wKNUmoKvjOuAE
+⬇
+https://www.armurerie-chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-3')" title="Locate in Email">
@@ -227,7 +241,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2-6vKVlrVRdMa5rj8PLtz0gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_-tGI-FbNr1EQQ7RxUT2uiRyXaS3dQkQQiEXdKW-5UkxPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtmFhd_CLm1aKPp2gz--moGS2k37zU9ckXFewyhths_CytFVHFA88y8TQJldsreKEo</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2-6vKVlrVRdMa5rj8PLtz0gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_-tGI-FbNr1EQQ7RxUT2uiRyXaS3dQkQQiEXdKW-5UkxPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtmFhd_CLm1aKPp2gz--moGS2k37zU9ckXFewyhths_CytFVHFA88y8TQJldsreKEo &gt; https://www.chasseur.com/bons-plans?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2-6vKVlrVRdMa5rj8PLtz0gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_-tGI-FbNr1EQQ7RxUT2uiRyXaS3dQkQQiEXdKW-5UkxPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtmFhd_CLm1aKPp2gz--moGS2k37zU9ckXFewyhths_CytFVHFA88y8TQJldsreKEo
+⬇
+https://www.chasseur.com/bons-plans?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-4')" title="Locate in Email">
@@ -248,7 +264,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2qrPJujLajpek47s8uTuhZwMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_3aUG4HUukrZ3oZv8USG9q2aHyt-3ord0Ro2HC5D3n2l4QccnRtyERb34SGdRSrFpX9alS0LxJkWxrGnWAbxRMUXpDv0j44kr-aOHi9WyykqIEnA7XaC_0t_Kpn2Y7fGQDjWcKfjLSNAkhuwLUEcNvs</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2qrPJujLajpek47s8uTuhZwMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_3aUG4HUukrZ3oZv8USG9q2aHyt-3ord0Ro2HC5D3n2l4QccnRtyERb34SGdRSrFpX9alS0LxJkWxrGnWAbxRMUXpDv0j44kr-aOHi9WyykqIEnA7XaC_0t_Kpn2Y7fGQDjWcKfjLSNAkhuwLUEcNvs &gt; https://www.chasseur.com/marques.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2qrPJujLajpek47s8uTuhZwMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_3aUG4HUukrZ3oZv8USG9q2aHyt-3ord0Ro2HC5D3n2l4QccnRtyERb34SGdRSrFpX9alS0LxJkWxrGnWAbxRMUXpDv0j44kr-aOHi9WyykqIEnA7XaC_0t_Kpn2Y7fGQDjWcKfjLSNAkhuwLUEcNvs
+⬇
+https://www.chasseur.com/marques.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-5')" title="Locate in Email">
@@ -269,7 +287,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2bH6lhelcnZqyEG7OWYgm6gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_yWRyvta-3PycMwap2eEEkjJUNIi2JsErdpWpvH7d_GN7xhcejoadf90OJjBWZ7M6hUr1ifXpxNTAuUjdGYlxL5R6FiLu32qv2PZlX6hZbogzg137uXAxvNLoxsw4HzjOObjJgkGPPAywW7miLw6rtiC3o3NTcEGTzeOD_djDhzD</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2bH6lhelcnZqyEG7OWYgm6gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_yWRyvta-3PycMwap2eEEkjJUNIi2JsErdpWpvH7d_GN7xhcejoadf90OJjBWZ7M6hUr1ifXpxNTAuUjdGYlxL5R6FiLu32qv2PZlX6hZbogzg137uXAxvNLoxsw4HzjOObjJgkGPPAywW7miLw6rtiC3o3NTcEGTzeOD_djDhzD &gt; https://www.chasseur.com/test-conseil-tuto-video-chasse.html?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2bH6lhelcnZqyEG7OWYgm6gMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_yWRyvta-3PycMwap2eEEkjJUNIi2JsErdpWpvH7d_GN7xhcejoadf90OJjBWZ7M6hUr1ifXpxNTAuUjdGYlxL5R6FiLu32qv2PZlX6hZbogzg137uXAxvNLoxsw4HzjOObjJgkGPPAywW7miLw6rtiC3o3NTcEGTzeOD_djDhzD
+⬇
+https://www.chasseur.com/test-conseil-tuto-video-chasse.html?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-6')" title="Locate in Email">
@@ -290,7 +310,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XkFqmMCR1mWi5oApjjmA4Uo</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XkFqmMCR1mWi5oApjjmA4Uo &gt; https://www.france-abonnements.fr/code/RF052?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XkFqmMCR1mWi5oApjjmA4Uo
+⬇
+https://www.france-abonnements.fr/code/RF052?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-7')" title="Locate in Email">
@@ -311,7 +337,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XnNGtfp3Z5PHU9eg8NPWJsk</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XnNGtfp3Z5PHU9eg8NPWJsk &gt; https://www.france-abonnements.fr/code/RF052?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XnNGtfp3Z5PHU9eg8NPWJsk
+⬇
+https://www.france-abonnements.fr/code/RF052?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-8')" title="Locate in Email">
@@ -332,7 +364,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XvMfoAf6_UUPUicAcwKokiU</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XvMfoAf6_UUPUicAcwKokiU &gt; https://www.france-abonnements.fr/code/RF052?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k27AOkKf7KBlwsr6i1CcSIAAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLaKt44_VSTR2y589n8BtI4n_0BxmAWfHgARQOzJKU-VECBuXIrsNYL7yFzH4ZNZZe7fajZuuoHHxQw2wA0cISTFeP_GDj89t2Yy-WcdRel9XvMfoAf6_UUPUicAcwKokiU
+⬇
+https://www.france-abonnements.fr/code/RF052?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-9')" title="Locate in Email">
@@ -353,7 +391,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2q1iH2ZOqfrCBvXO0-tnU8AMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2XqucPZKx6KgKcJeRH1_KzQY5ot-CI0wnhK3XyTERskev6__RmGfxN6LE_HBH94DvXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhRXU8sYaBD_UaOGvOwYpYpYuRtFgEIaQZQmNztT71PO3SGbPfuV650930AzWw-nFhw</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2q1iH2ZOqfrCBvXO0-tnU8AMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2XqucPZKx6KgKcJeRH1_KzQY5ot-CI0wnhK3XyTERskev6__RmGfxN6LE_HBH94DvXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhRXU8sYaBD_UaOGvOwYpYpYuRtFgEIaQZQmNztT71PO3SGbPfuV650930AzWw-nFhw &gt; https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-le-chasseur-francais-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2q1iH2ZOqfrCBvXO0-tnU8AMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2XqucPZKx6KgKcJeRH1_KzQY5ot-CI0wnhK3XyTERskev6__RmGfxN6LE_HBH94DvXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhRXU8sYaBD_UaOGvOwYpYpYuRtFgEIaQZQmNztT71PO3SGbPfuV650930AzWw-nFhw
+⬇
+https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-le-chasseur-francais-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-10')" title="Locate in Email">
@@ -374,7 +418,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2q1iH2ZOqfrCBvXO0-tnU8AMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2XqucPZKx6KgKcJeRH1_KzQY5ot-CI0wnhK3XyTERskev6__RmGfxN6LE_HBH94DvXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhRXU8sYaBD_UaOGvOwYpYpYuRtFgEIaQZQmNztT71PO3bxx-QI9HYb9oFRqTNABuI0</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2q1iH2ZOqfrCBvXO0-tnU8AMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2XqucPZKx6KgKcJeRH1_KzQY5ot-CI0wnhK3XyTERskev6__RmGfxN6LE_HBH94DvXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhRXU8sYaBD_UaOGvOwYpYpYuRtFgEIaQZQmNztT71PO3bxx-QI9HYb9oFRqTNABuI0 &gt; https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-le-chasseur-francais-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2q1iH2ZOqfrCBvXO0-tnU8AMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2XqucPZKx6KgKcJeRH1_KzQY5ot-CI0wnhK3XyTERskev6__RmGfxN6LE_HBH94DvXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhRXU8sYaBD_UaOGvOwYpYpYuRtFgEIaQZQmNztT71PO3bxx-QI9HYb9oFRqTNABuI0
+⬇
+https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-le-chasseur-francais-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-11')" title="Locate in Email">
@@ -395,7 +445,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2Aq6EGj-tQoR3HeNIusClbM</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2Aq6EGj-tQoR3HeNIusClbM &gt; https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2Aq6EGj-tQoR3HeNIusClbM
+⬇
+https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-12')" title="Locate in Email">
@@ -416,7 +472,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2DQkY0G9QioIfaALTCeqjMI</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2DQkY0G9QioIfaALTCeqjMI &gt; https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2DQkY0G9QioIfaALTCeqjMI
+⬇
+https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-13')" title="Locate in Email">
@@ -437,7 +499,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2GZ9reP2jZ9SXAAYq-mhbLs</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2GZ9reP2jZ9SXAAYq-mhbLs &gt; https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2GZ9reP2jZ9SXAAYq-mhbLs
+⬇
+https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-14')" title="Locate in Email">
@@ -458,7 +526,13 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2Lu7Gx5tIDFmqmT9ECowuOE</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2Lu7Gx5tIDFmqmT9ECowuOE &gt; https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.france-abonnements.fr/code/public &gt; https://www.france-abonnements.fr/" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2PCe1XusR9kJRq-FD-vqJjAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETuI85liXcJt5yNPCYEUKdwwklm7EbNNp9M4xynQ1UoLYCxxZr8nMHFtmUCKyxVfj2pECjL5xm0DPJUKK8N-lB66QgieoNsc9CcqdKRVZjT6Is3BqQ8pnnvo8nfBNJjDc6_nXAiLqE_FBbdjPc4c1evJKgMkQ1AKRjX9SBmbehEFP_6JMxO4wNMy-34f7QqmXiGG2nWY3OdrAxkpum1dib2Lu7Gx5tIDFmqmT9ECowuOE
+⬇
+https://www.france-abonnements.fr/code/RF052/produit/abonnement-magazine-la-revue-nationale-de-la-chasse-hs?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.france-abonnements.fr/code/public
+⬇
+https://www.france-abonnements.fr/" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-15')" title="Locate in Email">
@@ -479,7 +553,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2YvQJd56g179wfmoRm3LcFQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_5FJyW6VQqlRL_bIqyCS5aYOSQMmGKJzavvzkMSkAlVpSQJ9_iIaHPyYbz7YfQiDZBowbnBtO18kcd_K8fyyCzEy7Hj6SjcCHMR8KK3Xm1aF1_jrZ7dHsOKjRk3MTyvJ-Bnrpk1br1ogeodF-26seSg</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2YvQJd56g179wfmoRm3LcFQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_5FJyW6VQqlRL_bIqyCS5aYOSQMmGKJzavvzkMSkAlVpSQJ9_iIaHPyYbz7YfQiDZBowbnBtO18kcd_K8fyyCzEy7Hj6SjcCHMR8KK3Xm1aF1_jrZ7dHsOKjRk3MTyvJ-Bnrpk1br1ogeodF-26seSg &gt; https://www.chasseur.com/contacts.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2YvQJd56g179wfmoRm3LcFQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_5FJyW6VQqlRL_bIqyCS5aYOSQMmGKJzavvzkMSkAlVpSQJ9_iIaHPyYbz7YfQiDZBowbnBtO18kcd_K8fyyCzEy7Hj6SjcCHMR8KK3Xm1aF1_jrZ7dHsOKjRk3MTyvJ-Bnrpk1br1ogeodF-26seSg
+⬇
+https://www.chasseur.com/contacts.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-16')" title="Locate in Email">
@@ -500,7 +576,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2fUh3FGx3OUnaPnFuRLvKWQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__My_e6ASPdVZumpsuJV1YQTkvyTG7CT33pplAUyaxAFXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhT4N0A3TBTWrlrLZIuqOZ_RdvNG9CY3_3kW2ANP4N6oIMwJNEO91kw0FDwKqxlHP5g</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2fUh3FGx3OUnaPnFuRLvKWQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__My_e6ASPdVZumpsuJV1YQTkvyTG7CT33pplAUyaxAFXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhT4N0A3TBTWrlrLZIuqOZ_RdvNG9CY3_3kW2ANP4N6oIMwJNEO91kw0FDwKqxlHP5g &gt; https://www.chasseur.com/tableauPort.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2fUh3FGx3OUnaPnFuRLvKWQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__My_e6ASPdVZumpsuJV1YQTkvyTG7CT33pplAUyaxAFXXdqAWjDpRmCsmU9FoSvqPmwg2qDxcsdkupe8h9pDhT4N0A3TBTWrlrLZIuqOZ_RdvNG9CY3_3kW2ANP4N6oIMwJNEO91kw0FDwKqxlHP5g
+⬇
+https://www.chasseur.com/tableauPort.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-17')" title="Locate in Email">
@@ -521,7 +599,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k26J4ZkX9NJhLa9hVvg-67PAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__74fWGXddUl2Dw88g0ZdDtvJuOmywkRB_VGDIsLZbbqSeVD_sNNSyGLZga6GPXqff4Bv-pgGa56EzstLG9M7RqR8pdskqEQAA7kXdkDzMuDZu7QHQmBoxC0BGBZQaZikOYNjzunhzuLOQF3OKQYPzE</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k26J4ZkX9NJhLa9hVvg-67PAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__74fWGXddUl2Dw88g0ZdDtvJuOmywkRB_VGDIsLZbbqSeVD_sNNSyGLZga6GPXqff4Bv-pgGa56EzstLG9M7RqR8pdskqEQAA7kXdkDzMuDZu7QHQmBoxC0BGBZQaZikOYNjzunhzuLOQF3OKQYPzE &gt; https://www.chasseur.com/satisfait.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k26J4ZkX9NJhLa9hVvg-67PAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__74fWGXddUl2Dw88g0ZdDtvJuOmywkRB_VGDIsLZbbqSeVD_sNNSyGLZga6GPXqff4Bv-pgGa56EzstLG9M7RqR8pdskqEQAA7kXdkDzMuDZu7QHQmBoxC0BGBZQaZikOYNjzunhzuLOQF3OKQYPzE
+⬇
+https://www.chasseur.com/satisfait.asp?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-18')" title="Locate in Email">
@@ -542,7 +622,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k29Tm4rIgZlg84jK7DK6JqKgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__WO66xBtmTm2dIswypAczyyX8d5EwKz3cgiwj7WSN43ZEzOp3c-B-U7JNlgsSZaxIHPyU3RULtpoQRZiFCqqsG1ZthhCnYM9JSmdL1by3I4aqLpzT17KYaca0nceeHMfEb9EMzo3-bg9IG7_exiGBVpHxpiG7P5FdES7kWySSqc</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k29Tm4rIgZlg84jK7DK6JqKgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__WO66xBtmTm2dIswypAczyyX8d5EwKz3cgiwj7WSN43ZEzOp3c-B-U7JNlgsSZaxIHPyU3RULtpoQRZiFCqqsG1ZthhCnYM9JSmdL1by3I4aqLpzT17KYaca0nceeHMfEb9EMzo3-bg9IG7_exiGBVpHxpiG7P5FdES7kWySSqc &gt; https://www.chasseur.com/moyens-de-paiement.html?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k29Tm4rIgZlg84jK7DK6JqKgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX__WO66xBtmTm2dIswypAczyyX8d5EwKz3cgiwj7WSN43ZEzOp3c-B-U7JNlgsSZaxIHPyU3RULtpoQRZiFCqqsG1ZthhCnYM9JSmdL1by3I4aqLpzT17KYaca0nceeHMfEb9EMzo3-bg9IG7_exiGBVpHxpiG7P5FdES7kWySSqc
+⬇
+https://www.chasseur.com/moyens-de-paiement.html?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-19')" title="Locate in Email">
@@ -563,7 +645,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazqgBjW9rTP-AjiGd1YmAFbw</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazqgBjW9rTP-AjiGd1YmAFbw &gt; https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazqgBjW9rTP-AjiGd1YmAFbw
+⬇
+https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-20')" title="Locate in Email">
@@ -584,7 +668,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uaz8keszDyGcnZZAJUTS1d-Yw</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uaz8keszDyGcnZZAJUTS1d-Yw &gt; https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uaz8keszDyGcnZZAJUTS1d-Yw
+⬇
+https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-21')" title="Locate in Email">
@@ -605,7 +691,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazchNZ0f63e6Uzkja3WfTYaw</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazchNZ0f63e6Uzkja3WfTYaw &gt; https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazchNZ0f63e6Uzkja3WfTYaw
+⬇
+https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-22')" title="Locate in Email">
@@ -626,7 +714,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazmeuav3o7XI-obwdsGDloIQ</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazmeuav3o7XI-obwdsGDloIQ &gt; https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2W2c626GkozNx2zzeWjVCUQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_8dEKXKCfbOjCpXQHFiV63SLLe18ama7MAl-YOLZ1k7_iSe0Vdz-B77szzHEevVCb8oFsFjGvLOx3H0Gnre9-RlYkXa8cYRYHnbNZyd3_uazmeuav3o7XI-obwdsGDloIQ
+⬇
+https://www.chasseur.com/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-23')" title="Locate in Email">
@@ -647,7 +737,11 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2YvQJd56g179wfmoRm3LcFQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETgV3MfA0nOlJ_breW3AKU6WdMHcnOxdIEHoFIIxvTVIYsjsecTtP7wR2chnuedKQ8SQJ9_iIaHPyYbz7YfQiDZBowbnBtO18kcd_K8fyyCzEy7Hj6SjcCHMR8KK3Xm1aF1_jrZ7dHsOKjRk3MTyvJ-IsXy4rhn3iChz8GmbLgkOQ</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2YvQJd56g179wfmoRm3LcFQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETgV3MfA0nOlJ_breW3AKU6WdMHcnOxdIEHoFIIxvTVIYsjsecTtP7wR2chnuedKQ8SQJ9_iIaHPyYbz7YfQiDZBowbnBtO18kcd_K8fyyCzEy7Hj6SjcCHMR8KK3Xm1aF1_jrZ7dHsOKjRk3MTyvJ-IsXy4rhn3iChz8GmbLgkOQ &gt; https://www.facebook.com/chasseurcom/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fchasseurcom%2F%3Fidprob%3D181773_588609%26utm_campaign%3Demailing%26utm_medium%3Demail%26utm_source%3Dnewsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2YvQJd56g179wfmoRm3LcFQMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETgV3MfA0nOlJ_breW3AKU6WdMHcnOxdIEHoFIIxvTVIYsjsecTtP7wR2chnuedKQ8SQJ9_iIaHPyYbz7YfQiDZBowbnBtO18kcd_K8fyyCzEy7Hj6SjcCHMR8KK3Xm1aF1_jrZ7dHsOKjRk3MTyvJ-IsXy4rhn3iChz8GmbLgkOQ
+⬇
+https://www.facebook.com/chasseurcom/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.facebook.com/login/?next=https%3A%2F%2Fwww.facebook.com%2Fchasseurcom%2F%3Fidprob%3D181773_588609%26utm_campaign%3Demailing%26utm_medium%3Demail%26utm_source%3Dnewsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-24')" title="Locate in Email">
@@ -668,7 +762,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k2siF2bOzQznFEjn3EGOJrDAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFET6GHbksGDGmzWnE7Lnc6bLPgui5ues7U9AvHQqb6JnZjWLlJTsxgvWI3pG6MPzcw993YWuvRYKj_GNqFoaM7tTrogPXi9TN23FBcsB3D-NjHJm1gfbWmbmVr6zoe6qIuMWiNPz4UhEfs4GkvTlycT4xou_tAD9fs2bi-NbalpA1D0A7zhYpVc5IFGPzkZFFq4</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2siF2bOzQznFEjn3EGOJrDAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFET6GHbksGDGmzWnE7Lnc6bLPgui5ues7U9AvHQqb6JnZjWLlJTsxgvWI3pG6MPzcw993YWuvRYKj_GNqFoaM7tTrogPXi9TN23FBcsB3D-NjHJm1gfbWmbmVr6zoe6qIuMWiNPz4UhEfs4GkvTlycT4xou_tAD9fs2bi-NbalpA1D0A7zhYpVc5IFGPzkZFFq4 &gt; https://www.youtube.com/@chasseurpointcom6525?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k2siF2bOzQznFEjn3EGOJrDAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFET6GHbksGDGmzWnE7Lnc6bLPgui5ues7U9AvHQqb6JnZjWLlJTsxgvWI3pG6MPzcw993YWuvRYKj_GNqFoaM7tTrogPXi9TN23FBcsB3D-NjHJm1gfbWmbmVr6zoe6qIuMWiNPz4UhEfs4GkvTlycT4xou_tAD9fs2bi-NbalpA1D0A7zhYpVc5IFGPzkZFFq4
+⬇
+https://www.youtube.com/@chasseurpointcom6525?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-25')" title="Locate in Email">
@@ -689,7 +785,11 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k26J4ZkX9NJhLa9hVvg-67PAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETOgGEz6Q6OthT8zCpHesZaZqbuiO6E3pIB7cYrBz4SqoS2XTneaSgbceK29diuftGSeVD_sNNSyGLZga6GPXqff4Bv-pgGa56EzstLG9M7RqR8pdskqEQAA7kXdkDzMuDZu7QHQmBoxC0BGBZQaZikE8B6a-xRYZAMundr-xWqao</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k26J4ZkX9NJhLa9hVvg-67PAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETOgGEz6Q6OthT8zCpHesZaZqbuiO6E3pIB7cYrBz4SqoS2XTneaSgbceK29diuftGSeVD_sNNSyGLZga6GPXqff4Bv-pgGa56EzstLG9M7RqR8pdskqEQAA7kXdkDzMuDZu7QHQmBoxC0BGBZQaZikE8B6a-xRYZAMundr-xWqao &gt; https://www.instagram.com/chasseurcom/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter &gt; https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fchasseurcom%2F%3Fidprob%3D181773_588609%26utm_campaign%3Demailing%26utm_medium%3Demail%26utm_source%3Dnewsletter&amp;is_from_rle" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k26J4ZkX9NJhLa9hVvg-67PAMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETOgGEz6Q6OthT8zCpHesZaZqbuiO6E3pIB7cYrBz4SqoS2XTneaSgbceK29diuftGSeVD_sNNSyGLZga6GPXqff4Bv-pgGa56EzstLG9M7RqR8pdskqEQAA7kXdkDzMuDZu7QHQmBoxC0BGBZQaZikE8B6a-xRYZAMundr-xWqao
+⬇
+https://www.instagram.com/chasseurcom/?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter
+⬇
+https://www.instagram.com/accounts/login/?next=https%3A%2F%2Fwww.instagram.com%2Fchasseurcom%2F%3Fidprob%3D181773_588609%26utm_campaign%3Demailing%26utm_medium%3Demail%26utm_source%3Dnewsletter&amp;is_from_rle" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-26')" title="Locate in Email">
@@ -710,7 +810,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k22A0_0CVL032nX0taFZFEtgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETWmJ5gnHNN5qFxEsm6KVp5dhNLMoHLWs5NnlrGNRRMINkzmTqJuLWDU4TvB_DmskuPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtrJorwXbDWMXk4xm57AXIYLdMFAF_URsQKXG2q-unAOL2yXgYePkEmAM1g-9RxJEo</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k22A0_0CVL032nX0taFZFEtgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETWmJ5gnHNN5qFxEsm6KVp5dhNLMoHLWs5NnlrGNRRMINkzmTqJuLWDU4TvB_DmskuPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtrJorwXbDWMXk4xm57AXIYLdMFAF_URsQKXG2q-unAOL2yXgYePkEmAM1g-9RxJEo &gt; https://www.tiktok.com/@chasseurcom?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;lang=fr&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k22A0_0CVL032nX0taFZFEtgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETWmJ5gnHNN5qFxEsm6KVp5dhNLMoHLWs5NnlrGNRRMINkzmTqJuLWDU4TvB_DmskuPk-GrrDdC6BR4w8YB3yVs86VuRHNN4XZwYUWAbk_dEtrJorwXbDWMXk4xm57AXIYLdMFAF_URsQKXG2q-unAOL2yXgYePkEmAM1g-9RxJEo
+⬇
+https://www.tiktok.com/@chasseurcom?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;lang=fr&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-27')" title="Locate in Email">
@@ -731,7 +833,9 @@
                                     <div class="link-orig" title="Original Tracking Link">Original: https://tg.info.chasseur.com/1/c/k22A0_0CVL032nX0taFZFEtgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_1Mr6cM4jycWhQWp8nokyiiF_tzTNAOeAknE0SkmFLzy8ZduoifOAYt4iHYofPQ3B24kDH8GE8h6nEuTv8IGFZK8z3YmHd0VzkXDLL3U2JAR9ccoGOounKvdT0eunyPIlu9Hb59g1bWtJDT6cxYAlYI</div>
                                 </a>
                                 <div class="link-actions">
-                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k22A0_0CVL032nX0taFZFEtgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_1Mr6cM4jycWhQWp8nokyiiF_tzTNAOeAknE0SkmFLzy8ZduoifOAYt4iHYofPQ3B24kDH8GE8h6nEuTv8IGFZK8z3YmHd0VzkXDLL3U2JAR9ccoGOounKvdT0eunyPIlu9Hb59g1bWtJDT6cxYAlYI &gt; https://www.chasseur.com/espace-abonne.html?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
+                                    <button class="btn-action btn-chain" data-tooltip="https://tg.info.chasseur.com/1/c/k22A0_0CVL032nX0taFZFEtgMfoMQrakW5yfRO1CWXtJKDh2BQS51fsfdnxWDSwFETbearH8_ByF_2taq2rjsX_1Mr6cM4jycWhQWp8nokyiiF_tzTNAOeAknE0SkmFLzy8ZduoifOAYt4iHYofPQ3B24kDH8GE8h6nEuTv8IGFZK8z3YmHd0VzkXDLL3U2JAR9ccoGOounKvdT0eunyPIlu9Hb59g1bWtJDT6cxYAlYI
+⬇
+https://www.chasseur.com/espace-abonne.html?idprob=181773_588609&amp;utm_campaign=emailing&amp;utm_medium=email&amp;utm_source=newsletter" title="Show Redirect Path">
                                         <svg viewBox="0 0 24 24" width="12" height="12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
                                     </button>
                                     <button class="btn-action" onclick="scrollToLink('detected-link-28')" title="Locate in Email">
@@ -835,11 +939,25 @@ updateLanguage(currentLang);
                                 a, .link-text { color: #1a0dab; }
                                 html.dark-mode-internal { filter: invert(1) hue-rotate(180deg); }
                                 html.dark-mode-internal img, html.dark-mode-internal video, html.dark-mode-internal [style*="background-image"] { filter: invert(1) hue-rotate(180deg); }
+                                
                                 body.highlight-links a { border: 2px solid red !important; background-color: yellow !important; color: black !important; position: relative; z-index: 9999; box-shadow: 0 0 5px rgba(255,0,0,0.5); animation: flash 1s infinite alternate; display: inline-block; }
                                 body.highlight-links a img { outline: 4px solid #ff0000 !important; outline-offset: -2px; opacity: 0.8; filter: grayscale(50%); }
-                                a.flash-target { outline: 4px solid #0070f3 !important; background-color: rgba(0, 112, 243, 0.2) !important; transition: all 0.5s; animation: target-pulse 0.5s 3; }
-                                @keyframes flash { from { opacity: 1; } to { opacity: 0.7; } }
-                                @keyframes target-pulse { 0% { outline-offset: 0px; } 50% { outline-offset: 4px; } 100% { outline-offset: 0px; } }
+                                
+                                /* --- MODIF : ANIMATION PUISSANTE --- */
+                                @keyframes target-pulse { 
+                                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); }
+                                    50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 0, 0, 0); }
+                                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0); }
+                                }
+                                a.flash-target {
+                                    position: relative;
+                                    z-index: 99999;
+                                    outline: 10px solid #ff0000 !important;
+                                    background-color: rgba(255, 255, 0, 0.5) !important;
+                                    animation: target-pulse 0.5s ease-in-out 4; /* 4 pulses */
+                                    box-shadow: 0 0 50px rgba(255,0,0,1); /* Big glow */
+                                }
+
                                 @media screen and (max-width: 600px) { table, tbody, tr, td { width: 100% !important; min-width: 0 !important; box-sizing: border-box !important; height: auto !important; } div[style*="width"] { width: 100% !important; max-width: 100% !important; } img { width: auto !important; max-width: 100% !important; } }
                             `;
                             frame.contentDocument.head.appendChild(style);
@@ -860,8 +978,6 @@ updateLanguage(currentLang);
                                         tooltip.classList.add('visible');
                                         const rect = btn.getBoundingClientRect();
                                         tooltip.style.top = rect.top + 'px';
-                                        // Position to the left of the sidebar (button left position - tooltip estimated width)
-                                        // Simple calculation: align right edge of tooltip with left edge of button - 10px
                                         tooltip.style.right = (window.innerWidth - rect.left + 10) + 'px';
                                         tooltip.style.left = 'auto';
                                     }
